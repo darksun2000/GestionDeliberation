@@ -22,7 +22,7 @@ taches/
     └── Délibération du semestre
 ```
 
-## Proposistion des frameworks
+## Proposition des frameworks
 
 je propose d'utiliser les frameworks suivants:
 * ``` spring ``` pour les implémentations rapides et faciles des controlleurs
