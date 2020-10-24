@@ -30,5 +30,7 @@ je propose d'utiliser les frameworks suivants:
 * ``` maven ``` pour l'importation rapide et automatique des librairies que nous allons utiliser
 * ``` kwonnam jsp ``` pour l'heritage des pages jsp *sans réecrire du code de multitudes de fois* ...
 
+## Ce qu'il faut avoir
 
+* une version **Java** supérieur à la **version 10** _(11 ou plus)_
 
