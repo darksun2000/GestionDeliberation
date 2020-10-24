@@ -1,6 +1,6 @@
 # GESTION DES DELIBERATIONS
 
-Avans de commancer, voici un tutoriel pour utiliser [**git**](https://www.youtube.com/watch?v=HVsySz-h9r4) et [**github**](https://www.youtube.com/watch?v=hPfgekYUKgk): 
+Avans de commencer, voici un tutoriel pour utiliser [**git**](https://www.youtube.com/watch?v=HVsySz-h9r4) et [**github**](https://www.youtube.com/watch?v=hPfgekYUKgk): 
 
 ## Rappel sur les taches à faire
 ```
