@@ -114,3 +114,5 @@ Using generated security password: 48781b29-c46f-4ca7-9f47-afa10694ddde
 
 ```
 
+* dirigez-vous sur ``` localhos:8080 ```, puis vous trouvriez **HELLO WORLS** ecrit sur cette page
+
