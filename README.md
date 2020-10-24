@@ -33,5 +33,6 @@ je propose d'utiliser les frameworks suivants:
 ## Ce qu'il faut avoir
 
 * une version **Java** supérieur à la **version 10** _(11 ou plus)_
-* maven
+* maven dans eclipse
+* (privisoire) maven sur le système d'exploitation
 
