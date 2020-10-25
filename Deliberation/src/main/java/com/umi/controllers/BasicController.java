@@ -8,8 +8,9 @@ import org.springframework.web.servlet.ModelAndView;
 public class BasicController {
 	@RequestMapping("/")
 	public ModelAndView helloworld() {
-		ModelAndView model = new ModelAndView("index");
-		model.addObject("message", "HELLO WORLD");
-		return model;
+//		ModelAndView model = new ModelAndView("index");
+//		model.addObject("message", "HELLO WORLD");
+//		return model;
+		return new ModelAndView("redirect:/student/list");
 	}
 }
