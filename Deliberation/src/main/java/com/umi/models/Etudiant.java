@@ -1,6 +1,6 @@
 package com.umi.models;
 
-import java.io.Serializable;
+
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -15,8 +15,8 @@ import javax.persistence.Table;
 import com.umi.enums.Gender;
 
 @Entity
-@Table(name = "Student")
-public class Student {
+@Table(name = "Etudiant")
+public class Etudiant {
 
 	@Id @GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")
@@ -128,11 +128,11 @@ public class Student {
 	@Column(name = "establishment")
 	private String establishment;
 	
-	public Student() {
+	public Etudiant() {
 		
 	}
 
-	public Student(String massar_edu, String first_name_fr, String first_name_ar, String last_name_fr,
+	public Etudiant(String massar_edu, String first_name_fr, String first_name_ar, String last_name_fr,
 			String last_name_ar, String cne, String nationality, Gender gender, Date birth_date, String birth_place,
 			String city, String province, Integer bac_year, String bac_type, String mention, String high_school,
 			String bac_place, String academy, Date registration_date, String establishment) {

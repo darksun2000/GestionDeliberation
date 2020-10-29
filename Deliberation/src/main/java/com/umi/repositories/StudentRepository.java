@@ -6,14 +6,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.umi.models.Student;
+import com.umi.models.Etudiant;
 
-public interface StudentRepository extends JpaRepository<Student, Integer>{
+public interface StudentRepository extends JpaRepository<Etudiant, Integer>{
 	
-	@Query("select s from Student s")
-	List<Student> getAllStudents();
+	@Query("select s from Etudiant s")
+	List<Etudiant> getAllStudents();
 	
-	@Query("select s from Student s where s.nationality = :nationality")
-	List<Student> getStudentByNationality(@Param("nationality") String nationality);
+	@Query("select s from Etudiant s where s.nationality = :nationality")
+	List<Etudiant> getStudentByNationality(@Param("nationality") String nationality);
 
 }

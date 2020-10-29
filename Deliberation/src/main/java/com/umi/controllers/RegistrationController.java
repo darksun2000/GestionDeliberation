@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.umi.enums.Gender;
-import com.umi.models.Student;
+import com.umi.models.Etudiant;
 import com.umi.repositories.StudentRepository;
 
 @Controller
@@ -43,7 +43,7 @@ public class RegistrationController {
 			, @RequestParam("high_school") String high_school, @RequestParam("bac_place") String bac_place
 			, @RequestParam("academy") String academy, @RequestParam("establishment") String establishment) {
 		
-		Student student = new Student();
+		Etudiant student = new Etudiant();
 		student.setLast_name_fr(last_name_fr);
 		student.setLast_name_ar(last_name_ar);
 		student.setFirst_name_fr(first_name_fr);
