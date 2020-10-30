@@ -117,5 +117,24 @@ Using generated security password: 48781b29-c46f-4ca7-9f47-afa10694ddde
 * dirigez-vous sur ``` localhos:8080 ```, puis vous trouvriez **HELLO WORLD** ecrit sur cette page
 
 
+## Pour Windows
 
-**fin**
+il vaut mieu avoir **Spring Tool Suites (STS)** installé sur votre IDE eclipse, pour se faire:
+* Lancez eclipse
+* Dans la bare de menu, dirigez vous sur Help > Eclipse Marketplace
+* Attendez un moment le temps du chargement
+* Sur la bare de texte **Find:** tapez ``` STS ```
+* Vous allez trouver: ``` Spring Tool 3 (Standalone Edition) 3.9.13.RELEASE ```, sélectionez le
+* appuiez sur **Finish**
+* **Next > I accept conditions ...** ... vous connaissez la musique ``` ( ´･ω･)人(・ω・｀ ) ```
+* Normalement eclipse redémarrera
+* ouvrez le fichier ``` pom.xml ```
+* recherchez la balise ``` dependency ``` qui contien **mysql**
+* changez la version en ``` 5.1.46 ```
+* Biensure, il ne faut pas oublier que vous devriez sensé avoir Java 11 ou plus:
+	- allez vers la bare de menu et appuiez sur **Window > Preferences > Installed JREs**
+	- vous allez trouvez si vous avez bien la librairie de ``` jdk 1.11.0 ``` ou plus
+
+## Pour Hibernate
+
+je vous conseil de regarder [**cette vidéo**](https://www.youtube.com/watch?v=VLlDaIcb3jE).
