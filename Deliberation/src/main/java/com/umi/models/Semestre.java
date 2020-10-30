@@ -7,52 +7,54 @@ import javax.persistence.*;
 public class Semestre {
 
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="idSemestre")
-	private int idSemestre;
+	@Column(name="id_semestre")
+	private int id_semestre;
 	
-	@Column(name="LibelleSemestre")
-	private String LibelleSemestre;
+	@Column(name="libelle_semestre")
+	private String libelle_semestre;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="IdEtape")
+	@ManyToOne
+	@JoinColumn(name = "etape", foreignKey = @ForeignKey(name = "fk_etape"))
 	private Etape etape;
 
-	
-	
 	public Semestre() {
 	}
 
 
-	public Semestre(int idSemestre, String libelleSemestre) {
-		super();
-		this.idSemestre = idSemestre;
-		LibelleSemestre = libelleSemestre;
+	public Semestre(int id_semestre, String libelle_semestre, Etape etape) {
+		this.id_semestre = id_semestre;
+		this.libelle_semestre = libelle_semestre;
+		this.etape = etape;
 	}
 
 
-	public int getIdSemestre() {
-		return idSemestre;
+	public int getId_semestre() {
+		return id_semestre;
 	}
 
 
-	public void setIdSemestre(int idSemestre) {
-		this.idSemestre = idSemestre;
+	public void setId_semestre(int id_semestre) {
+		this.id_semestre = id_semestre;
 	}
 
 
-	public String getLibelleSemestre() {
-		return LibelleSemestre;
+	public String getLibelle_semestre() {
+		return libelle_semestre;
 	}
 
 
-	public void setLibelleSemestre(String libelleSemestre) {
-		LibelleSemestre = libelleSemestre;
+	public void setLibelle_semestre(String libelle_semestre) {
+		this.libelle_semestre = libelle_semestre;
 	}
 
 
-	
-	
-	
-	
+	public Etape getEtape() {
+		return etape;
+	}
+
+
+	public void setEtape(Etape etape) {
+		this.etape = etape;
+	}
 	
 }

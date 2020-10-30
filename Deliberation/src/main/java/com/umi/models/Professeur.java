@@ -1,5 +1,8 @@
 package com.umi.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.*;
 
 @Entity
@@ -7,76 +10,72 @@ import javax.persistence.*;
 public class Professeur {
 
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="idProfesseur")
-	private int idProfesseur;
+	@Column(name="id_professeur")
+	private int id_professeur;
 	
-	@Column(name="nomProfesseur")
-	private String nomProfesseur;
+	@Column(name="nom_professeur")
+	private String nom_professeur;
 	
-	@Column(name="emailProfesseur")
-	private String emailProfesseur;
+	@Column(name="email_professeur")
+	private String email_professeur;
 	
-	@Column(name="mdpProfesseur")
-	private String mdpProfesseur;
+	@Column(name="mdp_professeur")
+	private String mdp_professeur;
 	
-	@OneToMany(fetch = FetchType.LAZY)
-	@JoinColumn(name="idElement")
-	private Element element;
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, mappedBy = "professeur")
+	private List<Element> elements = new ArrayList<Element>();
 
 	public Professeur() {
 	}
 
-	public Professeur(int idProfesseur, String nomProfesseur, String emailProfesseur, String mdpProfesseur,
-			Element element) {
-		super();
-		this.idProfesseur = idProfesseur;
-		this.nomProfesseur = nomProfesseur;
-		this.emailProfesseur = emailProfesseur;
-		this.mdpProfesseur = mdpProfesseur;
-		this.element = element;
+	public Professeur(int id_professeur, String nom_professeur, String email_professeur, String mdp_professeur,
+			List<Element> elements) {
+		this.id_professeur = id_professeur;
+		this.nom_professeur = nom_professeur;
+		this.email_professeur = email_professeur;
+		this.mdp_professeur = mdp_professeur;
+		this.elements = elements;
 	}
 
-	public int getIdProfesseur() {
-		return idProfesseur;
+	public int getId_professeur() {
+		return id_professeur;
 	}
 
-	public void setIdProfesseur(int idProfesseur) {
-		this.idProfesseur = idProfesseur;
+	public void setId_professeur(int id_professeur) {
+		this.id_professeur = id_professeur;
 	}
 
-	public String getNomProfesseur() {
-		return nomProfesseur;
+	public String getNom_professeur() {
+		return nom_professeur;
 	}
 
-	public void setNomProfesseur(String nomProfesseur) {
-		this.nomProfesseur = nomProfesseur;
+	public void setNom_professeur(String nom_professeur) {
+		this.nom_professeur = nom_professeur;
 	}
 
-	public String getEmailProfesseur() {
-		return emailProfesseur;
+	public String getEmail_professeur() {
+		return email_professeur;
 	}
 
-	public void setEmailProfesseur(String emailProfesseur) {
-		this.emailProfesseur = emailProfesseur;
+	public void setEmail_professeur(String email_professeur) {
+		this.email_professeur = email_professeur;
 	}
 
-	public String getMdpProfesseur() {
-		return mdpProfesseur;
+	public String getMdp_professeur() {
+		return mdp_professeur;
 	}
 
-	public void setMdpProfesseur(String mdpProfesseur) {
-		this.mdpProfesseur = mdpProfesseur;
+	public void setMdp_professeur(String mdp_professeur) {
+		this.mdp_professeur = mdp_professeur;
 	}
 
-	public Element getElement() {
-		return element;
+	public List<Element> getElements() {
+		return elements;
 	}
 
-	public void setElement(Element element) {
-		this.element = element;
+	public void setElements(List<Element> elements) {
+		this.elements = elements;
 	}
-
-	
 	
 	
 }

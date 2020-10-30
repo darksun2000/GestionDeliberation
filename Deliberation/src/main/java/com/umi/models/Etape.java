@@ -1,44 +1,67 @@
 package com.umi.models;
 
-import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 @Entity
 @Table(name="Etape")
 public class Etape {
 
 	@Id @GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name="idEtape")
-	private int idEtape;
+	@Column(name="id_etape")
+	private int id_etape;
 	
-	@Column(name="LibelleEtape")
-	private String LibelleEtape;
+	@Column(name="libelle_etape")
+	private String libelle_etape;
 	
+	@OneToMany( cascade = CascadeType.REMOVE, mappedBy = "etape")
+	private List<Filiere> filieres = new ArrayList<Filiere>();
 	
 	public Etape() {
 		
 	}
 
-	public Etape(int idEtape, String libelleEtape) {
+	public Etape(int id_etape, String libelle_etape) {
 		super();
-		this.idEtape = idEtape;
-		LibelleEtape = libelleEtape;
+		this.id_etape = id_etape;
+		this.libelle_etape = libelle_etape;
 	}
 
-	public int getIdEtape() {
-		return idEtape;
+	public int getId_etape() {
+		return id_etape;
 	}
 
-	public void setIdEtape(int idEtape) {
-		this.idEtape = idEtape;
+	public void setId_etape(int id_etape) {
+		this.id_etape = id_etape;
 	}
 
-	public String getLibelleEtape() {
-		return LibelleEtape;
+	public String getLibelle_etape() {
+		return libelle_etape;
 	}
 
-	public void setLibelleEtape(String libelleEtape) {
-		LibelleEtape = libelleEtape;
+	public void setLibelle_etape(String libelle_etape) {
+		this.libelle_etape = libelle_etape;
 	}
 
+	public List<Filiere> getFilieres() {
+		return filieres;
+	}
+
+	public void setFilieres(List<Filiere> filieres) {
+		this.filieres = filieres;
+	}
 	
 }

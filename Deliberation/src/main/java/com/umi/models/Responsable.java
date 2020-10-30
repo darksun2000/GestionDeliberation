@@ -8,21 +8,21 @@ import javax.persistence.*;
 public class Responsable {
 
 	@Id @GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "idResponsable")
-	private int idResponsable;
+	@Column(name = "id_responsable")
+	private int id_responsable;
 	
-	@Column(name="nomResponsable")
-	private String nomResponsable;
+	@Column(name="nom_responsable")
+	private String nom_responsable;
 	
-	@Column(name="emailResponsable")
-	private String emailResponsable;
+	@Column(name="email_responsable")
+	private String email_responsable;
 	
-	@Column(name="mdpResponsable")
-	private String mdpResponsable;
+	@Column(name="mdp_responsable")
+	private String mdp_responsable;
 	
 	
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="idFiliere")
+	@JoinColumn(name="filiere")
 	private Filiere filiere;
 
 
@@ -30,66 +30,54 @@ public class Responsable {
 	}
 
 
-	public Responsable(int idResponsable, String nomResponsable, String emailResponsable, String mdpResponsable,
+	public Responsable(int id_responsable, String nom_responsable, String email_responsable, String mdp_responsable,
 			Filiere filiere) {
-		super();
-		this.idResponsable = idResponsable;
-		this.nomResponsable = nomResponsable;
-		this.emailResponsable = emailResponsable;
-		this.mdpResponsable = mdpResponsable;
+		this.id_responsable = id_responsable;
+		this.nom_responsable = nom_responsable;
+		this.email_responsable = email_responsable;
+		this.mdp_responsable = mdp_responsable;
 		this.filiere = filiere;
 	}
 
-
-	public int getIdResponsable() {
-		return idResponsable;
+	public int getId_responsable() {
+		return id_responsable;
 	}
 
-
-	public void setIdResponsable(int idResponsable) {
-		this.idResponsable = idResponsable;
+	public void setId_responsable(int id_responsable) {
+		this.id_responsable = id_responsable;
 	}
 
-
-	public String getNomResponsable() {
-		return nomResponsable;
+	public String getNom_responsable() {
+		return nom_responsable;
 	}
 
-
-	public void setNomResponsable(String nomResponsable) {
-		this.nomResponsable = nomResponsable;
+	public void setNom_responsable(String nom_responsable) {
+		this.nom_responsable = nom_responsable;
 	}
 
-
-	public String getEmailResponsable() {
-		return emailResponsable;
+	public String getEmail_responsable() {
+		return email_responsable;
 	}
 
-
-	public void setEmailResponsable(String emailResponsable) {
-		this.emailResponsable = emailResponsable;
+	public void setEmail_responsable(String email_responsable) {
+		this.email_responsable = email_responsable;
 	}
 
-
-	public String getMdpResponsable() {
-		return mdpResponsable;
+	public String getMdp_responsable() {
+		return mdp_responsable;
 	}
 
-
-	public void setMdpResponsable(String mdpResponsable) {
-		this.mdpResponsable = mdpResponsable;
+	public void setMdp_responsable(String mdp_responsable) {
+		this.mdp_responsable = mdp_responsable;
 	}
-
 
 	public Filiere getFiliere() {
 		return filiere;
 	}
 
-
 	public void setFiliere(Filiere filiere) {
 		this.filiere = filiere;
 	}
-	
-	
+		
 	
 }

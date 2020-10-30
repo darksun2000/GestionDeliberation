@@ -7,45 +7,44 @@ import javax.persistence.*;
 public class NoteModule {
 
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="idNoteModule")
-	private int idNoteModule;
+	@Column(name="id_note_module")
+	private int id_note_module;
 	
-	@Column(name="noteModule")
-	private double noteModule;
+	@Column(name="note_module")
+	private double note_module;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="idModule")
+	@JoinColumn(name="module")
 	private Module module;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="idIP")
-	private InscriptionPedagogique ip;
+	@JoinColumn(name="inscription_pedagogique")
+	private InscriptionPedagogique inscription_pedagogique;
 
 	public NoteModule() {
 	}
 
-	public NoteModule(int idNoteModule, double noteModule, Module module, InscriptionPedagogique ip) {
-		super();
-		this.idNoteModule = idNoteModule;
-		this.noteModule = noteModule;
+	public NoteModule(int id_note_module, double note_module, Module module, InscriptionPedagogique inscription_pedagogique) {
+		this.id_note_module = id_note_module;
+		this.note_module = note_module;
 		this.module = module;
-		this.ip = ip;
+		this.inscription_pedagogique = inscription_pedagogique;
 	}
 
-	public int getIdNoteModule() {
-		return idNoteModule;
+	public int getId_note_module() {
+		return id_note_module;
 	}
 
-	public void setIdNoteModule(int idNoteModule) {
-		this.idNoteModule = idNoteModule;
+	public void setId_note_module(int id_note_module) {
+		this.id_note_module = id_note_module;
 	}
 
-	public double getNoteModule() {
-		return noteModule;
+	public double getNote_module() {
+		return note_module;
 	}
 
-	public void setNoteModule(double noteModule) {
-		this.noteModule = noteModule;
+	public void setNote_module(double note_module) {
+		this.note_module = note_module;
 	}
 
 	public Module getModule() {
@@ -56,12 +55,13 @@ public class NoteModule {
 		this.module = module;
 	}
 
-	public InscriptionPedagogique getIp() {
-		return ip;
+	public InscriptionPedagogique getInscription_pedagogique() {
+		return inscription_pedagogique;
 	}
 
-	public void setIp(InscriptionPedagogique ip) {
-		this.ip = ip;
+	public void setInscription_pedagogique(InscriptionPedagogique inscription_pedagogique) {
+		this.inscription_pedagogique = inscription_pedagogique;
 	}
+	
 	
 }

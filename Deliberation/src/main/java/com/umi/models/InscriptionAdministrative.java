@@ -7,22 +7,25 @@ import java.util.List;
 import javax.persistence.*;
 
 @Entity
-@Table(name="InscriptionPedagogique")
-public class InscriptionPedagogique {
+@Table(name="InscriptionAdministrative")
+public class InscriptionAdministrative {
 
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="id_ip")
-	private int id_ip;
+	@Column(name="id_ia")
+	private int id_ia;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="etudiant", foreignKey = @ForeignKey(name = "fk_etudiant"))
+	@ManyToOne
+	@JoinColumn(name = "etudiant", foreignKey = @ForeignKey(name = "fk_etudiant"))
 	private Etudiant etudiant;
 	
 	@ManyToMany(fetch=FetchType.LAZY)
 	private List<Filiere> filieres = new ArrayList<Filiere>();
 	
 	@Column(name="annee_academique")
-	private String annee_academique; // not an integer ??
+	private String annee_academique; // not an integer ???
+	
+//	@Column(name="DatePreInscription")
+//	private String DatePreInscription;
 	
 	@Column(name="date_pre_inscription")
 	private Date date_pre_inscription;
@@ -30,12 +33,12 @@ public class InscriptionPedagogique {
 	@Column(name="date_valid_inscription")
 	private Date date_valid_inscription;
 
-	public InscriptionPedagogique() {
+	public InscriptionAdministrative() {
 	}
 
-	public InscriptionPedagogique(int id_ip, Etudiant etudiant, List<Filiere> filieres, String annee_academique,
+	public InscriptionAdministrative(int id_ia, Etudiant etudiant, List<Filiere> filieres, String annee_academique,
 			Date date_pre_inscription, Date date_valid_inscription) {
-		this.id_ip = id_ip;
+		this.id_ia = id_ia;
 		this.etudiant = etudiant;
 		this.filieres = filieres;
 		this.annee_academique = annee_academique;
@@ -43,12 +46,12 @@ public class InscriptionPedagogique {
 		this.date_valid_inscription = date_valid_inscription;
 	}
 
-	public int getId_ip() {
-		return id_ip;
+	public int getId_ia() {
+		return id_ia;
 	}
 
-	public void setId_ip(int id_ip) {
-		this.id_ip = id_ip;
+	public void setId_ia(int id_ia) {
+		this.id_ia = id_ia;
 	}
 
 	public Etudiant getEtudiant() {
@@ -75,7 +78,7 @@ public class InscriptionPedagogique {
 		this.annee_academique = annee_academique;
 	}
 
-	public Date getdate_pre_inscription() {
+	public Date getDate_pre_inscription() {
 		return date_pre_inscription;
 	}
 
@@ -90,5 +93,5 @@ public class InscriptionPedagogique {
 	public void setDate_valid_inscription(Date date_valid_inscription) {
 		this.date_valid_inscription = date_valid_inscription;
 	}
-	
+
 }
