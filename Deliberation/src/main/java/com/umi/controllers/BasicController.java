@@ -27,4 +27,12 @@ public class BasicController {
 		return model;
 //		return new ModelAndView("redirect:/student/list");
 	}
+	
+	@RequestMapping("/foobar")
+	public ModelAndView foobar() {
+		ModelAndView model = new ModelAndView("foo_bar");
+		return model;
+//		return new ModelAndView("redirect:/student/list");
+	}
+	
 }

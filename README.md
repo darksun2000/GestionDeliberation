@@ -126,7 +126,7 @@ il vaut mieu avoir **Spring Tool Suites (STS)** installé sur votre IDE eclipse,
 * Sur la bare de texte **Find:** tapez ``` STS ```
 * Vous allez trouver: ``` Spring Tool 3 (Standalone Edition) 3.9.13.RELEASE ```, sélectionez le
 * appuiez sur **Finish**
-* **Next > I accept conditions ...** ... vous connaissez la musique ``` ( ´･ω･)人(・ω・｀ ) ```
+* **Next > Next > Next ... I accept conditions ...** ... vous connaissez la musique ``` ( ´･ω･)人(・ω・｀ ) ```
 * Normalement eclipse redémarrera
 * ouvrez le fichier ``` pom.xml ```
 * recherchez la balise ``` dependency ``` qui contien **mysql**
