@@ -16,13 +16,9 @@ public class Filiere {
 	@Column(name="nom_filiere")
 	private String nom_filiere;
 
-	//	@OneToMany(fetch = FetchType.LAZY)
-	//	@JoinColumn(name="IdEtape")
-
-	@ManyToOne
-	@JoinColumn(name = "etape", foreignKey = @ForeignKey(name = "fk_etape"))
-	private Etape etape;
-
+	@OneToMany( cascade = CascadeType.REMOVE, mappedBy = "filiere")
+	private List<Etape> etapes = new ArrayList<Etape>();
+	
 	@ManyToMany(fetch=FetchType.LAZY, mappedBy = "filieres")
 	private List<InscriptionAdministrative> inscriptions_administrative = new ArrayList<InscriptionAdministrative>();
 	
@@ -32,13 +28,13 @@ public class Filiere {
 	public Filiere() {
 
 	}
-	public Filiere(int id_filiere,String nom_filiere , /*Etape Etape*/Etape etape){
+	public Filiere(int id_filiere,String nom_filiere){
 		//	 super();
 		this.id_filiere = id_filiere;
 		this.nom_filiere = nom_filiere;
-		this.etape = etape;
-
+		
 	}
+	
 	public int getId_filiere() {
 		return id_filiere;
 	}
@@ -51,11 +47,12 @@ public class Filiere {
 	public void setNom_filiere(String nom_filiere) {
 		this.nom_filiere = nom_filiere;
 	}
-	public Etape getEtape() {
-		return etape;
+	public List<Etape> getEtapes() {
+		return etapes;
 	}
-	public void setEtape(Etape etape) {
-		this.etape = etape;
+	public void setEtapes(List<Etape> etapes) {
+		this.etapes = etapes;
 	}
+	
 
 }

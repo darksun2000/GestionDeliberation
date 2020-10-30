@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -27,8 +28,9 @@ public class Etape {
 	@Column(name="libelle_etape")
 	private String libelle_etape;
 	
-	@OneToMany( cascade = CascadeType.REMOVE, mappedBy = "etape")
-	private List<Filiere> filieres = new ArrayList<Filiere>();
+	@ManyToOne
+	@JoinColumn(name = "filiere", foreignKey = @ForeignKey(name = "fk_filiere"))
+	private Filiere filiere;
 	
 	public Etape() {
 		
@@ -56,12 +58,5 @@ public class Etape {
 		this.libelle_etape = libelle_etape;
 	}
 
-	public List<Filiere> getFilieres() {
-		return filieres;
-	}
-
-	public void setFilieres(List<Filiere> filieres) {
-		this.filieres = filieres;
-	}
 	
 }
