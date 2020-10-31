@@ -13,16 +13,16 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.umi.enums.Gender;
 import com.umi.models.Etudiant;
-import com.umi.repositories.StudentRepository;
+import com.umi.repositories.EtudiantRepository;
 
 @Controller
 public class RegistrationController {
 	
 	@PersistenceContext
 	private EntityManager entiryManager;
-	private StudentRepository studentRepository;
+	private EtudiantRepository studentRepository;
 	
-	public RegistrationController(StudentRepository studentRepository) {
+	public RegistrationController(EtudiantRepository studentRepository) {
 		this.studentRepository = studentRepository;
 	}
 	

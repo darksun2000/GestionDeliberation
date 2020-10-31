@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import com.umi.models.Etudiant;
 
-public interface StudentRepository extends JpaRepository<Etudiant, Integer>{
+public interface EtudiantRepository extends JpaRepository<Etudiant, Integer>{
 	
 	@Query("select s from Etudiant s")
 	List<Etudiant> getAllStudents();
