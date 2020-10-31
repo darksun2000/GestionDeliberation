@@ -14,7 +14,7 @@
 				<table class="mb-0 table table-striped">
 					<thead>
 						<tr>
-							<th>#</th>
+							<th>Nom</th>
 							<th class="th-sm">Prénom</th>
 							<th class="th-sm">CNE</th>
 							<th class="th-sm">Sexe</th>

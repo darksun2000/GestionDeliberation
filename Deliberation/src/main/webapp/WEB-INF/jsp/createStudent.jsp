@@ -8,296 +8,23 @@
 <layout:extends name="layout.jsp">
 	<layout:put block="content" type="REPLACE">
 
-		<style>
-html, body {
-	min-height: 100%;
-}
-
-body, div, form, input, select, p {
-	padding: 0;
-	margin: 0;
-	outline: none;
-	font-family: Roboto, Arial, sans-serif;
-	font-size: 14px;
-	color: #666;
-}
-
-h1 {
-	margin: 0;
-	font-weight: 400;
-}
-
-h3 {
-	margin: 12px 0;
-	color: #8ebf42;
-}
-
-.main-block {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	background: #fff;
-}
-
-form {
-	width: 100%;
-	padding: 20px;
-}
-
-fieldset {
-	border: none;
-	border-top: 1px solid #8ebf42;
-}
-
-.account-details, .personal-details {
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: space-between;
-}
-
-.account-details>div, .personal-details>div>div {
-	display: flex;
-	align-items: center;
-	margin-bottom: 10px;
-}
-
-.account-details>div, .personal-details>div, input, label {
-	width: 100%;
-}
-
-label {
-	padding: 0 5px;
-	text-align: right;
-	vertical-align: middle;
-}
-
-input {
-	padding: 5px;
-	vertical-align: middle;
-}
-
-.checkbox {
-	margin-bottom: 10px;
-}
-
-select, .children, .gender, .bdate-block {
-	width: calc(100% + 26px);
-	padding: 5px 0;
-}
-
-select {
-	background: transparent;
-}
-
-.gender input {
-	width: auto;
-}
-
-.gender label {
-	padding: 0 5px 0 0;
-}
-
-.bdate-block {
-	display: flex;
-	justify-content: space-between;
-}
-
-.birthdate select.day {
-	width: 35px;
-}
-
-.birthdate select.mounth {
-	width: calc(100% - 94px);
-}
-
-.birthdate input {
-	width: 38px;
-	vertical-align: unset;
-}
-
-.checkbox input, .children input {
-	width: auto;
-	margin: -2px 10px 0 0;
-}
-
-.checkbox a {
-	color: #8ebf42;
-}
-
-.checkbox a:hover {
-	color: #82b534;
-}
-
-button {
-	width: 100%;
-	padding: 10px 0;
-	margin: 10px auto;
-	border-radius: 5px;
-	border: none;
-	background: #8ebf42;
-	font-size: 14px;
-	font-weight: 600;
-	color: #fff;
-}
-
-button:hover {
-	background: #82b534;
-}
-
-@media ( min-width : 568px) {
-	.account-details>div, .personal-details>div {
-		width: 50%;
-	}
-	label {
-		width: 40%;
-	}
-	input {
-		width: 60%;
-	}
-	select, .children, .gender, .bdate-block {
-		width: calc(60% + 16px);
-	}
-}
-</style>
-
-		<div class="main-block">
-			<form action="/student/create" method="POST">
-				<h1>Créaction d'un étudiant</h1>
-				<fieldset>
-					<legend>
-						<h3>Nom et prénom</h3>
-					</legend>
-					<div class="account-details">
-						<div>
-							<label>Nom en français</label><input type="text"
-								name="last_name_fr" required>
-						</div>
-						<div>
-							<label>Nom en arabe</label><input type="text" name="last_name_ar"
-								required>
-						</div>
-						<div>
-							<label>Prénom en français</label><input type="text"
-								name="first_name_fr" required>
-						</div>
-						<div>
-							<label>Prénom en arabe</label><input type="text"
-								name="first_name_ar" required>
-						</div>
-					</div>
-				</fieldset>
-				<fieldset>
-					<legend>
-						<h3>Informations estudiantes</h3>
-					</legend>
-					<div class="personal-details">
-						<div>
-							<div>
-								<label>Code massar</label><input type="text" name="massar_edu"
-									required>
-							</div>
-							<div>
-								<label>CNE</label><input type="text" name="cne" required>
-							</div>
-							<div>
-								<label>Nationalité</label><jsp:include page="country-select.jsp"></jsp:include></div>
-							<div>
-								<label>Ville</label><input type="text" name="city" required>
-							</div>
-							<div>
-								<label>Sexe</label>
-								<div class="gender">
-									Homme <input type="radio" value="HOMME" id="male" name="gender"
-										required /><br> Femme <input type="radio" value="FEMME"
-										id="female" name="gender" required /><br>
-								</div>
-							</div>
-						</div>
-						<div>
-							<div>
-								<label>Date de naissance</label><input type="date"
-									name="birth_date">
-							</div>
-
-							<div>
-								<label>Lieu de naissance</label><input type="text"
-									name="birth_place">
-							</div>
-
-							<div>
-								<label>Province</label><input type="text" name="province">
-							</div>
-
-							<div>
-								<label>année du bac</label><input type="text" name="bac_year">
-							</div>
-
-							<div>
-								<label>type du bac</label><input type="text" name="bac_type">
-							</div>
-
-							<div>
-								<label>mention du bac</label><input type="text" name="mention">
-							</div>
-
-							<div>
-								<label>lycée</label><input type="text" name="high_school">
-							</div>
-
-							<div>
-								<label>lieu d'obtention du bac</label><input type="text"
-									name="bac_place">
-							</div>
-
-							<div>
-								<label>académie</label><input type="text" name="academy">
-							</div>
-
-							<div>
-								<label>établissement</label><input type="text"
-									name="establishment">
-							</div>
-
-						</div>
-
-					</div>
-				</fieldset>
-				<button type="submit">Submit</button>
-			</form>
-		</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 		<div class="main-card mb-3 card">
 			<div class="card-body">
 				<h5 class="card-title">Création d'un étudiant</h5>
-				<form class="">
+				<form class="" action="/student/create" method="POST">
 					<div class="form-row">
 						<div class="col-md-6">
 							<div class="position-relative form-group">
 								<label for="last_name_fr" class="">Nom en français</label><input
-									name="last_name_fr" id="last_name_fr"
-									placeholder="" type="text"
-									class="form-control">
+									name="last_name_fr" id="last_name_fr" placeholder=""
+									type="text" class="form-control">
 							</div>
 						</div>
 						<div class="col-md-6">
 							<div class="position-relative form-group">
 								<label for="last_name_ar" class="">Nom en arabe</label><input
-									name="last_name_ar" id="last_name_ar"
-									placeholder="" type="text"
-									class="form-control">
+									name="last_name_ar" id="last_name_ar" placeholder=""
+									type="text" class="form-control">
 							</div>
 						</div>
 					</div>
@@ -305,77 +32,156 @@ button:hover {
 						<div class="col-md-6">
 							<div class="position-relative form-group">
 								<label for="first_name_fr" class="">Prénom en français</label><input
-									name="first_name_fr" id="first_name_fr"
-									placeholder="" type="text"
-									class="form-control">
+									name="first_name_fr" id="first_name_fr" placeholder=""
+									type="text" class="form-control">
 							</div>
 						</div>
 						<div class="col-md-6">
 							<div class="position-relative form-group">
 								<label for="first_name_ar" class="">Prénom en arabe</label><input
-									name="first_name_ar" id="first_name_ar"
-									placeholder="" type="text"
-									class="form-control">
+									name="first_name_ar" id="first_name_ar" placeholder=""
+									type="text" class="form-control">
 							</div>
 						</div>
 					</div>
-					<div class="position-relative form-group">
-						<label for="exampleAddress" class="">Address</label><input
-							name="address" id="exampleAddress" placeholder="1234 Main St"
-							type="text" class="form-control">
+
+					<div class="form-row">
+						<div class="col-md-6">
+							<div class="position-relative form-group">
+								<label for="massar_edu" class="">Code Massar</label><input
+									name="massar_edu" id="massar_edu" placeholder="" type="text"
+									class="form-control">
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="position-relative form-group">
+								<label for="cne" class="">CNE</label><input name="cne" id="cne"
+									placeholder="" type="text" class="form-control">
+							</div>
+						</div>
 					</div>
-					<div class="position-relative form-group">
-						<label for="exampleAddress2" class="">Address 2</label><input
-							name="address2" id="exampleAddress2"
-							placeholder="Apartment, studio, or floor" type="text"
-							class="form-control">
+
+					<div class="form-row">
+						<div class="col-md-3">
+							<div class="position-relative form-group">
+								<label for="nationality" class="">Nationalité</label>
+								<jsp:include page="country-select.jsp"></jsp:include>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="position-relative form-group">
+								<label for="city" class="">Ville</label><input name="city"
+									id="city" placeholder="" type="text" class="form-control">
+							</div>
+						</div>
+
+						<div class="col-md-6">
+
+							<div class="card-body">
+								<h5 class="card-title">Sexe</h5>
+								<div class="position-relative form-group">
+									<div>
+										<div
+											class="custom-radio custom-control">
+											<input type="radio" id="male" value="HOMME" name="gender"
+												class="custom-control-input"><label
+												class="custom-control-label" for="male">Homme</label>
+										</div>
+										<div
+											class="custom-radio custom-control">
+											<input type="radio" id="female" value="FEMME" name="gender"
+												class="custom-control-input"><label
+												class="custom-control-label" for="female">Femme</label>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+					
+					<div class="form-row">
+						<div class="col-md-6">
+							<div class="position-relative form-group">
+								<label for="birth_date" class="">Date de naissance</label><input
+									name="birth_date" id="birth_date"
+									type="date" class="form-control">
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="position-relative form-group">
+								<label for="birth_place" class="">Lieu de naissance</label><input
+									name="birth_place" id="birth_place" placeholder=""
+									type="text" class="form-control">
+							</div>
+						</div>
 					</div>
 					<div class="form-row">
 						<div class="col-md-6">
 							<div class="position-relative form-group">
-								<label for="exampleCity" class="">City</label><input name="city"
-									id="exampleCity" type="text" class="form-control">
+								<label for="province" class="">Province</label><input
+									name="province" id="province" placeholder=""
+									type="text" class="form-control">
 							</div>
 						</div>
-						<div class="col-md-4">
+						<div class="col-md-6">
 							<div class="position-relative form-group">
-								<label for="exampleState" class="">State</label><input
-									name="state" id="exampleState" type="text" class="form-control">
-							</div>
-						</div>
-						<div class="col-md-2">
-							<div class="position-relative form-group">
-								<label for="exampleZip" class="">Zip</label><input name="zip"
-									id="exampleZip" type="text" class="form-control">
+								<label for="bac_year" class="">Année bac</label><input
+									name="bac_year" id="bac_year" placeholder=""
+									type="number" class="form-control">
 							</div>
 						</div>
 					</div>
-					<div class="position-relative form-check">
-						<input name="check" id="exampleCheck" type="checkbox"
-							class="form-check-input"><label for="exampleCheck"
-							class="form-check-label">Check me out</label>
+					<div class="form-row">
+						<div class="col-md-6">
+							<div class="position-relative form-group">
+								<label for="bac_type" class="">Type du bac</label><input
+									name="bac_type" id="bac_type" placeholder=""
+									type="text" class="form-control">
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="position-relative form-group">
+								<label for="mention" class="">Mention</label><input
+									name="mention" id="mention" placeholder=""
+									type="text" class="form-control">
+							</div>
+						</div>
 					</div>
-					<button class="mt-2 btn btn-primary">Sign in</button>
+					<div class="form-row">
+						<div class="col-md-3">
+							<div class="position-relative form-group">
+								<label for="high_school" class="">Lycée</label><input
+									name="high_school" id="high_school" placeholder=""
+									type="text" class="form-control">
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="position-relative form-group">
+								<label for="bac_place" class="">Lieu d'obtention du bac</label><input
+									name="bac_place" id="bac_place" placeholder=""
+									type="text" class="form-control">
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="position-relative form-group">
+								<label for="academy" class="">Académie</label><input
+									name="academy" id="academy" placeholder=""
+									type="text" class="form-control">
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="position-relative form-group">
+								<label for="establishment" class="">établissement</label><input
+									name="establishment" id="establishment" placeholder=""
+									type="text" class="form-control">
+							</div>
+						</div>
+					</div>
+					<button class="mt-2 btn btn-primary col-md-12" type="submit">Valider</button>
 				</form>
 			</div>
 		</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 	</layout:put>
 </layout:extends>

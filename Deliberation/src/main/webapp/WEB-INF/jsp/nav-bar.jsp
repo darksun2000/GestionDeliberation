@@ -38,23 +38,15 @@
 		<div class="app-sidebar__inner">
 			<ul class="vertical-nav-menu">
 				<li class="app-sidebar__heading">Accueil</li>
-				<li><a href="index.html" class="mm-active"> <i
+				<li><a href="/" class="${dashboard}"> <i
 						class="metismenu-icon pe-7s-rocket"></i> Tableau de bords
 				</a></li>
-				<li>
-					<a href="#"> <i class="metismenu-icon pe-7s-diamond"></i>
-						Menu <i
-						class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
-				</a>
-					<ul>
-						<li><a href="/student/create"> <i
-								class="metismenu-icon"></i> Ajouter un étudiant
-						</a></li>
-						<li><a href="/student/list"> <i
-								class="metismenu-icon"> </i>Liste des étudiants
-						</a></li>
-					</ul>
-				</li>
+				<li><a href="/student/create" class="${createStudent}"> <i
+						class="metismenu-icon pe-7s-plus"></i> Ajouter un étudiant
+				</a></li>
+				<li><a href="/student/list" class="${listStudent}"> <i
+						class="metismenu-icon pe-7s-menu"></i> Liste des étudiants
+				</a></li>
 			</ul>
 		</div>
 	</div>

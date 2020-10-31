@@ -28,7 +28,9 @@ public class RegistrationController {
 	
 	@GetMapping("/student/create")
 	public ModelAndView createANewStudent() {
-		return new ModelAndView("createStudent");
+		ModelAndView model = new ModelAndView("createStudent");
+		model.addObject("createStudent", "mm-active");//will be used in the nav-bar
+		return model;
 	}
 	
 	@PostMapping("/student/create")
@@ -74,7 +76,9 @@ public class RegistrationController {
 	@GetMapping("/student/list")
 	public ModelAndView list() {
 		ModelAndView model = new ModelAndView("listStudent");
+		model.addObject("listStudent", "mm-active");
 		model.addObject("students", studentRepository.getAllStudents());
+		
 		return model;
 	}
 	
