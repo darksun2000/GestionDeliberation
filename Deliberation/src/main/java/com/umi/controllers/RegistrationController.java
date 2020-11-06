@@ -26,6 +26,11 @@ public class RegistrationController {
 		this.studentRepository = studentRepository;
 	}
 	
+	@GetMapping("/log")
+	public ModelAndView login() {
+		return new ModelAndView("login");
+	}
+	
 	@GetMapping("/student/create")
 	public ModelAndView createANewStudent() {
 		ModelAndView model = new ModelAndView("createStudent");
