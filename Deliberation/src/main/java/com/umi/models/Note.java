@@ -3,8 +3,8 @@ package com.umi.models;
 import javax.persistence.*;
 
 @Entity
-@Table(name="NoteModule")
-public class NoteModule {
+@Table(name="Note")
+public class Note {
 
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="id_note_module")
@@ -14,20 +14,20 @@ public class NoteModule {
 	private double note_module;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="module")
-	private Module module;
+	@JoinColumn(name="element")
+	private Element element;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="inscription_pedagogique")
 	private InscriptionPedagogique inscription_pedagogique;
 
-	public NoteModule() {
+	public Note() {
 	}
 
-	public NoteModule(int id_note_module, double note_module, Module module, InscriptionPedagogique inscription_pedagogique) {
+	public Note(int id_note_module, double note_module, Element element, InscriptionPedagogique inscription_pedagogique) {
 		this.id_note_module = id_note_module;
 		this.note_module = note_module;
-		this.module = module;
+		this.element = element;
 		this.inscription_pedagogique = inscription_pedagogique;
 	}
 
@@ -47,12 +47,12 @@ public class NoteModule {
 		this.note_module = note_module;
 	}
 
-	public Module getModule() {
-		return module;
+	public Element getElement() {
+		return element;
 	}
 
-	public void setModule(Module module) {
-		this.module = module;
+	public void setElement(Element element) {
+		this.element = element;
 	}
 
 	public InscriptionPedagogique getInscription_pedagogique() {

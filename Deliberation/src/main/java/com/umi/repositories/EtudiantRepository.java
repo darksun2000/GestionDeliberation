@@ -13,6 +13,9 @@ public interface EtudiantRepository extends JpaRepository<Etudiant, Integer>{
 	@Query("select s from Etudiant s")
 	List<Etudiant> getAllStudents();
 	
+	@Query("select s from Etudiant s where s.cne = :cne")
+	Etudiant getEtudiantByCne(@Param("cne") String cne);
+	
 	@Query("select s from Etudiant s where s.nationality = :nationality")
 	List<Etudiant> getStudentByNationality(@Param("nationality") String nationality);
 
