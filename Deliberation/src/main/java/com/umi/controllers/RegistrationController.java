@@ -175,7 +175,6 @@ public class RegistrationController {
 		student.setBac_place(iel.getBac_place());
 		student.setAcademy(iel.getAcademy());
 		student.setEstablishment(iel.getEstablishment());
-		studentRepository.save(student);
 		inscriptionEnligne.updateAcceptation(iel.getId(),1);
 		return new ModelAndView("redirect:/student/ListInscriptionEnligne");
 	}

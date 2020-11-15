@@ -42,6 +42,12 @@
 			<version>5.0.0-M5</version>
 			<scope>test</scope>
 		</dependency>
+		
+		<dependency>
+<groupId>org.apache.poi</groupId>
+<artifactId>poi-ooxml</artifactId>
+<version>4.1.2</version>
+</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -184,6 +190,11 @@
 			<version>1.18</version>
 		</dependency>
 
+	<!-- Spring Batch -->
+<dependency>
+    <groupId>org.springframework.batch</groupId>
+    <artifactId>spring-batch-core</artifactId>
+</dependency>
 
 	</dependencies>
 

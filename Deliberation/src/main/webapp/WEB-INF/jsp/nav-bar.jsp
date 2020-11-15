@@ -48,10 +48,16 @@
 						class="metismenu-icon pe-7s-menu"></i> Liste des étudiants
 				</a></li>
 				<li><a href="/student/InscriptionEnLigne" class="${InscriptionEnLigne}"> <i
-						class="metismenu-icon pe-7s-menu"></i> Inscription En ligne
+						class="metismenu-icon pe-7s-plus"></i> Inscription En ligne
 				</a></li>
 				<li><a href="/student/ListInscriptionEnligne" class="${listInscriptions}"> <i
 						class="metismenu-icon pe-7s-menu"></i>Liste des inscriptions en ligne
+				</a></li>
+				<li><a href="/inscription/InscriptionAdministrative" class="${InscriptionAdministrative}"> <i
+						class="metismenu-icon pe-7s-plus"></i> Inscription Administrative
+				</a></li>
+				<li><a href="/inscription/ListInscriptionAdministrative" class="${listAdministartive}"> <i
+						class="metismenu-icon pe-7s-menu"></i> Listes Inscriptions Administratives
 				</a></li>
 			</ul>
 		</div>

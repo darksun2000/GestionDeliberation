@@ -1,8 +1,6 @@
 package com.umi.models;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.*;
 
@@ -18,8 +16,8 @@ public class InscriptionAdministrative {
 	@JoinColumn(name = "etudiant", foreignKey = @ForeignKey(name = "fk_etudiant"))
 	private Etudiant etudiant;
 	
-	@ManyToMany(fetch=FetchType.LAZY)
-	private List<Filiere> filieres = new ArrayList<Filiere>();
+	@OneToOne(fetch=FetchType.LAZY)
+	private Filiere filieres;
 	
 	@Column(name="annee_academique")
 	private String annee_academique; // not an integer ???
@@ -32,18 +30,34 @@ public class InscriptionAdministrative {
 	
 	@Column(name="date_valid_inscription")
 	private Date date_valid_inscription;
+	
+	@Column(name="operateur")
+	private String operateur;
 
 	public InscriptionAdministrative() {
 	}
 
-	public InscriptionAdministrative(int id_ia, Etudiant etudiant, List<Filiere> filieres, String annee_academique,
-			Date date_pre_inscription, Date date_valid_inscription) {
+	public InscriptionAdministrative(int id_ia, Etudiant etudiant, Filiere filieres, String annee_academique,
+			Date date_pre_inscription, Date date_valid_inscription,String operateur) {
 		this.id_ia = id_ia;
 		this.etudiant = etudiant;
 		this.filieres = filieres;
 		this.annee_academique = annee_academique;
 		this.date_pre_inscription = date_pre_inscription;
 		this.date_valid_inscription = date_valid_inscription;
+		this.operateur=operateur;
+	}
+
+	public String getOperateur() {
+		return operateur;
+	}
+
+	public void setOperateur(String operateur) {
+		this.operateur = operateur;
+	}
+
+	public Etudiant getEtudiant() {
+		return etudiant;
 	}
 
 	public int getId_ia() {
@@ -54,7 +68,9 @@ public class InscriptionAdministrative {
 		this.id_ia = id_ia;
 	}
 
-	public Etudiant getEtudiant() {
+	
+
+	public Etudiant getId_etudiant() {
 		return etudiant;
 	}
 
@@ -62,11 +78,11 @@ public class InscriptionAdministrative {
 		this.etudiant = etudiant;
 	}
 
-	public List<Filiere> getFilieres() {
+	public Filiere getFilieres() {
 		return filieres;
 	}
 
-	public void setFilieres(List<Filiere> filieres) {
+	public void setFilieres(Filiere filieres) {
 		this.filieres = filieres;
 	}
 
