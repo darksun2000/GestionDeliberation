@@ -76,7 +76,7 @@ public class Excel2DbRepository {
                     Cell nextCell = cellIterator.next();
  
                     int columnIndex = nextCell.getColumnIndex();
- 
+
                     switch (columnIndex) {
                     case 0:
                         String annee_academique = nextCell.getStringCellValue();
