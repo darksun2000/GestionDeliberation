@@ -12,7 +12,7 @@
 			<div class="card-body">
 				<h5 class="card-title">Inscription Administrative de l'Etudiant</h5>
 				<form class="" action="/inscription/UploadInscriptionAdministrative" method="POST">
-					
+
 
 					<div class="form-row">
 						<div class="col-md-6">
