@@ -1,0 +1,66 @@
+réalisé avec: windev (un langage de progra)
+
+1. authentification (data base ??)
+
+2. content of gui in database
+	server:
+	port:
+	base de données: (cochage de "local")
+	dossier locale:
+	valider annuler
+3. content of autehntification
+	user:
+	passw:
+4. content of the main interface (always gui)
+	menu bar
+		statistiques
+		options
+			stucture de l'enseignement
+				select the diplome
+					when you select année you can see semesters
+					when you select semester you can see the modules
+					you can modify the column diplomante of the year
+					
+		outils
+		Configuration
+		Scolarité
+			Fiche etudiant
+				new gui: form for adding a new student
+					when clicking on précédent or suivant: it auto-fill the students on the form
+					so you can modify the student with this gui
+					you can add an img
+					you can cancel
+			inscription
+				admin:
+					new gui:
+						you need to select the year (for example: anné: 2019)
+						if you select a student:
+							inserer
+							modifier
+							supprimer
+								you need to watchout if you delete a student while you already added a grade
+							séléction un liste d'étudiants
+								you can select students and then do the (inscription péda) on them
+				peda:
+					peda automatique
+					peda par element
+						you need to select the step (étape: première année, deuxieme année ...)
+						lancer l'inscription ip automatique
+						inscrir en diplome
+						imprimer la liste des étudiants (pdf)
+						** inscription en semestre **
+						inscription en module
+						valider
+				en ligne
+		Enseignement
+		Examen
+			Deliberation
+				select the year
+				select the diploma
+				select the semester
+				select the modul
+				you can import an excel file for the grades per modul
+		
+			
+999. notes:
+	on peut importer par excel
