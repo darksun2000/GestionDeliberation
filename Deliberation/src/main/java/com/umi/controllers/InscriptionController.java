@@ -70,14 +70,38 @@ public class InscriptionController {
 			@RequestParam("date_pre_inscription")Date date_pre_inscription,
 			@RequestParam("date_valid_inscription")Date date_valid_inscription,
 			@RequestParam("id_etudiant")int id_etudiant,
-			@RequestParam("id_filiere")int id_filiere,
+			@RequestParam("filiere")int id_filiere,
 			@RequestParam("operateur")String operateur
 			) {
+		System.out.println(id_filiere);
+		System.out.println("++++++++++++++++++++++++++++++");
 		InscriptionAdministrative ia=new InscriptionAdministrative();
 		Etudiant e =new Etudiant();
-		InscriptionEnLigne ie=new InscriptionEnLigne();
-		ie=inscriptionEnLigne.getOne(id_etudiant);
-		etudiantRepository.copyIeEtudiant(ie.getId());
+		InscriptionEnLigne iel=new InscriptionEnLigne();
+		iel=inscriptionEnLigne.getOne(id_etudiant);
+		 e.setAcademy(iel.getAcademy());
+         e.setBac_place(iel.getBac_place());
+         e.setBac_type(iel.getBac_type());
+         e.setBac_year(iel.getBac_year());
+         e.setBirth_date(iel.getBirth_date());
+         e.setBirth_place(iel.getBirth_place());
+         e.setCity(iel.getCity());
+         e.setCne(iel.getCne());
+         e.setEstablishment(iel.getEstablishment());
+         e.setFirst_name_ar(iel.getFirst_name_ar());
+         e.setFirst_name_fr(iel.getFirst_name_fr());
+         e.setGender(iel.getGender());
+         e.setHigh_school(iel.getHigh_school());
+         e.setId(iel.getId());
+         e.setLast_name_ar(iel.getLast_name_ar());
+         e.setLast_name_fr(iel.getLast_name_fr());
+         e.setMassar_edu(iel.getMassar_edu());
+         e.setMention(iel.getMention());
+         e.setNationality(iel.getNationality());
+         e.setProvince(iel.getProvince());
+         e.setRegistration_date(iel.getRegistration_date());
+         inscriptionEnLigne.updateAcceptation(iel.getId(), 3);
+		//etudiantRepository.copyIeEtudiant(ie.getId());
 		ia.setAnnee_academique(annee_academique);
 		ia.setDate_pre_inscription(date_pre_inscription);
 		ia.setDate_valid_inscription(date_valid_inscription);
@@ -89,12 +113,28 @@ public class InscriptionController {
 		return new ModelAndView("redirect:/student/list");
 	}
 	
+	
+	@GetMapping("/inscription/ModifierInscriptionAdministrative")
+	public ModelAndView ModifierInscriptionAdministrative(
+			@RequestParam("id_ia")int id_ia,
+			@RequestParam("annee_academique")String annee_academique,
+			@RequestParam("date_pre_inscription")Date date_pre_inscription,
+			@RequestParam("date_valid_inscription")Date date_valid_inscription,
+			@RequestParam("id_etudiant")int id_etudiant,
+			@RequestParam("filiere")int id_filiere,
+			@RequestParam("operateur")String operateur
+			) {
+		inscriptionAdministrative.updateInscriptionAdministrative(id_ia, annee_academique, date_pre_inscription, date_valid_inscription, id_etudiant, id_filiere, operateur);
+		return new ModelAndView("redirect:/inscription/ListInscriptionAdministrative");
+	}
+	
 	@GetMapping("/inscription/ListInscriptionAdministrative")
 	public ModelAndView listInscriptionEnligne() {
 		ModelAndView model = new ModelAndView("ListInscriptionAdministrative");
+		List<Filiere> f=filiereRepository.getAllFiliere();
 		model.addObject("InscriptionAdministrative", "mm-active");
 		model.addObject("Inscription", inscriptionAdministrative.getAllInscriptionsAdministrative());
-		
+		model.addObject("f", f);
 		return model;
 	}
 	
@@ -106,7 +146,19 @@ public class InscriptionController {
 		return model;
 	}
 	
-	
+	@GetMapping("/inscription/PageModifierInscriptionAdministrative")
+	public ModelAndView PageModifierInscriptionEnligne(
+			@RequestParam("id")int id_ia
+			) {
+		List<InscriptionEnLigne> e=inscriptionEnLigne.getAllInscriptionsEnLigneAccepted();
+		InscriptionAdministrative ia=inscriptionAdministrative.getOne(id_ia);
+		ModelAndView model = new ModelAndView("ModifierInscriptionAdministrative");
+		model.addObject("ListInscriptionAdministartive", "mm-active");
+		model.addObject("ia", ia);
+		model.addObject("Etudiant",e);
+		
+		return model;
+	}
 	
 	
 	@PostMapping("/inscription/UploadInscriptionAdministrative")

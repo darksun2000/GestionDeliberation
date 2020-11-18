@@ -24,7 +24,13 @@ public interface EtudiantRepository extends JpaRepository<Etudiant, Integer>{
 	
 	@Transactional
 	@Modifying
-	@Query(value="INSERT INTO Etudiant SELECT * FROM InscriptionEnligne WHERE id=x" , nativeQuery=true)
+	@Query(value="INSERT INTO Etudiant(id, academy, bac_place, bac_type, bac_year, date, birth_place,"
+			+ " city, cne, establishment, first_name_ar, first_name_fr, gender, high_school, last_name_ar,"
+			+ " last_name_fr, massar_edu, mention, nationality, province, registration_date)"
+			+ " SELECT id, academy, bac_place, bac_type, bac_year, date, birth_place, city,"
+			+ " cne, establishment, first_name_ar, first_name_fr, gender, high_school, last_name_ar,"
+			+ " last_name_fr, massar_edu, mention, nationality, province, registration_date"
+			+ " FROM deliberationbachelor.inscription_en_ligne WHERE id=:x" , nativeQuery=true)
     void copyIeEtudiant(@Param("x")int id);
 
 }
