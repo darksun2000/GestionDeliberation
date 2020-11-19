@@ -19,6 +19,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -114,9 +115,9 @@ public class InscriptionController {
 	}
 	
 	
-	@GetMapping("/inscription/ModifierInscriptionAdministrative")
+	@PostMapping("/inscription/ModifierInscriptionAdministrative/{id_ia}")
 	public ModelAndView ModifierInscriptionAdministrative(
-			@RequestParam("id_ia")int id_ia,
+			@PathVariable("id_ia")int id_ia,
 			@RequestParam("annee_academique")String annee_academique,
 			@RequestParam("date_pre_inscription")Date date_pre_inscription,
 			@RequestParam("date_valid_inscription")Date date_valid_inscription,
@@ -124,7 +125,16 @@ public class InscriptionController {
 			@RequestParam("filiere")int id_filiere,
 			@RequestParam("operateur")String operateur
 			) {
-		inscriptionAdministrative.updateInscriptionAdministrative(id_ia, annee_academique, date_pre_inscription, date_valid_inscription, id_etudiant, id_filiere, operateur);
+		inscriptionAdministrative.updateInscriptionAdministrative(id_ia, annee_academique, date_pre_inscription, date_valid_inscription, etudiantRepository.getOne(id_etudiant), filiereRepository.getOne(id_filiere), operateur);
+		return new ModelAndView("redirect:/inscription/ListInscriptionAdministrative");
+	}
+	
+	@GetMapping("/inscription/SupprimerInscriptionAdministrative/{id_ia}")
+	public ModelAndView SupprimerInscriptionAdministrative(
+			@PathVariable("id_ia")int id_ia
+			) {
+		inscriptionAdministrative.deleteById(id_ia);
+		etudiantRepository.delete(inscriptionAdministrative.getOne(id_ia).getEtudiant());
 		return new ModelAndView("redirect:/inscription/ListInscriptionAdministrative");
 	}
 	
@@ -166,7 +176,7 @@ public class InscriptionController {
 		
 		Path dir =Paths.get("src/main/resources/static/Excels/");
 		Path excelFilePath=excel2Db.write(file, dir);
-		 InscriptionAdministrative ia= new InscriptionAdministrative();
+		InscriptionAdministrative ia;
 	        //*************************************************************************************************//
 	        try {
 	            long start = System.currentTimeMillis();
@@ -185,12 +195,11 @@ public class InscriptionController {
 	            while (rowIterator.hasNext()) {
 	                Row nextRow = rowIterator.next();
 	                Iterator<Cell> cellIterator = nextRow.cellIterator();
-	 
+	                ia= new InscriptionAdministrative();
 	                while (cellIterator.hasNext()) {
 	                    Cell nextCell = cellIterator.next();
 	 
 	                    int columnIndex = nextCell.getColumnIndex();
-	 
 	                    switch (columnIndex) {
 	                    case 0:
 	                        String annee_academique = nextCell.getStringCellValue();
@@ -224,7 +233,6 @@ public class InscriptionController {
 	                       e.setFirst_name_fr(iel.getFirst_name_fr());
 	                       e.setGender(iel.getGender());
 	                       e.setHigh_school(iel.getHigh_school());
-	                       e.setId(iel.getId());
 	                       e.setLast_name_ar(iel.getLast_name_ar());
 	                       e.setLast_name_fr(last_name_fr);
 	                       e.setMassar_edu(iel.getMassar_edu());
@@ -233,6 +241,8 @@ public class InscriptionController {
 	                       e.setProvince(iel.getProvince());
 	                       e.setRegistration_date(iel.getRegistration_date());
 	                       // etudiantRepository.copyIeEtudiant(iel.getId());
+	                       System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++");
+	                       System.out.println(e.getId());
 	                       etudiantRepository.save(e);
 	                        ia.setEtudiant(e);
 	                        break;
@@ -244,6 +254,7 @@ public class InscriptionController {
 	                    case 5:
 	                        String operateur = nextCell.getStringCellValue();
 	                        ia.setOperateur(operateur);
+	                        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++");
 	                        inscriptionAdministrative.save(ia);
 	                        break;
 	                    }

@@ -21,7 +21,7 @@
 								<select name="id_etudiant" id="exampleSelect" class="form-control">
 								<option default>Choisir étudiant</option>
 								<c:forEach var="e" items="${Etudiant }">
-								<option value=${e.getId() }>${e.getFirst_name_fr() } ${e.getLast_name_fr() }</option>
+								<option value="${e.getId()}">${e.getFirst_name_fr() } ${e.getLast_name_fr() }</option>
 								</c:forEach>
 								</select>
 							</div>

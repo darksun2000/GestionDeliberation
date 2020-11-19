@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.umi.models.Etudiant;
+import com.umi.models.Filiere;
 import com.umi.models.InscriptionAdministrative;
 
 public interface InscriptionAdministrativeRepository extends JpaRepository<InscriptionAdministrative, Integer>{
@@ -19,6 +20,6 @@ public interface InscriptionAdministrativeRepository extends JpaRepository<Inscr
 	
 	@Transactional
 	@Modifying
-	@Query("update InscriptionAdministrative s set s.annee_academique=:a, s.date_pre_inscription=:b, s.date_valid_inscription=:c, s.etudiant=:d, s.filieres_id_filiere=:e, s.operateur=:f where s.id_ia=g")
-	void updateInscriptionAdministrative(@Param("f")int id_ia,@Param("a")String annee_academique,@Param("b")Date date_pre_inscription,@Param("c")Date date_valid_inscription,@Param("d")int etudiant,@Param("e")int filieres_id_filiere,@Param("f")String operateur);
+	@Query("update InscriptionAdministrative s set s.annee_academique=:a, s.date_pre_inscription=:b, s.date_valid_inscription=:c, s.etudiant=:d, s.filieres=:e, s.operateur=:f where s.id_ia=:g")
+	void updateInscriptionAdministrative(@Param("g")int id_ia,@Param("a")String annee_academique,@Param("b")Date date_pre_inscription,@Param("c")Date date_valid_inscription,@Param("d")Etudiant etudiant,@Param("e")Filiere filieres_id_filiere,@Param("f")String operateur);
 }

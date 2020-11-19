@@ -11,7 +11,7 @@
 		<div class="main-card mb-3 card">
 			<div class="card-body">
 				<h5 class="card-title">Inscription Administrative de l'Etudiant</h5>
-				<form class="" action="/inscription/ModifierInscriptionAdministrative?id_ia=${ia.id_ia }" method="GET">
+				<form class="" action="/inscription/ModifierInscriptionAdministrative/${ia.id_ia}" method="POST">
 
 
 					<div class="form-row">
@@ -21,7 +21,7 @@
 								<select name="id_etudiant" id="exampleSelect" class="form-control">
 								<option value="${ia.etudiant.id }" selected>${ia.etudiant.first_name_fr } ${ia.etudiant.last_name_fr }</option>
 								<c:forEach var="e" items="${Etudiant }">
-								<c:if test=${ia.etudiant.id!=e.id }>
+								<c:if test="${ia.etudiant.id!=e.id }">
 								<option value=${e.getId() }>${e.getFirst_name_fr() } ${e.getLast_name_fr() }</option>
 								</c:if>
 								</c:forEach>
@@ -37,7 +37,7 @@
 								<select name="filiere" id="exampleSelect" class="form-control" >
 								<option value="${ia.filieres.id_filiere }" selected>${ia.filieres.nom_filiere }</option>
 								<c:forEach var="f" items="${Filiere }">
-								<c:if test=${ia.filiers.id_filiere!=f.id_filiere }>
+								<c:if test="${ia.filiers.id_filiere!=f.id_filiere }">
 								<option value="${f.getId_filiere()}">${f.getNom_filiere() }</option>
 								</c:if>
 								</c:forEach>
@@ -52,14 +52,14 @@
 						<div class="col-md-3">
 							<div class="position-relative form-group">
 								<label for="date_pre_inscription" class="">Date de preinscription</label><input
-									name="date_pre_inscription" id="date_pre_inscription" value="${ia.date_pre_inscription}"
+									name="date_pre_inscription" id="date_pre_inscription" value="${ia.date_pre_inscription.toString().substring(0,10)}"
 									type="date" class="form-control">
 							</div>
 						</div>
 						<div class="col-md-3">
 							<div class="position-relative form-group">
 								<label for="date_valid_inscription" class="">Date Validation d'inscription</label><input
-									name="date_valid_inscription" id="date_valid_inscription" value="${ia.date_valid_inscription}"
+									name="date_valid_inscription" id="date_valid_inscription" value="${ia.date_valid_inscription.toString().substring(0,10)}"
 									type="date" class="form-control">
 							</div>
 						</div>

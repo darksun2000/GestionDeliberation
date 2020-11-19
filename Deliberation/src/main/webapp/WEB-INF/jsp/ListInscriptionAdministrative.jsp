@@ -39,8 +39,8 @@
 								<td><a style="color: black">${i.date_pre_inscription}</a></td>
 								<td><a style="color: black">${i.date_valid_inscription}</a></td>
 								<td><a style="color: black">${i.operateur}</a></td>
-								<td> <button class="mb-2 mr-2 btn btn-primary" onclick="window.location.href='PageUploadInscriptionAdministrative'">Modifier</button>
-								 <button class="mb-2 mr-2 btn btn-danger" onclick="window.location.href='PageUploadInscriptionAdministrative'">Supprimer</button>
+								<td> <button class="mb-2 mr-2 btn btn-primary" onclick="window.location.href='PageModifierInscriptionAdministrative?id=${i.id_ia}'">Modifier</button>
+								 <button class="mb-2 mr-2 btn btn-danger" onclick="window.location.href='SupprimerInscriptionAdministrative/${i.id_ia}'">Supprimer</button>
 								</td>
 								</c:if>
 							</tr>
