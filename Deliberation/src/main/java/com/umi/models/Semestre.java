@@ -14,17 +14,17 @@ public class Semestre {
 	private String libelle_semestre;
 	
 	@ManyToOne
-	@JoinColumn(name = "etape", foreignKey = @ForeignKey(name = "fk_etape"))
-	private Etape etape;
+	@JoinColumn(name = "filiere", foreignKey = @ForeignKey(name = "fk_filiere"))
+	private Filiere filiere;
 
 	public Semestre() {
 	}
 
 
-	public Semestre(int id_semestre, String libelle_semestre, Etape etape) {
+	public Semestre(int id_semestre, String libelle_semestre, Filiere filiere) {
 		this.id_semestre = id_semestre;
 		this.libelle_semestre = libelle_semestre;
-		this.etape = etape;
+		this.filiere = filiere;
 	}
 
 
@@ -48,13 +48,13 @@ public class Semestre {
 	}
 
 
-	public Etape getEtape() {
-		return etape;
+	public Filiere getFiliere() {
+		return filiere;
 	}
 
 
-	public void setEtape(Etape etape) {
-		this.etape = etape;
+	public void setEtape(Filiere filiere) {
+		this.filiere = filiere;
 	}
 	
 }

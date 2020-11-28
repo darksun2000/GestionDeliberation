@@ -19,7 +19,10 @@ public class InscriptionPedagogique {
 	private Etudiant etudiant;
 	
 	@ManyToMany(fetch=FetchType.LAZY)
-	private List<Filiere> filieres = new ArrayList<Filiere>();
+	private List<Module> module = new ArrayList<Module>();
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	private Semestre semestre;
 	
 	@Column(name="annee_academique")
 	private String annee_academique; // not an integer ??
@@ -33,15 +36,79 @@ public class InscriptionPedagogique {
 	public InscriptionPedagogique() {
 	}
 
-	public InscriptionPedagogique(int id_ip, Etudiant etudiant, List<Filiere> filieres, String annee_academique,
-			Date date_pre_inscription, Date date_valid_inscription) {
+	
+
+	
+
+
+
+	public List<Module> getModule() {
+		return module;
+	}
+
+
+
+
+
+
+
+	public void setModule(List<Module> module) {
+		this.module = module;
+	}
+
+
+
+
+
+
+
+	public Semestre getSemestre() {
+		return semestre;
+	}
+
+
+
+
+
+
+
+	public void setSemestre(Semestre semestre) {
+		this.semestre = semestre;
+	}
+
+
+
+
+
+
+
+	public Date getDate_pre_inscription() {
+		return date_pre_inscription;
+	}
+
+
+
+
+
+
+
+	public InscriptionPedagogique(int id_ip, Etudiant etudiant, List<Module> module, Semestre semestre,
+			String annee_academique, Date date_pre_inscription, Date date_valid_inscription) {
+		super();
 		this.id_ip = id_ip;
 		this.etudiant = etudiant;
-		this.filieres = filieres;
+		this.module = module;
+		this.semestre = semestre;
 		this.annee_academique = annee_academique;
 		this.date_pre_inscription = date_pre_inscription;
 		this.date_valid_inscription = date_valid_inscription;
 	}
+
+
+
+
+
+
 
 	public int getId_ip() {
 		return id_ip;
@@ -59,13 +126,6 @@ public class InscriptionPedagogique {
 		this.etudiant = etudiant;
 	}
 
-	public List<Filiere> getFilieres() {
-		return filieres;
-	}
-
-	public void setFilieres(List<Filiere> filieres) {
-		this.filieres = filieres;
-	}
 
 	public String getAnnee_academique() {
 		return annee_academique;

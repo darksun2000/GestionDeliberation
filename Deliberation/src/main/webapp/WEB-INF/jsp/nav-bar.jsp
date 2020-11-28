@@ -59,6 +59,9 @@
 				<li><a href="/inscription/ListInscriptionAdministrative" class="${listAdministartive}"> <i
 						class="metismenu-icon pe-7s-menu"></i> Listes Inscriptions Administratives
 				</a></li>
+				<li><a href="/inscription/MenuPedagogique" class="${InscriptionPedagogique}"> <i
+						class="metismenu-icon pe-7s-plus"></i>Inscriptions Pédagogique
+				</a></li>
 			</ul>
 		</div>
 	</div>

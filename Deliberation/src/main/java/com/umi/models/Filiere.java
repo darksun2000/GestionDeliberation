@@ -19,22 +19,55 @@ public class Filiere {
 	@OneToMany( cascade = CascadeType.REMOVE, mappedBy = "filiere")
 	private List<Etape> etapes = new ArrayList<Etape>();
 	
-	@ManyToMany(fetch=FetchType.LAZY, mappedBy = "filieres")
+	@ManyToMany(fetch=FetchType.LAZY)
 	private List<InscriptionAdministrative> inscriptions_administrative = new ArrayList<InscriptionAdministrative>();
 	
-	@ManyToMany(fetch=FetchType.LAZY, mappedBy = "filieres")
+	@ManyToMany(fetch=FetchType.LAZY)
 	private List<InscriptionPedagogique> inscriptions_pedagogique = new ArrayList<InscriptionPedagogique>();
 
 	public Filiere() {
 
 	}
-	public Filiere(int id_filiere,String nom_filiere){
-		//	 super();
+	
+	
+	
+	public List<InscriptionAdministrative> getInscriptions_administrative() {
+		return inscriptions_administrative;
+	}
+
+
+
+	public void setInscriptions_administrative(List<InscriptionAdministrative> inscriptions_administrative) {
+		this.inscriptions_administrative = inscriptions_administrative;
+	}
+
+
+
+	public List<InscriptionPedagogique> getInscriptions_pedagogique() {
+		return inscriptions_pedagogique;
+	}
+
+
+
+	public void setInscriptions_pedagogique(List<InscriptionPedagogique> inscriptions_pedagogique) {
+		this.inscriptions_pedagogique = inscriptions_pedagogique;
+	}
+
+
+
+	public Filiere(int id_filiere, String nom_filiere, List<Etape> etapes,
+			List<InscriptionAdministrative> inscriptions_administrative,
+			List<InscriptionPedagogique> inscriptions_pedagogique) {
+		super();
 		this.id_filiere = id_filiere;
 		this.nom_filiere = nom_filiere;
-		
+		this.etapes = etapes;
+		this.inscriptions_administrative = inscriptions_administrative;
+		this.inscriptions_pedagogique = inscriptions_pedagogique;
 	}
-	
+
+
+
 	public int getId_filiere() {
 		return id_filiere;
 	}

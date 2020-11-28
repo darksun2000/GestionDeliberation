@@ -18,6 +18,13 @@ public interface InscriptionAdministrativeRepository extends JpaRepository<Inscr
 	@Query("select s from InscriptionAdministrative s")
 	List<InscriptionAdministrative> getAllInscriptionsAdministrative();
 	
+	@Query("select s from InscriptionAdministrative s where filieres=:x")
+	List<InscriptionAdministrative> getInscriptionsAdministrativeByFiliere(@Param("x")Filiere f);
+	
+	
+	@Query("select count(*) from InscriptionAdministrative s where s.filieres=:x")
+	int getNumIaByFiliere(@Param("x")Filiere filiere);
+	
 	@Transactional
 	@Modifying
 	@Query("update InscriptionAdministrative s set s.annee_academique=:a, s.date_pre_inscription=:b, s.date_valid_inscription=:c, s.etudiant=:d, s.filieres=:e, s.operateur=:f where s.id_ia=:g")

@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Iterator;
 import java.util.List;
 
@@ -30,11 +32,16 @@ import com.umi.models.Etudiant;
 import com.umi.models.Filiere;
 import com.umi.models.InscriptionAdministrative;
 import com.umi.models.InscriptionEnLigne;
+import com.umi.models.InscriptionPedagogique;
+import com.umi.models.Semestre;
 import com.umi.repositories.EtudiantRepository;
 import com.umi.repositories.Excel2DbRepository;
 import com.umi.repositories.FiliereRepository;
 import com.umi.repositories.InscriptionAdministrativeRepository;
 import com.umi.repositories.InscriptionEnLigneRepository;
+import com.umi.repositories.InscriptionPedagogiqueRepository;
+import com.umi.repositories.ModuleRepository;
+import com.umi.repositories.SemestreRepository;
 
 @Controller
 public class InscriptionController {
@@ -45,13 +52,19 @@ public class InscriptionController {
 	private EtudiantRepository etudiantRepository;
 	private FiliereRepository filiereRepository;
 	private InscriptionEnLigneRepository inscriptionEnLigne;
+	private SemestreRepository semestreRepository;
+	private InscriptionPedagogiqueRepository inscriptionPedagogiqueRepository;
+	private ModuleRepository moduleRepository;
 	Excel2DbRepository excel2Db =new Excel2DbRepository();
 	
-	public InscriptionController(EtudiantRepository studentRepository,InscriptionAdministrativeRepository inscriptionAdministrative,InscriptionEnLigneRepository inscriptionEnLigne,FiliereRepository filiereRepository) {
+	public InscriptionController(ModuleRepository moduleRepository,InscriptionPedagogiqueRepository inscriptionPedagogiqueRepository,EtudiantRepository studentRepository,SemestreRepository semestreRepository,InscriptionAdministrativeRepository inscriptionAdministrative,InscriptionEnLigneRepository inscriptionEnLigne,FiliereRepository filiereRepository) {
 		this.etudiantRepository = studentRepository;
 		this.inscriptionAdministrative=inscriptionAdministrative;
 		this.filiereRepository=filiereRepository;
 		this.inscriptionEnLigne=inscriptionEnLigne;
+		this.semestreRepository=semestreRepository;
+		this.inscriptionPedagogiqueRepository=inscriptionPedagogiqueRepository;
+		this.moduleRepository=moduleRepository;
 	}
 	
 	@GetMapping("/inscription/InscriptionAdministrative")
@@ -142,9 +155,117 @@ public class InscriptionController {
 	public ModelAndView listInscriptionEnligne() {
 		ModelAndView model = new ModelAndView("ListInscriptionAdministrative");
 		List<Filiere> f=filiereRepository.getAllFiliere();
-		model.addObject("InscriptionAdministrative", "mm-active");
+		model.addObject("listAdministartive", "mm-active");
 		model.addObject("Inscription", inscriptionAdministrative.getAllInscriptionsAdministrative());
 		model.addObject("f", f);
+		return model;
+	}
+	
+	@PostMapping("/inscription/PageInscriptionPedagogique")
+	public ModelAndView PageInscriptionPedagogique(@RequestParam("filiere")int id_filiere) {
+		ModelAndView model = new ModelAndView("InscriptionPedagogique");
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+	    LocalDate localDate = LocalDate.now();
+	    int ele[]=new int[3];
+	    for (int i = 0; i < ele.length; i++) {
+	    	ele[i]=Integer.parseInt((dtf.format(localDate).toString().split("/")[i].trim()));
+		}
+	    if(ele[1]>8) {
+	    	ele[0]++;
+	    }
+	    Filiere filiere=filiereRepository.getOne(id_filiere);
+		List<Filiere> f=filiereRepository.getAllFiliere();
+		List<Semestre> s=semestreRepository.getSemestreByFiliere(filiere);
+		int num= inscriptionAdministrative.getNumIaByFiliere(filiere);
+		model.addObject("InscriptionPedagogique", "mm-active");
+		model.addObject("annee",ele[0]);
+		model.addObject("Inscription", inscriptionAdministrative.getInscriptionsAdministrativeByFiliere(filiere));
+		model.addObject("f", f);
+		model.addObject("semestre",s);
+		model.addObject("numRows",num);
+		return model;
+	}
+	
+	
+	@PostMapping("/inscription/createANewInscriptionPedagogique")
+	public ModelAndView createANewInscriptionPedagogique(@RequestParam("id_ias")String ids,
+			@RequestParam("filiere")int id_semestre
+			) {
+		
+		System.out.println("++++++++++++++++++++++++++++++++++++++++");
+		System.out.println(ids);
+		String id[]=ids.split(",");
+		int idI;
+		InscriptionAdministrative ia;
+		Etudiant e;
+		Semestre semestre =semestreRepository.getOne(id_semestre);
+		for (int i = 0; i < id.length; i++) {
+			InscriptionPedagogique ip =new InscriptionPedagogique();
+			idI=Integer.parseInt(id[i].trim());
+			ia=inscriptionAdministrative.getOne(idI);
+			e=ia.getEtudiant();
+			ip.setAnnee_academique(ia.getAnnee_academique());
+			ip.setDate_pre_inscription(ia.getDate_pre_inscription());
+			ip.setDate_valid_inscription(ia.getDate_valid_inscription());
+			ip.setEtudiant(e);
+			ip.setSemestre(semestre);
+			inscriptionPedagogiqueRepository.save(ip);
+		}
+		return new ModelAndView("redirect:/inscription/ListInscriptionAdministrative");
+	}
+	
+	
+	@PostMapping("/inscription/PageInscriptionPedagogiqueModule")
+	public ModelAndView PageInscriptionPedagogiqueModule(@RequestParam("filiere")int idFiliere,
+			@RequestParam("semestre")String libelle_semestre
+			) {
+		ModelAndView model = new ModelAndView("InscriptionPedagogiqueModule");
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+	    LocalDate localDate = LocalDate.now();
+	    int ele[]=new int[3];
+	    for (int i = 0; i < ele.length; i++) {
+	    	ele[i]=Integer.parseInt((dtf.format(localDate).toString().split("/")[i].trim()));
+		}
+	    if(ele[1]>8) {
+	    	ele[0]++;
+	    }
+		Filiere f=filiereRepository.getOne(idFiliere);
+		Semestre s=semestreRepository.getSemestreByFiliereAndLibelle(f, libelle_semestre);
+		model.addObject("InscriptionPedagogique", "mm-active");
+		model.addObject("annee",ele[0]);
+		model.addObject("Inscription", inscriptionPedagogiqueRepository.getInscriptionsPedagogiqueBySemestre(s));
+		model.addObject("module",moduleRepository.getModuleBySemestre(s));
+		model.addObject("f", f);
+		model.addObject("semestre",s);
+		return model;
+	}
+	
+	@GetMapping("/inscription/choixDeFiliere")
+	public ModelAndView choixDeFiliere() {
+		ModelAndView model = new ModelAndView("choixDeFiliere");
+		
+		List<Filiere> f=filiereRepository.getAllFiliere();
+		model.addObject("InscriptionPedagogique", "mm-active");
+		model.addObject("m",false);
+		model.addObject("f", f);
+		return model;
+	}
+	
+	@GetMapping("/inscription/choixDeFiliereModule")
+	public ModelAndView choixDeFiliereModule() {
+		ModelAndView model = new ModelAndView("choixDeFiliere");
+		List<Filiere> f=filiereRepository.getAllFiliere();
+		model.addObject("module","Module");
+		model.addObject("m",true);
+		model.addObject("InscriptionPedagogique", "mm-active");
+		model.addObject("f", f);
+		return model;
+	}
+	
+	@GetMapping("/inscription/MenuPedagogique")
+	public ModelAndView MenuPedagogique() {
+		ModelAndView model = new ModelAndView("menuPedagogique");
+		model.addObject("InscriptionPedagogique", "mm-active");
 		return model;
 	}
 	
