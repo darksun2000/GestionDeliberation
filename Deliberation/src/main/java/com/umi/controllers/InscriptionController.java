@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -29,6 +30,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 
 import com.umi.models.Etudiant;
+import com.umi.models.Module;
 import com.umi.models.Filiere;
 import com.umi.models.InscriptionAdministrative;
 import com.umi.models.InscriptionEnLigne;
@@ -210,6 +212,40 @@ public class InscriptionController {
 			ip.setEtudiant(e);
 			ip.setSemestre(semestre);
 			inscriptionPedagogiqueRepository.save(ip);
+		}
+		return new ModelAndView("redirect:/inscription/ListInscriptionAdministrative");
+	}
+	
+	
+	@PostMapping("/inscription/createANewInscriptionPedagogiqueModule")
+	public ModelAndView createANewInscriptionPedagogiqueModule(@RequestParam("id_ip")String ids,
+			@RequestParam("modules")String modules
+			) {
+		
+		String id[]=ids.split(",");
+		String id_modules[]=modules.split(",");
+		for (int i = 0; i < id_modules.length; i++) {
+			System.out.println(id_modules[i]);
+		}
+		//remplire list des modules------------------------------------------
+		
+		List<Module> listModules=new ArrayList<Module>();
+		for (int i = 0; i < id_modules.length; i++) {
+			listModules.add(moduleRepository.getOne(Integer.parseInt(id_modules[i].trim())));
+		}
+		
+		//remplir list des ip-----------------------------------------------
+		
+		List<InscriptionPedagogique> listIP =new ArrayList<InscriptionPedagogique>();
+		for (int i = 0; i < id.length; i++) {
+			listIP.add(inscriptionPedagogiqueRepository.getOne(Integer.parseInt(id[i].trim())));
+		}
+		
+		//inscrire les ips par modules---------------------------------------
+		
+		for (int i = 0; i < listIP.size(); i++) {
+			listIP.get(i).setModule(listModules);
+			inscriptionPedagogiqueRepository.save(listIP.get(i));
 		}
 		return new ModelAndView("redirect:/inscription/ListInscriptionAdministrative");
 	}
