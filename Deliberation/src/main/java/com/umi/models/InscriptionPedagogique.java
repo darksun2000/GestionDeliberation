@@ -25,7 +25,7 @@ public class InscriptionPedagogique {
 	private Semestre semestre;
 	
 	@Column(name="annee_academique")
-	private String annee_academique; // not an integer ??
+	private String annee_academique; // not an integer ?? //ofc
 	
 	@Column(name="date_pre_inscription")
 	private Date date_pre_inscription;

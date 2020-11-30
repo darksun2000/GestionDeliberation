@@ -1,20 +1,15 @@
 package com.umi.models;
 
-import java.util.ArrayList;
-import java.util.List;
 
-import javax.persistence.CascadeType;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -28,6 +23,9 @@ public class Etape {
 	@Column(name="libelle_etape")
 	private String libelle_etape;
 	
+	@Column(name="diplomante")
+	private int diplomante;
+	
 	@ManyToOne
 	@JoinColumn(name = "filiere", foreignKey = @ForeignKey(name = "fk_filiere"))
 	private Filiere filiere;
@@ -36,11 +34,17 @@ public class Etape {
 		
 	}
 
-	public Etape(int id_etape, String libelle_etape) {
+	
+
+	public Etape(int id_etape, String libelle_etape, int diplomante, Filiere filiere) {
 		super();
 		this.id_etape = id_etape;
 		this.libelle_etape = libelle_etape;
+		this.diplomante = diplomante;
+		this.filiere = filiere;
 	}
+
+
 
 	public int getId_etape() {
 		return id_etape;
@@ -56,6 +60,30 @@ public class Etape {
 
 	public void setLibelle_etape(String libelle_etape) {
 		this.libelle_etape = libelle_etape;
+	}
+
+
+
+	public int getDiplomante() {
+		return diplomante;
+	}
+
+
+
+	public void setDiplomante(int diplomante) {
+		this.diplomante = diplomante;
+	}
+
+
+
+	public Filiere getFiliere() {
+		return filiere;
+	}
+
+
+
+	public void setFiliere(Filiere filiere) {
+		this.filiere = filiere;
 	}
 
 	

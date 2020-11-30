@@ -69,6 +69,16 @@ public class InscriptionController {
 		this.moduleRepository=moduleRepository;
 	}
 	
+	
+	
+							//-------+++++++++-----------------++++++++------------++++++++----------++++++++-------//
+//+*+*+*+*+*+*+*+*+*++*+*+*+*+*+**+*+*+*+*+*+*+*+*+*+/ PARTIE INSCRIPTION ADMINISTRATIVE /*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+**+*+*+//
+							//-------+++++++++-----------------++++++++------------++++++++----------++++++++-------//
+
+	
+	
+//---------------------------------------aller à page d'inscription administrative----------------------------------//
+	
 	@GetMapping("/inscription/InscriptionAdministrative")
 	public ModelAndView InscriptionAdministrative() {
 		ModelAndView model = new ModelAndView("InscriptionAdministrative");
@@ -80,6 +90,8 @@ public class InscriptionController {
 		return model;
 	}
 	
+//---------------------------------action :création d'une nouvelle inscription administrative-----------------------------//
+	
 	@GetMapping("/inscription/createANewInscriptionAdministrative")
 	public ModelAndView createANewInscriptionAdministrative(
 			@RequestParam("annee_academique")String annee_academique,
@@ -89,12 +101,11 @@ public class InscriptionController {
 			@RequestParam("filiere")int id_filiere,
 			@RequestParam("operateur")String operateur
 			) {
-		System.out.println(id_filiere);
-		System.out.println("++++++++++++++++++++++++++++++");
 		InscriptionAdministrative ia=new InscriptionAdministrative();
 		Etudiant e =new Etudiant();
 		InscriptionEnLigne iel=new InscriptionEnLigne();
 		iel=inscriptionEnLigne.getOne(id_etudiant);
+		//-------------------crée l'etudiant au fur et à mesure de la creation de l'inscrip administrative--------//
 		 e.setAcademy(iel.getAcademy());
          e.setBac_place(iel.getBac_place());
          e.setBac_type(iel.getBac_type());
@@ -116,8 +127,9 @@ public class InscriptionController {
          e.setNationality(iel.getNationality());
          e.setProvince(iel.getProvince());
          e.setRegistration_date(iel.getRegistration_date());
+         //---------------etudiant est accepté officielement------------------//
          inscriptionEnLigne.updateAcceptation(iel.getId(), 3);
-		//etudiantRepository.copyIeEtudiant(ie.getId());
+		//--------------------partie creation d inscrip administrative----------------------------//
 		ia.setAnnee_academique(annee_academique);
 		ia.setDate_pre_inscription(date_pre_inscription);
 		ia.setDate_valid_inscription(date_valid_inscription);
@@ -129,6 +141,8 @@ public class InscriptionController {
 		return new ModelAndView("redirect:/student/list");
 	}
 	
+	
+//-----------------------------------action : modifier inscription administrative---------------------------------------//
 	
 	@PostMapping("/inscription/ModifierInscriptionAdministrative/{id_ia}")
 	public ModelAndView ModifierInscriptionAdministrative(
@@ -144,6 +158,9 @@ public class InscriptionController {
 		return new ModelAndView("redirect:/inscription/ListInscriptionAdministrative");
 	}
 	
+	
+//---------------------------------------action : supprimer inscrip administrative----------------------------------------//
+	
 	@GetMapping("/inscription/SupprimerInscriptionAdministrative/{id_ia}")
 	public ModelAndView SupprimerInscriptionAdministrative(
 			@PathVariable("id_ia")int id_ia
@@ -153,8 +170,11 @@ public class InscriptionController {
 		return new ModelAndView("redirect:/inscription/ListInscriptionAdministrative");
 	}
 	
+	
+//-----------------------------------------page affichant la liste des inscriptions administratives-------------------------------//
+	
 	@GetMapping("/inscription/ListInscriptionAdministrative")
-	public ModelAndView listInscriptionEnligne() {
+	public ModelAndView listInscriptionAdministratives() {
 		ModelAndView model = new ModelAndView("ListInscriptionAdministrative");
 		List<Filiere> f=filiereRepository.getAllFiliere();
 		model.addObject("listAdministartive", "mm-active");
@@ -163,9 +183,171 @@ public class InscriptionController {
 		return model;
 	}
 	
+	
+//-------------------------------------------aller à la page pour uploder un fichier d'inscrip administratives------------------------//
+	
+		@GetMapping("/inscription/PageUploadInscriptionAdministrative")
+		public ModelAndView PageUploadInscriptionAdministrative() {
+			ModelAndView model = new ModelAndView("UploadInscriptionAdministrative");
+			model.addObject("InscriptionAdministartive", "mm-active");
+			
+			return model;
+		}
+		
+		
+//-------------------------------------------aller à la page pour modifier inscrip administratives-----------------------------------------//
+		
+		@GetMapping("/inscription/PageModifierInscriptionAdministrative")
+		public ModelAndView PageModifierInscriptionAdministrative(
+				@RequestParam("id")int id_ia
+				) {
+			List<InscriptionEnLigne> e=inscriptionEnLigne.getAllInscriptionsEnLigneAccepted();
+			InscriptionAdministrative ia=inscriptionAdministrative.getOne(id_ia);
+			ModelAndView model = new ModelAndView("ModifierInscriptionAdministrative");
+			model.addObject("ListInscriptionAdministartive", "mm-active");
+			model.addObject("ia", ia);
+			model.addObject("Etudiant",e);
+			
+			return model;
+		}
+		
+		
+//--------------------------------------------------Upload du fichier et remplir la base de données----------------------------------------//
+		
+		@PostMapping("/inscription/UploadInscriptionAdministrative")
+		public ModelAndView UploadInscriptionAdministartive(@RequestParam("file") MultipartFile file) throws IOException {
+			
+			Path dir =Paths.get("src/main/resources/static/Excels/");
+			Path excelFilePath=excel2Db.write(file, dir);
+			InscriptionAdministrative ia;
+		        //----------------------------------------------------------------------------------------//
+		        try {
+		        	//----------------------------declaration et initialisation des objets à utiliser-------------------//
+		            long start = System.currentTimeMillis();
+		             
+		            FileInputStream inputStream = new FileInputStream(excelFilePath.toString());
+		 
+		            Workbook workbook = new XSSFWorkbook(inputStream);
+		 
+		            Sheet firstSheet = workbook.getSheetAt(0);
+		            Iterator<Row> rowIterator = firstSheet.iterator();
+		            //-----------------------------------------------------------------------------------//
+		  
+		             
+		            rowIterator.next(); // skip the header row
+		             
+		            //boucle pour passer par toutes les lignes
+		            while (rowIterator.hasNext()) {
+		            	
+		            	//-----incrementer l'iterator ligne-----//
+		                Row nextRow = rowIterator.next();
+		                Iterator<Cell> cellIterator = nextRow.cellIterator();
+		                //--------------------------//
+		                
+		                ia= new InscriptionAdministrative();
+		                
+			            //boucle pour passer par toutes les colonnes
+		                while (cellIterator.hasNext()) {
+		                	
+			            	//-----incrementer l'iterator colonne-----//
+		                    Cell nextCell = cellIterator.next();
+		                    int columnIndex = nextCell.getColumnIndex();
+		                  //------------------------------------//
+		                    
+		                    //ce switch pour indiquer dans quelle colonne on est.
+		                    switch (columnIndex) {
+		                    //colonne 1
+		                    case 0:
+		                        String annee_academique = nextCell.getStringCellValue();
+		                        ia.setAnnee_academique(annee_academique);
+		                        break;
+		                    //colonne 2
+		                    case 1:
+		                        java.util.Date date_pre_inscription =nextCell.getDateCellValue();
+		                        ia.setDate_pre_inscription(date_pre_inscription);
+		                        break;
+		                    //colonne 3
+		                    case 2:
+		                        java.util.Date date_valid_inscription = nextCell.getDateCellValue();
+		                        ia.setDate_valid_inscription(date_valid_inscription);
+		                        break;
+		                    //colonne 4
+		                    case 3:
+		                        String fullNameEtudiant = nextCell.getStringCellValue();
+		                        String [] nameEtudiant=fullNameEtudiant.split(" ");
+		                        String first_name_fr=nameEtudiant[0];
+		                        String last_name_fr=nameEtudiant[1];
+		                        InscriptionEnLigne iel=inscriptionEnLigne.findByNameAccepted(first_name_fr, last_name_fr);
+		                        Etudiant e = new Etudiant();
+		                       e.setAcademy(iel.getAcademy());
+		                       e.setBac_place(iel.getBac_place());
+		                       e.setBac_type(iel.getBac_type());
+		                       e.setBac_year(iel.getBac_year());
+		                       e.setBirth_date(iel.getBirth_date());
+		                       e.setBirth_place(iel.getBirth_place());
+		                       e.setCity(iel.getCity());
+		                       e.setCne(iel.getCne());
+		                       e.setEstablishment(iel.getEstablishment());
+		                       e.setFirst_name_ar(iel.getFirst_name_ar());
+		                       e.setFirst_name_fr(iel.getFirst_name_fr());
+		                       e.setGender(iel.getGender());
+		                       e.setHigh_school(iel.getHigh_school());
+		                       e.setLast_name_ar(iel.getLast_name_ar());
+		                       e.setLast_name_fr(last_name_fr);
+		                       e.setMassar_edu(iel.getMassar_edu());
+		                       e.setMention(iel.getMention());
+		                       e.setNationality(iel.getNationality());
+		                       e.setProvince(iel.getProvince());
+		                       e.setRegistration_date(iel.getRegistration_date());
+		                       etudiantRepository.save(e);
+		                        ia.setEtudiant(e);
+		                        break;
+		                   //colonne 5
+		                    case 4:
+		                        int filieres_id_filiere = (int) nextCell.getNumericCellValue();
+		                        Filiere f = filiereRepository.getOne(filieres_id_filiere);
+		                        ia.setFilieres(f);
+		                        break;
+		                    //colonne 6
+		                    case 5:
+		                        String operateur = nextCell.getStringCellValue();
+		                        ia.setOperateur(operateur);
+		                        //faire entrer l inscrip. dans la base de données
+		                        inscriptionAdministrative.save(ia);
+		                        break;
+		                    }
+		                }  
+		            }
+		            workbook.close();
+		             
+		            long end = System.currentTimeMillis();
+		            System.out.printf("Import done in %d ms\n", (end - start));
+		             
+		        } catch (IOException ex1) {
+		            System.out.println("Error reading file");
+		            ex1.printStackTrace();
+		        } 
+		       //------------------------------------------------------------------------------------// 
+			return new ModelAndView("redirect:/inscription/PageUploadInscriptionAdministrative");
+		}
+		
+		
+		
+		
+		
+							//-------+++++++++-----------------++++++++------------++++++++----------++++++++-------//
+//+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+/ PARTIE INSCRIPTION PEDAGOGIQUE /*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+**+*+*+//
+							//-------+++++++++-----------------++++++++------------++++++++----------++++++++-------//
+		
+		
+		
+		
+//------------------------------Page affichant la liste (un) ou des etudiants a inscrire pedagogiquement en un semestre-----------------//
+	
 	@PostMapping("/inscription/PageInscriptionPedagogique")
 	public ModelAndView PageInscriptionPedagogique(@RequestParam("filiere")int id_filiere) {
 		ModelAndView model = new ModelAndView("InscriptionPedagogique");
+		//--------------------les années universitaires utilisés comme filtre du tableau-----------------------//
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 	    LocalDate localDate = LocalDate.now();
 	    int ele[]=new int[3];
@@ -175,6 +357,7 @@ public class InscriptionController {
 	    if(ele[1]>8) {
 	    	ele[0]++;
 	    }
+	    //-----------------------------------------------------------------------------------------------//
 	    Filiere filiere=filiereRepository.getOne(id_filiere);
 		List<Filiere> f=filiereRepository.getAllFiliere();
 		List<Semestre> s=semestreRepository.getSemestreByFiliere(filiere);
@@ -189,13 +372,15 @@ public class InscriptionController {
 	}
 	
 	
+	
+//-------------------------------------action :  creation d'une inscription par semestre d'un ou plusieurs etudiants-----------------------//
+	
 	@PostMapping("/inscription/createANewInscriptionPedagogique")
 	public ModelAndView createANewInscriptionPedagogique(@RequestParam("id_ias")String ids,
 			@RequestParam("filiere")int id_semestre
 			) {
 		
-		System.out.println("++++++++++++++++++++++++++++++++++++++++");
-		System.out.println(ids);
+		
 		String id[]=ids.split(",");
 		int idI;
 		InscriptionAdministrative ia;
@@ -216,6 +401,9 @@ public class InscriptionController {
 		return new ModelAndView("redirect:/inscription/ListInscriptionAdministrative");
 	}
 	
+
+	
+//-------------------------------------action :  creation d'une inscription par module d'un ou plusieurs etudiants------------------//
 	
 	@PostMapping("/inscription/createANewInscriptionPedagogiqueModule")
 	public ModelAndView createANewInscriptionPedagogiqueModule(@RequestParam("id_ip")String ids,
@@ -251,11 +439,15 @@ public class InscriptionController {
 	}
 	
 	
+
+//------------------------------Page affichant la liste (un) ou des etudiants a inscrire pedagogiquement en un Module-----------------//
+
 	@PostMapping("/inscription/PageInscriptionPedagogiqueModule")
 	public ModelAndView PageInscriptionPedagogiqueModule(@RequestParam("filiere")int idFiliere,
 			@RequestParam("semestre")String libelle_semestre
 			) {
 		ModelAndView model = new ModelAndView("InscriptionPedagogiqueModule");
+		//--------------------les années universitaires utilisés comme filtre du tableau-----------------------//
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 	    LocalDate localDate = LocalDate.now();
 	    int ele[]=new int[3];
@@ -265,6 +457,7 @@ public class InscriptionController {
 	    if(ele[1]>8) {
 	    	ele[0]++;
 	    }
+	    //--------------------------------------------------------------------------------------------------//
 		Filiere f=filiereRepository.getOne(idFiliere);
 		Semestre s=semestreRepository.getSemestreByFiliereAndLibelle(f, libelle_semestre);
 		model.addObject("InscriptionPedagogique", "mm-active");
@@ -276,6 +469,10 @@ public class InscriptionController {
 		return model;
 	}
 	
+	
+	
+//-----------------------------le menu pour choisir	la filiere pour afficher les etudiants à inscrire par semestre--------------------------// 
+
 	@GetMapping("/inscription/choixDeFiliere")
 	public ModelAndView choixDeFiliere() {
 		ModelAndView model = new ModelAndView("choixDeFiliere");
@@ -287,6 +484,10 @@ public class InscriptionController {
 		return model;
 	}
 	
+	
+	
+//-----------------------------le menu pour choisir	la filiere et semestre pour afficher les etudiants à inscrire par module----------------------// 
+	
 	@GetMapping("/inscription/choixDeFiliereModule")
 	public ModelAndView choixDeFiliereModule() {
 		ModelAndView model = new ModelAndView("choixDeFiliere");
@@ -297,6 +498,10 @@ public class InscriptionController {
 		model.addObject("f", f);
 		return model;
 	}
+
+	
+	
+//-------------------------------------menu pour choisir inscription pedago. par module ou par semestre-------------------------------//
 	
 	@GetMapping("/inscription/MenuPedagogique")
 	public ModelAndView MenuPedagogique() {
@@ -305,137 +510,54 @@ public class InscriptionController {
 		return model;
 	}
 	
-	@GetMapping("/inscription/PageUploadInscriptionAdministrative")
-	public ModelAndView PageUploadInscriptionEnligne() {
-		ModelAndView model = new ModelAndView("UploadInscriptionAdministrative");
-		model.addObject("InscriptionAdministartive", "mm-active");
-		
-		return model;
-	}
+
 	
-	@GetMapping("/inscription/PageModifierInscriptionAdministrative")
-	public ModelAndView PageModifierInscriptionEnligne(
-			@RequestParam("id")int id_ia
-			) {
-		List<InscriptionEnLigne> e=inscriptionEnLigne.getAllInscriptionsEnLigneAccepted();
-		InscriptionAdministrative ia=inscriptionAdministrative.getOne(id_ia);
-		ModelAndView model = new ModelAndView("ModifierInscriptionAdministrative");
-		model.addObject("ListInscriptionAdministartive", "mm-active");
-		model.addObject("ia", ia);
-		model.addObject("Etudiant",e);
-		
-		return model;
-	}
+//-----------------------------------------page affichant la liste des inscriptions Pedagoggiques par semestre-------------------------------//
 	
-	
-	@PostMapping("/inscription/UploadInscriptionAdministrative")
-	public ModelAndView UploadInscriptionEnligne(@RequestParam("file") MultipartFile file) throws IOException {
+		@GetMapping("/inscription/ListInscriptionPedagogiqueS")
+		public ModelAndView listInscriptionPedagogiqueS() {
+			ModelAndView model = new ModelAndView("ListInscriptionPedagogique");
+			List<Filiere> f=filiereRepository.getAllFiliere();
+			model.addObject("listPedagogique", "mm-active");
+			model.addObject("Inscription", inscriptionPedagogiqueRepository.getAllInscriptionsPedagogique());
+			model.addObject("module", moduleRepository.getAllModules());
+			model.addObject("parModule",0);
+			model.addObject("parSemestre",1);
+			model.addObject("f", f);
+			return model;
+		}
 		
-		Path dir =Paths.get("src/main/resources/static/Excels/");
-		Path excelFilePath=excel2Db.write(file, dir);
-		InscriptionAdministrative ia;
-	        //*************************************************************************************************//
-	        try {
-	            long start = System.currentTimeMillis();
-	             
-	            FileInputStream inputStream = new FileInputStream(excelFilePath.toString());
-	 
-	            Workbook workbook = new XSSFWorkbook(inputStream);
-	 
-	            Sheet firstSheet = workbook.getSheetAt(0);
-	            Iterator<Row> rowIterator = firstSheet.iterator();
-	 
-	  
-	             
-	            rowIterator.next(); // skip the header row
-	             
-	            while (rowIterator.hasNext()) {
-	                Row nextRow = rowIterator.next();
-	                Iterator<Cell> cellIterator = nextRow.cellIterator();
-	                ia= new InscriptionAdministrative();
-	                while (cellIterator.hasNext()) {
-	                    Cell nextCell = cellIterator.next();
-	 
-	                    int columnIndex = nextCell.getColumnIndex();
-	                    switch (columnIndex) {
-	                    case 0:
-	                        String annee_academique = nextCell.getStringCellValue();
-	                        ia.setAnnee_academique(annee_academique);
-	                        break;
-	                    case 1:
-	                        java.util.Date date_pre_inscription =nextCell.getDateCellValue();
-	                        ia.setDate_pre_inscription(date_pre_inscription);
-	                        break;
-	                    case 2:
-	                        java.util.Date date_valid_inscription = nextCell.getDateCellValue();
-	                        ia.setDate_valid_inscription(date_valid_inscription);
-	                        break;
-	                    case 3:
-	                        String fullNameEtudiant = nextCell.getStringCellValue();
-	                        String [] nameEtudiant=fullNameEtudiant.split(" ");
-	                        String first_name_fr=nameEtudiant[0];
-	                        String last_name_fr=nameEtudiant[1];
-	                        InscriptionEnLigne iel=inscriptionEnLigne.findByNameAccepted(first_name_fr, last_name_fr);
-	                        Etudiant e = new Etudiant();
-	                       e.setAcademy(iel.getAcademy());
-	                       e.setBac_place(iel.getBac_place());
-	                       e.setBac_type(iel.getBac_type());
-	                       e.setBac_year(iel.getBac_year());
-	                       e.setBirth_date(iel.getBirth_date());
-	                       e.setBirth_place(iel.getBirth_place());
-	                       e.setCity(iel.getCity());
-	                       e.setCne(iel.getCne());
-	                       e.setEstablishment(iel.getEstablishment());
-	                       e.setFirst_name_ar(iel.getFirst_name_ar());
-	                       e.setFirst_name_fr(iel.getFirst_name_fr());
-	                       e.setGender(iel.getGender());
-	                       e.setHigh_school(iel.getHigh_school());
-	                       e.setLast_name_ar(iel.getLast_name_ar());
-	                       e.setLast_name_fr(last_name_fr);
-	                       e.setMassar_edu(iel.getMassar_edu());
-	                       e.setMention(iel.getMention());
-	                       e.setNationality(iel.getNationality());
-	                       e.setProvince(iel.getProvince());
-	                       e.setRegistration_date(iel.getRegistration_date());
-	                       // etudiantRepository.copyIeEtudiant(iel.getId());
-	                       System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++");
-	                       System.out.println(e.getId());
-	                       etudiantRepository.save(e);
-	                        ia.setEtudiant(e);
-	                        break;
-	                    case 4:
-	                        int filieres_id_filiere = (int) nextCell.getNumericCellValue();
-	                        Filiere f = filiereRepository.getOne(filieres_id_filiere);
-	                        ia.setFilieres(f);
-	                        break;
-	                    case 5:
-	                        String operateur = nextCell.getStringCellValue();
-	                        ia.setOperateur(operateur);
-	                        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++");
-	                        inscriptionAdministrative.save(ia);
-	                        break;
-	                    }
-	 
-	                    
-	                }
-	                 
-	                
-	                           
-	 
-	            }
-	 
-	            workbook.close();
-	             
-	            
-	             
-	            long end = System.currentTimeMillis();
-	            System.out.printf("Import done in %d ms\n", (end - start));
-	             
-	        } catch (IOException ex1) {
-	            System.out.println("Error reading file");
-	            ex1.printStackTrace();
-	        } 
-	       //***********************************************************************************************************// 
-		return new ModelAndView("redirect:/inscription/PageUploadInscriptionAdministrative");
-	}
+		
+		
+//-----------------------------------------page affichant la liste des inscriptions Pedagoggiques par Module-------------------------------//
+
+		
+		
+		@GetMapping("/inscription/ListInscriptionPedagogiqueM")
+		public ModelAndView listInscriptionPedagogiquesM() {
+			ModelAndView model = new ModelAndView("ListInscriptionPedagogique");
+			List<Filiere> f=filiereRepository.getAllFiliere();
+			model.addObject("listPedagogique", "mm-active");
+			model.addObject("Inscription", inscriptionPedagogiqueRepository.getAllInscriptionsPedagogique());
+			model.addObject("module", moduleRepository.getAllModules());
+			model.addObject("parModule",1);
+			model.addObject("parSemestre",0);
+			model.addObject("f", f);
+			return model;
+		}
+		
+
+//----------------------------------------------menu liste des inscription pedagogiques-----------------------------------------------------//
+
+
+
+		@GetMapping("/inscription/menuListPedagogique")
+		public ModelAndView menuListPedagogique() {
+			ModelAndView model = new ModelAndView("menuListPedagogique");
+			model.addObject("listPedagogique", "mm-active");
+			return model;
+		}
+		
+
+		
 }

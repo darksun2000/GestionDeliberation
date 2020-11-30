@@ -13,4 +13,7 @@ public interface ModuleRepository extends JpaRepository<Module, Integer>{
 
 	@Query("select s from Module s where semestre=:x")
 	List<Module> getModuleBySemestre(@Param("x")Semestre semestre);
+	
+	@Query("select s from Module s")
+	List<Module> getAllModules();
 }
