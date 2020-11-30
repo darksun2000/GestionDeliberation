@@ -101,7 +101,6 @@
 			for(j=1 ; j<checkboxes.length ; j++){
 				value=value+","+names[j];
 			}
-			alert(value);
 			
 			var input = document.createElement("input");
 

@@ -9,7 +9,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.umi.models.Etudiant;
-import com.umi.models.InscriptionEnLigne;
 
 public interface EtudiantRepository extends JpaRepository<Etudiant, Integer>{
 	

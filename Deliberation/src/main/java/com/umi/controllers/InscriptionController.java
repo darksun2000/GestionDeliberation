@@ -133,11 +133,13 @@ public class InscriptionController {
 		ia.setAnnee_academique(annee_academique);
 		ia.setDate_pre_inscription(date_pre_inscription);
 		ia.setDate_valid_inscription(date_valid_inscription);
-		ia.setEtudiant(e);
+		etudiantRepository.save(e);
+		//-------------get l'etudiant qui vient d'être inscrit inscriver----------------------------//
+		Etudiant etudiant=etudiantRepository.getOne(etudiantRepository.getIdEtudiantByName(iel.getFirst_name_fr(), iel.getLast_name_fr()));
+		ia.setEtudiant(etudiant);
 		ia.setFilieres(filiereRepository.getOne(id_filiere));
 		ia.setOperateur(operateur);
 		inscriptionAdministrative.save(ia);
-		etudiantRepository.save(e);
 		return new ModelAndView("redirect:/student/list");
 	}
 	
