@@ -170,8 +170,12 @@ public class InscriptionController {
 	public ModelAndView SupprimerInscriptionAdministrative(
 			@PathVariable("id_ia")int id_ia
 			) {
-		inscriptionAdministrative.deleteById(id_ia);
+		List<InscriptionPedagogique> ipl=inscriptionPedagogiqueRepository.getInscriptionsPedagogiqueByEtudiant(inscriptionAdministrative.getOne(id_ia).getEtudiant());
+		if(!ipl.isEmpty()) {
+		inscriptionPedagogiqueRepository.deleteAll(ipl);
+		}
 		etudiantRepository.delete(inscriptionAdministrative.getOne(id_ia).getEtudiant());
+		inscriptionAdministrative.deleteById(id_ia);
 		return new ModelAndView("redirect:/inscription/ListInscriptionAdministrative");
 	}
 	
@@ -564,9 +568,15 @@ public class InscriptionController {
 		
 		
 		
-									//-------+++++++++-----------------++++++++------------++++++++----------++++++++-------//
-		//+*+*+*+*+*+*+*+*+*++*+*+*+*+*+**+*+*+*+*+*+*+*+*+*+/ PARTIE STRUCTURE D'ENSEIGNEMENT /*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+**+*+*+//
-									//-------+++++++++-----------------++++++++------------++++++++----------++++++++-------//
+							//-------+++++++++-----------------++++++++------------++++++++----------++++++++-------//
+//+*+*+*+*+*+*+*+*+*++*+*+*+*+*+**+*+*+*+*+*+*+*+*+*+/ PARTIE STRUCTURE D'ENSEIGNEMENT /*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+**+*+*+//
+							//-------+++++++++-----------------++++++++------------++++++++----------++++++++-------//
+		
+		
+		
+		
+//------------------------------------------allez vers page structure d'enseignement--------------------------------------------------//
+		
 		
 		
 		@GetMapping("/inscription/StructureEnseignement")
@@ -574,10 +584,16 @@ public class InscriptionController {
 			ModelAndView model = new ModelAndView("ListAnnees");
 			model.addObject("f",filiereRepository.getAllFiliere());
 			model.addObject("etape",etapeRepository.findAll());
+			model.addObject("semestres",semestreRepository.getAllSemestre());
+			model.addObject("modules",moduleRepository.findAll());
 			model.addObject("StructureEnseignement", "mm-active");
 			return model;
 		}
 
+		
+		
+//-------------------------------------modification d'une (plusieurs) années : diplomante ou pas------------------------------------//		
+		
 		
 		@PostMapping("/inscription/ModifierAnneeDiplomante")
 		public ModelAndView ModifierAnneeDiplomante(@RequestParam("id_ip")String ids) {
@@ -606,6 +622,22 @@ public class InscriptionController {
 				}
 			}
 			return new ModelAndView("redirect:/inscription/StructureEnseignement");
+		}
+		
+		
+		
+//-------------------------------------------------Details semestre---------------------------------------------------//
+		
+		
+		
+		@GetMapping("/inscription/VoirSemestre")
+		public ModelAndView VoirSemestre(@RequestParam("idS")int idS) {
+			ModelAndView model=new ModelAndView("voirSemestre");
+			Semestre semestre=semestreRepository.getOne(idS);
+			List<Module>modules=moduleRepository.getModuleBySemestre(semestre);
+			model.addObject("modules",modules);
+			model.addObject("semestre",semestre);
+			return model;
 		}
 		
 }

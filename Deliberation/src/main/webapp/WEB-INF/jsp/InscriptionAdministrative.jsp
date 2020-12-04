@@ -18,7 +18,7 @@
 						<div class="col-md-6">
 							<div class="position-relative form-group">
 								<label for="Nom Etudiant" class="">Nom Etudiant</label>
-								<select name="id_etudiant" id="exampleSelect" class="form-control">
+								<select name="id_etudiant" id="exampleSelect" class="form-control" required>
 								<option default>Choisir étudiant</option>
 								<c:forEach var="e" items="${Etudiant }">
 								<option value="${e.getId()}">${e.getFirst_name_fr() } ${e.getLast_name_fr() }</option>
@@ -32,7 +32,7 @@
 							<div class="col-md-6">
 							<div class="position-relative form-group">
 								<label for="Filiere" class="">Filiere</label>
-								<select name="filiere" id="exampleSelect" class="form-control" >
+								<select name="filiere" id="exampleSelect" class="form-control" required>
 								<option default>Choisir la filiére</option>
 								<c:forEach var="f" items="${Filiere }">
 								<option value="${f.getId_filiere()}">${f.getNom_filiere() }</option>
@@ -49,28 +49,28 @@
 							<div class="position-relative form-group">
 								<label for="date_pre_inscription" class="">Date de preinscription</label><input
 									name="date_pre_inscription" id="date_pre_inscription"
-									type="date" class="form-control">
+									type="date" class="form-control" required>
 							</div>
 						</div>
 						<div class="col-md-3">
 							<div class="position-relative form-group">
 								<label for="date_valid_inscription" class="">Date Validation d'inscription</label><input
 									name="date_valid_inscription" id="date_valid_inscription"
-									type="date" class="form-control">
+									type="date" class="form-control" required>
 							</div>
 						</div>
 						<div class="col-md-3">
 							<div class="position-relative form-group">
 								<label for="annee_academique" class="">Année academique</label><input
 									name="annee_academique" id="date_valid_inscription" placeholder="xxxx/xxxx"
-									 class="form-control">
+									 class="form-control" required>
 							</div>
 						</div>
 						<div class="col-md-3">
 							<div class="position-relative form-group">
 								<label for="annee_academique" class="">Operateur</label><input
 									name="operateur" id="date_valid_inscription"
-									 class="form-control">
+									 class="form-control" required>
 							</div>
 						</div>
 					</div>

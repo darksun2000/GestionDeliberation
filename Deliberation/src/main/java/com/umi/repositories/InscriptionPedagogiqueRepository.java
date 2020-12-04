@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.umi.models.Etudiant;
 import com.umi.models.InscriptionPedagogique;
 import com.umi.models.Semestre;
 import com.umi.models.Module;
@@ -21,6 +22,9 @@ public interface InscriptionPedagogiqueRepository extends JpaRepository<Inscript
 	
 	@Query("select s from InscriptionPedagogique s where semestre=:x")
 	List<InscriptionPedagogique> getInscriptionsPedagogiqueBySemestre(@Param("x")Semestre semestre);
+	
+	@Query("select s from InscriptionPedagogique s where etudiant=:x")
+	List<InscriptionPedagogique> getInscriptionsPedagogiqueByEtudiant(@Param("x")Etudiant etudiant);
 	
 	@Transactional
 	@Modifying

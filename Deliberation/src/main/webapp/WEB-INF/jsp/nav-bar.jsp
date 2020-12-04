@@ -41,32 +41,59 @@
 				<li><a href="/" class="${dashboard}"> <i
 						class="metismenu-icon pe-7s-rocket"></i> Tableau de bords
 				</a></li>
-				<li><a href="/student/create" class="${createStudent}"> <i
-						class="metismenu-icon pe-7s-plus"></i> Ajouter un étudiant
-				</a></li>
+
 				<li><a href="/student/list" class="${listStudent}"> <i
-						class="metismenu-icon pe-7s-menu"></i> Liste des étudiants
+						class="metismenu-icon pe-7s-study"></i> Liste des étudiants
 				</a></li>
-				<li><a href="/student/InscriptionEnLigne" class="${InscriptionEnLigne}"> <i
-						class="metismenu-icon pe-7s-plus"></i> Inscription En ligne
-				</a></li>
-				<li><a href="/student/ListInscriptionEnligne" class="${listInscriptions}"> <i
-						class="metismenu-icon pe-7s-menu"></i>Liste des inscriptions en ligne
-				</a></li>
-				<li><a href="/inscription/InscriptionAdministrative" class="${InscriptionAdministrative}"> <i
-						class="metismenu-icon pe-7s-plus"></i> Inscription Administrative
-				</a></li>
-				<li><a href="/inscription/ListInscriptionAdministrative" class="${listAdministartive}"> <i
-						class="metismenu-icon pe-7s-menu"></i> Listes Inscriptions Administratives
-				</a></li>
-				<li><a href="/inscription/MenuPedagogique" class="${InscriptionPedagogique}"> <i
-						class="metismenu-icon pe-7s-plus"></i>Inscriptions Pédagogique
-				</a></li>
-				<li><a href="/inscription/menuListPedagogique" class="${listPedagogique}"> <i
-						class="metismenu-icon pe-7s-menu"></i> Listes Inscriptions Pedagogique
-				</a></li>
-				<li><a href="/inscription/StructureEnseignement" class="${StructureEnseignement}"> <i
-						class="metismenu-icon pe-7s-menu"></i> Structure d'Enseignement
+				<li><a href="#" aria-expanded="false"> <i
+						class="metismenu-icon pe-7s-id"></i> Inscription EnLigne <i
+						class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+				</a>
+					<ul class="mm-collapse" style="height: 7.04px;">
+						<li><a href="/student/InscriptionEnLigne"
+							class="${InscriptionEnLigne}"> <i
+								class="metismenu-icon pe-7s-add-user"></i>Ajouter I. En ligne
+						</a></li>
+						<li><a href="/student/ListInscriptionEnligne"
+							class="${listInscriptions}"> <i
+								class="metismenu-icon pe-7s-menu"></i>Liste I. en ligne
+						</a></li>
+					</ul></li>
+
+				<li><a href="#" aria-expanded="false"> <i
+						class="metismenu-icon pe-7s-id"></i> Inscription Administrative <i
+						class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+				</a>
+					<ul class="mm-collapse" style="height: 7.04px;">
+
+						<li><a href="/inscription/InscriptionAdministrative"
+							class="${InscriptionAdministrative}"> <i
+								class="metismenu-icon pe-7s-add-user"></i>Ajouter I.
+								Administrative
+						</a></li>
+						<li><a href="/inscription/ListInscriptionAdministrative"
+							class="${listAdministartive}"> <i
+								class="metismenu-icon pe-7s-menu"></i> Listes I. Administratives
+						</a></li>
+					</ul></li>
+
+				<li><a href="#" aria-expanded="false"> <i
+						class="metismenu-icon pe-7s-id"></i> Inscription Pedagogique <i
+						class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+				</a>
+					<ul class="mm-collapse" style="height: 7.04px;">
+						<li><a href="/inscription/MenuPedagogique"
+							class="${InscriptionPedagogique}"> <i
+								class="metismenu-icon pe-7s-add-user"></i>Ajouter I. Pédagogique
+						</a></li>
+						<li><a href="/inscription/menuListPedagogique"
+							class="${listPedagogique}"> <i
+								class="metismenu-icon pe-7s-menu"></i>Listes I. Pedagogique
+						</a></li>
+					</ul></li>
+				<li><a href="/inscription/StructureEnseignement"
+					class="${StructureEnseignement}"> <i
+						class="metismenu-icon pe-7s-graph3"></i> Structure d'Enseignement
 				</a></li>
 			</ul>
 		</div>

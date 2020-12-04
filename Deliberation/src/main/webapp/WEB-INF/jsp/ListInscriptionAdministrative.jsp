@@ -40,7 +40,9 @@
 								<td><a style="color: black">${i.date_valid_inscription}</a></td>
 								<td><a style="color: black">${i.operateur}</a></td>
 								<td> <button class="mb-2 mr-2 btn btn-primary" onclick="window.location.href='PageModifierInscriptionAdministrative?id=${i.id_ia}'">Modifier</button>
-								 <button class="mb-2 mr-2 btn btn-danger" onclick="window.location.href='SupprimerInscriptionAdministrative/${i.id_ia}'">Supprimer</button>
+								<button type="button" class="btn mr-2 mb-2 btn-danger" data-toggle="modal" data-target="#exampleModal" onclick="window.location.href='SupprimerInscriptionAdministrative/${i.id_ia}'">
+                                            Supprimer
+                                        </button>
 								</td>
 								</c:if>
 							</tr>
@@ -51,6 +53,7 @@
 				</c:forEach>
 			</div>
 		</div>
+		<script type="text/javascript" src="./assets/scripts/main.js"></script>
 		<script>
 		function openCity(evt, cityName) {
 			  // Declare all variables
@@ -74,4 +77,23 @@
 			}
 		</script>
 	</layout:put>
+	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="mb-0">Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
 </layout:extends>

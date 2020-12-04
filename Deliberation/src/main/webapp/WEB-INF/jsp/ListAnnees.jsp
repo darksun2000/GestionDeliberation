@@ -10,7 +10,6 @@
 
 		<div class="main-card mb-3 card">
 			<div class="card-body">
-			<form method="POST" action="/inscription/ModifierAnneeDiplomante">
 				<h5 class="card-title">Liste des inscriptions d'étudiants</h5>
 				<div class="tab" id="myDiv">
 				<input name="id_ip" id="ok" type="text" style="display: none">
@@ -18,6 +17,7 @@
  					 <button class="mb-2 mr-2 btn btn-success" onclick="openCity(event, '${f.nom_filiere}')">${f.nom_filiere}</button>
   				</c:forEach>
 				</div>
+				<form method="POST" action="/inscription/ModifierAnneeDiplomante">
 				<c:forEach var="f" items="${f}">
 
 	<div id="${f.nom_filiere}" class="tabcontent">
@@ -26,6 +26,7 @@
 						<tr>
 							<th class="th-sm">Etape</th>
 							<th class="th-sm">Filiere</th>
+							<th class="th-sm" colspan="2">Semestre</th>
 							<th class="th-sm">Diplomante</th>
 						</tr>
 					</thead>
@@ -35,6 +36,11 @@
 							<c:if test="${f.id_filiere==e.filiere.id_filiere }">
 								<td><a style="color: black">${e.libelle_etape}</a></td>
 								<td><a style="color: black">${e.filiere.nom_filiere }</a></td>
+								<c:forEach var="s" items="${semestres }">
+								<c:if test="${s.etape== e}">
+								<td><a style="color: black" href="#linktobottom" onclick="tableauModule(${s.id_semestre})">${s.libelle_semestre}</a></td>
+								</c:if>
+								</c:forEach>
 								<td>
 								<c:if test="${e.diplomante==1 }">
 								<input type="checkbox" id="lesIds" name="${e.id_etape }" onchange="envoi_form()" checked>
@@ -54,7 +60,49 @@
 				</form>
 			</div>
 		</div>
+		
+	<c:forEach var="s" items="${semestres }">
+		<div class="main-card mb-3 card" id="${s.id_semestre}" style="display:none">
+			<div class="card-body">
+				<h5 class="card-title">Liste des modules du ${s.libelle_semestre } filiére ${s.filiere.nom_filiere }</h5>
+				
+				<table class="mb-0 table table-hover">
+					<thead>
+						<tr>
+						<c:forEach var="m" items="${modules}">
+							<c:if test="${m.semestre==s }">
+								<th class="th-sm"></th>
+							</c:if>
+						</c:forEach>
+						</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<c:forEach var="m" items="${modules}">
+						<c:if test="${m.semestre==s }">
+						<td><a style="color: black" name="linktobottom">${m.libelle_module}</a></td>
+						</c:if>
+						</c:forEach>
+					</tr>
+				</tbody>
+				</table>
+				
+			</div>
+		</div>
+	</c:forEach>
+		
+		
 		<script>
+		
+		function tableauModule(idS){
+			var x=document.getElementById(idS+"");
+			if (x.style.display === "none") {
+			    x.style.display = "block";
+			  } else {
+			    x.style.display = "none";
+			  }
+		}
+		
 		function envoi_form(){
 			var button=document.getElementById("valider");
 			button.disabled=false;
