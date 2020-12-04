@@ -10,8 +10,10 @@
 
 		<div class="main-card mb-3 card">
 			<div class="card-body">
+			<form method="POST" action="/inscription/ModifierAnneeDiplomante">
 				<h5 class="card-title">Liste des inscriptions d'étudiants</h5>
-				<div class="tab">
+				<div class="tab" id="myDiv">
+				<input name="id_ip" id="ok" type="text" style="display: none">
 				<c:forEach var="f" items="${f}">
  					 <button class="mb-2 mr-2 btn btn-success" onclick="openCity(event, '${f.nom_filiere}')">${f.nom_filiere}</button>
   				</c:forEach>
@@ -22,25 +24,24 @@
 				<table class="mb-0 table table-hover">
 					<thead>
 						<tr>
-							<th class="th-sm">Nom Etudiant</th>
-							<th class="th-sm">Année universitaire</th>
-							<th class="th-sm">Date de preinscription</th>
-							<th class="th-sm">Date Validation d'inscription</th>
-							<th class="th-sm">Operateur</th>
-							<th class="th-sm"></th>
+							<th class="th-sm">Etape</th>
+							<th class="th-sm">Filiere</th>
+							<th class="th-sm">Diplomante</th>
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach var="i" items="${Inscription}">
+						<c:forEach var="e" items="${etape}">
 							<tr>
-							<c:if test="${f.id_filiere==i.filieres.id_filiere }">
-								<td><a style="color: black">${i.etudiant.first_name_fr} ${i.etudiant.last_name_fr}</a></td>
-								<td><a style="color: black">${i.annee_academique}</a></td>
-								<td><a style="color: black">${i.date_pre_inscription}</a></td>
-								<td><a style="color: black">${i.date_valid_inscription}</a></td>
-								<td><a style="color: black">${i.operateur}</a></td>
-								<td> <button class="mb-2 mr-2 btn btn-primary" onclick="window.location.href='PageModifierInscriptionAdministrative?id=${i.id_ia}'">Modifier</button>
-								 <button class="mb-2 mr-2 btn btn-danger" onclick="window.location.href='SupprimerInscriptionAdministrative/${i.id_ia}'">Supprimer</button>
+							<c:if test="${f.id_filiere==e.filiere.id_filiere }">
+								<td><a style="color: black">${e.libelle_etape}</a></td>
+								<td><a style="color: black">${e.filiere.nom_filiere }</a></td>
+								<td>
+								<c:if test="${e.diplomante==1 }">
+								<input type="checkbox" id="lesIds" name="${e.id_etape }" onchange="envoi_form()" checked>
+								</c:if>
+								<c:if test="${e.diplomante==0 }">
+								<input type="checkbox" id="lesIds" name="${e.id_etape }" onchange="envoi_form()">
+								</c:if>
 								</td>
 								</c:if>
 							</tr>
@@ -49,9 +50,44 @@
 				</table>
 				</div>
 				</c:forEach>
+				<button class="mt-2 btn btn-primary col-md-12" id="valider" type="submit" disabled>Valider</button>
+				</form>
 			</div>
 		</div>
 		<script>
+		function envoi_form(){
+			var button=document.getElementById("valider");
+			button.disabled=false;
+			var element = document.getElementById("myDiv");
+			var child=document.getElementById("ok");
+			element.removeChild(child);
+			
+			const checkboxes = document.querySelectorAll('input[id="lesIds"]:checked');
+			var names= new Array(checkboxes.length+1);
+			var i;
+			for(i=0 ; i<checkboxes.length ; i++){
+				names[i]=checkboxes[i].name;
+			}
+			var value=names[0]+"";
+			var j;
+			for(j=1 ; j<checkboxes.length ; j++){
+				value=value+","+names[j];
+			}
+			console.log(value);
+			var input = document.createElement("input");
+
+			input.setAttribute("type", "hidden");
+
+			input.setAttribute("name", "id_ip");
+			
+			input.setAttribute("id", "ok");
+
+			input.setAttribute("value", value);
+
+			//append to form element that you want .
+			document.getElementById("myDiv").appendChild(input);
+			
+		}
 		function openCity(evt, cityName) {
 			  // Declare all variables
 			  var i, tabcontent, tablinks;

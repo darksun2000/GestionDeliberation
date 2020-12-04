@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-
+import com.umi.models.Etape;
 import com.umi.models.Etudiant;
 import com.umi.models.Module;
 import com.umi.models.Filiere;
@@ -36,6 +36,7 @@ import com.umi.models.InscriptionAdministrative;
 import com.umi.models.InscriptionEnLigne;
 import com.umi.models.InscriptionPedagogique;
 import com.umi.models.Semestre;
+import com.umi.repositories.EtapeRepository;
 import com.umi.repositories.EtudiantRepository;
 import com.umi.repositories.Excel2DbRepository;
 import com.umi.repositories.FiliereRepository;
@@ -57,9 +58,10 @@ public class InscriptionController {
 	private SemestreRepository semestreRepository;
 	private InscriptionPedagogiqueRepository inscriptionPedagogiqueRepository;
 	private ModuleRepository moduleRepository;
+	private EtapeRepository etapeRepository;
 	Excel2DbRepository excel2Db =new Excel2DbRepository();
 	
-	public InscriptionController(ModuleRepository moduleRepository,InscriptionPedagogiqueRepository inscriptionPedagogiqueRepository,EtudiantRepository studentRepository,SemestreRepository semestreRepository,InscriptionAdministrativeRepository inscriptionAdministrative,InscriptionEnLigneRepository inscriptionEnLigne,FiliereRepository filiereRepository) {
+	public InscriptionController(EtapeRepository etapeRepository,ModuleRepository moduleRepository,InscriptionPedagogiqueRepository inscriptionPedagogiqueRepository,EtudiantRepository studentRepository,SemestreRepository semestreRepository,InscriptionAdministrativeRepository inscriptionAdministrative,InscriptionEnLigneRepository inscriptionEnLigne,FiliereRepository filiereRepository) {
 		this.etudiantRepository = studentRepository;
 		this.inscriptionAdministrative=inscriptionAdministrative;
 		this.filiereRepository=filiereRepository;
@@ -67,6 +69,7 @@ public class InscriptionController {
 		this.semestreRepository=semestreRepository;
 		this.inscriptionPedagogiqueRepository=inscriptionPedagogiqueRepository;
 		this.moduleRepository=moduleRepository;
+		this.etapeRepository=etapeRepository;
 	}
 	
 	
@@ -414,9 +417,7 @@ public class InscriptionController {
 		
 		String id[]=ids.split(",");
 		String id_modules[]=modules.split(",");
-		for (int i = 0; i < id_modules.length; i++) {
-			System.out.println(id_modules[i]);
-		}
+		
 		//remplire list des modules------------------------------------------
 		
 		List<Module> listModules=new ArrayList<Module>();
@@ -429,12 +430,12 @@ public class InscriptionController {
 		List<InscriptionPedagogique> listIP =new ArrayList<InscriptionPedagogique>();
 		for (int i = 0; i < id.length; i++) {
 			listIP.add(inscriptionPedagogiqueRepository.getOne(Integer.parseInt(id[i].trim())));
+			listIP.get(i).setModule(listModules);;
 		}
 		
 		//inscrire les ips par modules---------------------------------------
 		
 		for (int i = 0; i < listIP.size(); i++) {
-			listIP.get(i).setModule(listModules);
 			inscriptionPedagogiqueRepository.save(listIP.get(i));
 		}
 		return new ModelAndView("redirect:/inscription/ListInscriptionAdministrative");
@@ -560,6 +561,51 @@ public class InscriptionController {
 			return model;
 		}
 		
+		
+		
+		
+									//-------+++++++++-----------------++++++++------------++++++++----------++++++++-------//
+		//+*+*+*+*+*+*+*+*+*++*+*+*+*+*+**+*+*+*+*+*+*+*+*+*+/ PARTIE STRUCTURE D'ENSEIGNEMENT /*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+**+*+*+//
+									//-------+++++++++-----------------++++++++------------++++++++----------++++++++-------//
+		
+		
+		@GetMapping("/inscription/StructureEnseignement")
+		public ModelAndView structureDEnseignement() {
+			ModelAndView model = new ModelAndView("ListAnnees");
+			model.addObject("f",filiereRepository.getAllFiliere());
+			model.addObject("etape",etapeRepository.findAll());
+			model.addObject("StructureEnseignement", "mm-active");
+			return model;
+		}
 
+		
+		@PostMapping("/inscription/ModifierAnneeDiplomante")
+		public ModelAndView ModifierAnneeDiplomante(@RequestParam("id_ip")String ids) {
+			String idstring[]=ids.split(",");
+			
+			List<Integer> id=new ArrayList<Integer>();
+			for (int i = 0; i < idstring.length; i++) {
+				id.add(Integer.parseInt(idstring[i]));
+			}
+			List<Etape> etapesA=etapeRepository.findAllById(id);
+			for (int i = 0; i < etapesA.size(); i++) {
+				etapeRepository.activerDiplomante(etapesA.get(i).getId_etape(),1);
+			}
+			
+			List<Etape> etapesD=etapeRepository.findAll();
+			int trouver=0;
+			for (int i = 0; i < etapesD.size(); i++) {
+				trouver=0;
+				for (int j = 0; j < etapesA.size(); j++) {
+					if(etapesD.get(i)==etapesA.get(j)) {
+						trouver=1;
+					}
+				}
+				if(trouver==0) {
+					etapeRepository.activerDiplomante(etapesD.get(i).getId_etape(),0);
+				}
+			}
+			return new ModelAndView("redirect:/inscription/StructureEnseignement");
+		}
 		
 }

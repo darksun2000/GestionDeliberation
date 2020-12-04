@@ -1,6 +1,7 @@
 package com.umi.repositories;
 
 
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -24,5 +25,5 @@ public interface InscriptionPedagogiqueRepository extends JpaRepository<Inscript
 	@Transactional
 	@Modifying
 	@Query("update InscriptionPedagogique s set s.module=:x where s.id_ip=:y")
-	void updateInscriptionPedagogique(@Param("y")int id,@Param("x")List<Module> listModules);
+	void updateInscriptionPedagogique(@Param("y")int id,@Param("x")Collection<Module> listModules);
 }

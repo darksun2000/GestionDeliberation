@@ -65,6 +65,9 @@
 				<li><a href="/inscription/menuListPedagogique" class="${listPedagogique}"> <i
 						class="metismenu-icon pe-7s-menu"></i> Listes Inscriptions Pedagogique
 				</a></li>
+				<li><a href="/inscription/StructureEnseignement" class="${StructureEnseignement}"> <i
+						class="metismenu-icon pe-7s-menu"></i> Structure d'Enseignement
+				</a></li>
 			</ul>
 		</div>
 	</div>
