@@ -225,10 +225,15 @@ public class InscriptionController {
 		
 		@PostMapping("/inscription/UploadInscriptionAdministrative")
 		public ModelAndView UploadInscriptionAdministartive(@RequestParam("file") MultipartFile file) throws IOException {
-			
+			ModelAndView model = new ModelAndView("RapportUpload");
 			Path dir =Paths.get("src/main/resources/static/Excels/");
+			Boolean dontSave=false;
 			Path excelFilePath=excel2Db.write(file, dir);
 			InscriptionAdministrative ia;
+			//---------------pour les lignes non valide---------//
+			List<String> namesE=new ArrayList<String>();
+			//---------------pour les lignes non valide---------//
+			List<String> namesV=new ArrayList<String>();
 		        //----------------------------------------------------------------------------------------//
 		        try {
 		        	//----------------------------declaration et initialisation des objets à utiliser-------------------//
@@ -247,7 +252,7 @@ public class InscriptionController {
 		             
 		            //boucle pour passer par toutes les lignes
 		            while (rowIterator.hasNext()) {
-		            	
+		            	dontSave=false;
 		            	//-----incrementer l'iterator ligne-----//
 		                Row nextRow = rowIterator.next();
 		                Iterator<Cell> cellIterator = nextRow.cellIterator();
@@ -287,6 +292,14 @@ public class InscriptionController {
 		                        String first_name_fr=nameEtudiant[0];
 		                        String last_name_fr=nameEtudiant[1];
 		                        InscriptionEnLigne iel=inscriptionEnLigne.findByNameAccepted(first_name_fr, last_name_fr);
+		                        //--------cas ou l'inscription en ligne n'existe pas-----//
+		                        if(iel==null) {
+		                        	namesE.add(fullNameEtudiant);
+		                        	dontSave=true;
+		                        	continue;
+		                        }
+		                        //----------------------------------------------//
+		                        namesV.add(fullNameEtudiant);
 		                        Etudiant e = new Etudiant();
 		                       e.setAcademy(iel.getAcademy());
 		                       e.setBac_place(iel.getBac_place());
@@ -321,6 +334,7 @@ public class InscriptionController {
 		                    case 5:
 		                        String operateur = nextCell.getStringCellValue();
 		                        ia.setOperateur(operateur);
+		                        if(dontSave==true)continue;
 		                        //faire entrer l inscrip. dans la base de données
 		                        inscriptionAdministrative.save(ia);
 		                        break;
@@ -332,13 +346,25 @@ public class InscriptionController {
 		            long end = System.currentTimeMillis();
 		            System.out.printf("Import done in %d ms\n", (end - start));
 		             
+		             model.addObject("nonAccepter", namesE);
+		             model.addObject("Accepter", namesV);
+		             System.out.println(namesV);
+		             System.out.println(namesE);
+		             //-------------envoyer le size de la plus grande liste------//
+		             if(namesE.size()>namesV.size()) {
+		            	 model.addObject("size",namesE.size());
+		             }
+		             else {
+		            	 model.addObject("size",namesV.size());
+		             }
+		             
 		        } catch (IOException ex1) {
 		            System.out.println("Error reading file");
 		            ex1.printStackTrace();
 		        } 
 		       //------------------------------------------------------------------------------------// 
-			return new ModelAndView("redirect:/inscription/PageUploadInscriptionAdministrative");
-		}
+			return model;
+					}
 		
 		
 		

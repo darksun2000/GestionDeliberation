@@ -142,9 +142,13 @@
 						</div>
 						<div class="col-md-6">
 							<div class="position-relative form-group">
-								<label for="mention" class="">Mention</label><input
-									name="mention" id="mention" placeholder=""
-									type="text" class="form-control" required>
+								<label for="mention" class="">Mention</label>
+								<select name="mention" id="mention" class="form-control" required>
+								<option value="Trés bien">Trés bien</option>
+								<option value="Bien">Bien</option>
+								<option value="Assez Bien">Assez Bien</option>
+								<option value="Passable">Passable</option>
+								</select>
 							</div>
 						</div>
 					</div>
