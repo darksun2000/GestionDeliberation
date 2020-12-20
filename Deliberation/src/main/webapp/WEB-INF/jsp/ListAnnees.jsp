@@ -11,13 +11,15 @@
 		<div class="main-card mb-3 card">
 			<div class="card-body">
 				<h5 class="card-title">Liste des inscriptions d'étudiants</h5>
-				<div class="tab" id="myDiv">
-				<input name="id_ip" id="ok" type="text" style="display: none">
+				<div class="tab">
 				<c:forEach var="f" items="${f}">
  					 <button class="mb-2 mr-2 btn btn-success" onclick="openCity(event, '${f.nom_filiere}')">${f.nom_filiere}</button>
   				</c:forEach>
 				</div>
 				<form method="POST" action="/inscription/ModifierAnneeDiplomante">
+				<div class="tab" id="myDiv">
+				<input name="id_ip" id="ok" type="text" style="display: none">
+				</div>
 				<c:forEach var="f" items="${f}">
 
 	<div id="${f.nom_filiere}" class="tabcontent">
@@ -122,6 +124,7 @@
 				value=value+","+names[j];
 			}
 			console.log(value);
+			console.log(parseInt(value.length/2,10)+1);
 			var input = document.createElement("input");
 
 			input.setAttribute("type", "hidden");
