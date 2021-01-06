@@ -11,7 +11,7 @@
 		<div class="main-card mb-3 card">
 			<div class="card-body">
 				<h5 class="card-title">Inscription Administrative de l'Etudiant</h5>
-				<form class="" action="/inscription/createANewInscriptionAdministrative" method="GET">
+				<form class="" action="/inscription/createANewInscriptionAdministrative" method="Post" enctype="multipart/form-data">
 
 
 					<div class="form-row">
@@ -45,28 +45,15 @@
 					</div>
 					
 					<div class="form-row">
-						<div class="col-md-3">
-							<div class="position-relative form-group">
-								<label for="date_pre_inscription" class="">Date de preinscription</label><input
-									name="date_pre_inscription" id="date_pre_inscription"
-									type="date" class="form-control" required>
-							</div>
-						</div>
-						<div class="col-md-3">
-							<div class="position-relative form-group">
-								<label for="date_valid_inscription" class="">Date Validation d'inscription</label><input
-									name="date_valid_inscription" id="date_valid_inscription"
-									type="date" class="form-control" required>
-							</div>
-						</div>
-						<div class="col-md-3">
+						
+						<div class="col-md-6">
 							<div class="position-relative form-group">
 								<label for="annee_academique" class="">Année academique</label><input
 									name="annee_academique" id="date_valid_inscription" placeholder="xxxx/xxxx"
-									 class="form-control" required>
+									 class="form-control" value="${year }/${year + 1}" required>
 							</div>
 						</div>
-						<div class="col-md-3">
+						<div class="col-md-6">
 							<div class="position-relative form-group">
 								<label for="annee_academique" class="">Operateur</label><input
 									name="operateur" id="date_valid_inscription"
@@ -74,9 +61,18 @@
 							</div>
 						</div>
 					</div>
-					<script>
-					
-					</script>
+					<div class="form-row">
+						<div class="col-md-6">
+							<div class="position-relative form-group">
+			      				<label for="annee_academique" class="">Inserer photo</label><input name="photo" id="file" type="file" class="form-control-file">
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="position-relative form-group">
+								<label for="annee_academique" class="">Inserer document</label><input name="document1" id="file" type="file" class="form-control-file">		
+							</div>
+						</div>
+						</div>
 						
 					<button class="mt-2 btn btn-primary col-md-12" type="submit">Valider</button>
 				</form>

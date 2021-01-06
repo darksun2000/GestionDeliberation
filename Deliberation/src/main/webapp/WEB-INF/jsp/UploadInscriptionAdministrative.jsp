@@ -25,9 +25,6 @@
 							</div>
 						</div>
 					</div>
-					<script>
-					
-					</script>
 						
 					<button class="mt-2 btn btn-primary col-md-12" type="submit">Valider</button>
 				</form>

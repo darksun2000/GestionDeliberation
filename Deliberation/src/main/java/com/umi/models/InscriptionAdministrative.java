@@ -33,20 +33,74 @@ public class InscriptionAdministrative {
 	
 	@Column(name="operateur")
 	private String operateur;
+	
+	@Lob
+	private byte[] document1;
+	
+	@Lob
+	private byte[] photo;
+	
+	
+	
 
-	public InscriptionAdministrative() {
-	}
+	
 
 	public InscriptionAdministrative(int id_ia, Etudiant etudiant, Filiere filieres, String annee_academique,
-			Date date_pre_inscription, Date date_valid_inscription,String operateur) {
+			Date date_pre_inscription, Date date_valid_inscription, String operateur, byte[] document1, byte[] photo) {
+		super();
 		this.id_ia = id_ia;
 		this.etudiant = etudiant;
 		this.filieres = filieres;
 		this.annee_academique = annee_academique;
 		this.date_pre_inscription = date_pre_inscription;
 		this.date_valid_inscription = date_valid_inscription;
-		this.operateur=operateur;
+		this.operateur = operateur;
+		this.document1 = document1;
+		this.photo = photo;
 	}
+
+
+
+
+
+	public byte[] getDocument1() {
+		return document1;
+	}
+
+
+
+
+
+	public void setDocument1(byte[] document1) {
+		this.document1 = document1;
+	}
+
+
+
+
+
+	public byte[] getPhoto() {
+		return photo;
+	}
+
+
+
+
+
+	public void setPhoto(byte[] photo) {
+		this.photo = photo;
+	}
+
+
+
+
+
+	public InscriptionAdministrative() {
+	}
+
+	
+
+	
 
 	public String getOperateur() {
 		return operateur;

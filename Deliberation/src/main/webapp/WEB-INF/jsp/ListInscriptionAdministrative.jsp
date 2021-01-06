@@ -27,6 +27,8 @@
 							<th class="th-sm">Date de preinscription</th>
 							<th class="th-sm">Date Validation d'inscription</th>
 							<th class="th-sm">Operateur</th>
+							<th class="th-sm">Photo</th>
+							<th class="th-sm">Document1</th>
 							<th class="th-sm"></th>
 						</tr>
 					</thead>
@@ -39,6 +41,20 @@
 								<td><a style="color: black">${i.date_pre_inscription}</a></td>
 								<td><a style="color: black">${i.date_valid_inscription}</a></td>
 								<td><a style="color: black">${i.operateur}</a></td>
+								<c:if test="${i.photo != null }">
+								<td><div class="mb-2 mr-2 badge badge-success">disponible</div></td>
+								</c:if>
+								<c:if test="${i.photo == null }">
+								<td><div class="mb-2 mr-2 badge badge-danger">non disponible</div></td>
+								</c:if>
+								
+								<c:if test="${i.document1 != null }">
+								<td><div class="mb-2 mr-2 badge badge-success">disponible</div></td>
+								</c:if>
+								<c:if test="${i.document1 == null }">
+								<td><div class="mb-2 mr-2 badge badge-danger">non disponible</div></td>
+								</c:if>
+								
 								<td> <button class="mb-2 mr-2 btn btn-primary" onclick="window.location.href='PageModifierInscriptionAdministrative?id=${i.id_ia}'">Modifier</button>
 								<button type="button" class="btn mr-2 mb-2 btn-danger" data-toggle="modal" data-target="#exampleModal" onclick="window.location.href='SupprimerInscriptionAdministrative/${i.id_ia}'">
                                             Supprimer

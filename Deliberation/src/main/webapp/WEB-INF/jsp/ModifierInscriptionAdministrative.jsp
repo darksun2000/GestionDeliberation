@@ -11,7 +11,7 @@
 		<div class="main-card mb-3 card">
 			<div class="card-body">
 				<h5 class="card-title">Inscription Administrative de l'Etudiant</h5>
-				<form class="" action="/inscription/ModifierInscriptionAdministrative/${ia.id_ia}" method="POST">
+				<form class="" action="/inscription/ModifierInscriptionAdministrative/${ia.id_ia}" method="POST" enctype="multipart/form-data">
 
 
 					<div class="form-row">
@@ -78,9 +78,18 @@
 							</div>
 						</div>
 					</div>
-					<script>
-					
-					</script>
+					<div class="form-row">
+						<div class="col-md-6">
+							<div class="position-relative form-group">
+			      				<label for="annee_academique" class="">Inserer photo</label><input name="photo" id="file" type="file" class="form-control-file">
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="position-relative form-group">
+								<label for="annee_academique" class="">Inserer document</label><input name="document1" id="file" type="file" class="form-control-file">		
+							</div>
+						</div>
+						</div>
 						
 					<button class="mt-2 btn btn-primary col-md-12" type="submit">Valider</button>
 				</form>

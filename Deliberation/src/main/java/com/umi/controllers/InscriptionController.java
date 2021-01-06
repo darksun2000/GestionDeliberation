@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -88,6 +89,13 @@ public class InscriptionController {
 		model.addObject("InscriptionAdministrative", "mm-active");//will be used in the nav-bar
 		List<InscriptionEnLigne> e=inscriptionEnLigne.getAllInscriptionsEnLigneAccepted();
 		List<Filiere> f=filiereRepository.getAllFiliere();
+		LocalDate ld = LocalDate.now();
+		int year = ld.getYear();
+		int month = ld.getMonth().getValue();
+		if(month < 9) {
+			year--;
+		}
+		model.addObject("year",year);
 		model.addObject("Etudiant", e);
 		model.addObject("Filiere" ,f);
 		return model;
@@ -95,16 +103,17 @@ public class InscriptionController {
 	
 //---------------------------------action :création d'une nouvelle inscription administrative-----------------------------//
 	
-	@GetMapping("/inscription/createANewInscriptionAdministrative")
+	@PostMapping("/inscription/createANewInscriptionAdministrative")
 	public ModelAndView createANewInscriptionAdministrative(
 			@RequestParam("annee_academique")String annee_academique,
-			@RequestParam("date_pre_inscription")Date date_pre_inscription,
-			@RequestParam("date_valid_inscription")Date date_valid_inscription,
 			@RequestParam("id_etudiant")int id_etudiant,
 			@RequestParam("filiere")int id_filiere,
-			@RequestParam("operateur")String operateur
-			) {
+			@RequestParam("operateur")String operateur,
+			@RequestParam("photo") MultipartFile photo,
+			@RequestParam("document1") MultipartFile document1
+			) throws IOException {
 		InscriptionAdministrative ia=new InscriptionAdministrative();
+		System.out.println(ia.getDocument1());
 		Etudiant e =new Etudiant();
 		InscriptionEnLigne iel=new InscriptionEnLigne();
 		iel=inscriptionEnLigne.getOne(id_etudiant);
@@ -134,8 +143,13 @@ public class InscriptionController {
          inscriptionEnLigne.updateAcceptation(iel.getId(), 3);
 		//--------------------partie creation d inscrip administrative----------------------------//
 		ia.setAnnee_academique(annee_academique);
-		ia.setDate_pre_inscription(date_pre_inscription);
-		ia.setDate_valid_inscription(date_valid_inscription);
+		ia.setDate_pre_inscription(iel.getRegistration_date());
+		LocalDate ld = LocalDate.now();
+		ZoneId defaultZoneId = ZoneId.systemDefault();
+		java.util.Date date = Date.from(ld.atStartOfDay(defaultZoneId).toInstant());
+		ia.setDate_valid_inscription(date);
+		ia.setPhoto(photo.getBytes());
+		ia.setDocument1(document1.getBytes());
 		etudiantRepository.save(e);
 		//-------------get l'etudiant qui vient d'être inscrit inscriver----------------------------//
 		Etudiant etudiant=etudiantRepository.getOne(etudiantRepository.getIdEtudiantByName(iel.getFirst_name_fr(), iel.getLast_name_fr()));
@@ -157,9 +171,26 @@ public class InscriptionController {
 			@RequestParam("date_valid_inscription")Date date_valid_inscription,
 			@RequestParam("id_etudiant")int id_etudiant,
 			@RequestParam("filiere")int id_filiere,
-			@RequestParam("operateur")String operateur
-			) {
-		inscriptionAdministrative.updateInscriptionAdministrative(id_ia, annee_academique, date_pre_inscription, date_valid_inscription, etudiantRepository.getOne(id_etudiant), filiereRepository.getOne(id_filiere), operateur);
+			@RequestParam("operateur")String operateur,
+			@RequestParam("document1")MultipartFile document1,
+			@RequestParam("photo")MultipartFile photo			
+			) throws IOException {
+		InscriptionAdministrative ia = inscriptionAdministrative.getOne(id_ia);
+		ia.setAnnee_academique(annee_academique);
+		ia.setDate_pre_inscription(date_pre_inscription);
+		ia.setDate_valid_inscription(date_valid_inscription);
+		ia.setFilieres(filiereRepository.getOne(id_filiere));
+		ia.setOperateur(operateur);
+		ia.setEtudiant(etudiantRepository.getOne(id_etudiant));
+		System.out.println(photo.isEmpty());
+		if(!photo.isEmpty()) {
+			ia.setPhoto(photo.getBytes());
+		}
+		if(!document1.isEmpty()) {
+			ia.setDocument1(document1.getBytes());
+		}
+		inscriptionAdministrative.save(ia);
+		//inscriptionAdministrative.updateInscriptionAdministrative(id_ia, annee_academique, date_pre_inscription, date_valid_inscription, etudiantRepository.getOne(id_etudiant), filiereRepository.getOne(id_filiere), operateur);
 		return new ModelAndView("redirect:/inscription/ListInscriptionAdministrative");
 	}
 	
@@ -407,6 +438,29 @@ public class InscriptionController {
 	}
 	
 	
+//---------------------------------------------------------------------------------------------------------------------------//
+	
+	
+	@GetMapping("/inscription/PageInscriptionPedagogiqueIndividuelle")
+	public ModelAndView PageInscriptionPedagogiqueIndividuelle(@RequestParam("id")int id_ia) {
+		ModelAndView model = new ModelAndView("InscriptionPedagogiqueIndividuelle");
+		InscriptionAdministrative ia= inscriptionAdministrative.getOne(id_ia);
+	    Filiere filiere = ia.getFilieres();
+	    List<Etape> e = etapeRepository.getEtapeByFiliere(filiere);
+	    List<Semestre> s = semestreRepository.getSemestreByFiliere(filiere);
+	    List<Module> m = moduleRepository.getModuleBySemestre(s.get(0));
+	    for (int i = 1; i < s.size(); i++) {
+			m.addAll(moduleRepository.getModuleBySemestre(s.get(i)));
+		}
+	    
+		model.addObject("InscriptionPedagogique", "mm-active");
+		model.addObject("ia", ia);
+		model.addObject("etape", e);
+		model.addObject("semestre",s);
+		model.addObject("modules",m);
+		return model;
+	}
+	
 	
 //-------------------------------------action :  creation d'une inscription par semestre d'un ou plusieurs etudiants-----------------------//
 	
@@ -414,8 +468,26 @@ public class InscriptionController {
 	public ModelAndView createANewInscriptionPedagogique(@RequestParam("id_ias")String ids,
 			@RequestParam("filiere")int id_semestre
 			) {
+		ModelAndView model = new ModelAndView("InscriptionPedagogiqueModule");
 		
+		int idFiliere = semestreRepository.getOne(id_semestre).getFiliere().getId_filiere();
+		String libelle_semestre = semestreRepository.getOne(id_semestre).getLibelle_semestre();
 		
+		//--------------------les années universitaires utilisés comme filtre du tableau-----------------------//
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+	    LocalDate localDate = LocalDate.now();
+	    int ele[]=new int[3];
+	    for (int i = 0; i < ele.length; i++) {
+	    	ele[i]=Integer.parseInt((dtf.format(localDate).toString().split("/")[i].trim()));
+		}
+	    if(ele[1]>8) {
+	    	ele[0]++;
+	    }
+	    //--------------------------------------------------------------------------------------------------//
+		Filiere f=filiereRepository.getOne(idFiliere);
+		Semestre s=semestreRepository.getSemestreByFiliereAndLibelle(f, libelle_semestre);
+
+		//-------------------------------------
 		String id[]=ids.split(",");
 		int idI;
 		InscriptionAdministrative ia;
@@ -432,10 +504,58 @@ public class InscriptionController {
 			ip.setEtudiant(e);
 			ip.setSemestre(semestre);
 			inscriptionPedagogiqueRepository.save(ip);
+		
+		
+		
 		}
-		return new ModelAndView("redirect:/inscription/ListInscriptionAdministrative");
+		//------------------------------------------
+				model.addObject("InscriptionPedagogique", "mm-active");
+				model.addObject("annee",ele[0]);
+				model.addObject("Inscription", inscriptionPedagogiqueRepository.getInscriptionsPedagogiqueBySemestre(s));
+				model.addObject("module",moduleRepository.getModuleBySemestre(s));
+				model.addObject("f", f);
+				model.addObject("semestre",s);
+				return model;
 	}
 	
+
+	
+//-------------------------------------action :  creation d'une inscription par semestre d'un etudiants-----------------------//
+	
+
+	@PostMapping("/inscription/CreateNewInscriptionPedagogiqueIndividuelle")
+	public ModelAndView createANewInscriptionPedagogiqueIndividulle(@RequestParam("id_modules")String ids_module
+			) {
+		
+		String []ids = ids_module.split(",");
+		int id_ia = Integer.parseInt(ids[0]);
+		ArrayList<Module> modules = new ArrayList<Module>();
+		
+		for (int j = 1; j < ids.length; j++) {
+			modules.add(moduleRepository.getOne(Integer.parseInt(ids[j])));
+		}
+		
+	    	    
+		InscriptionAdministrative ia = inscriptionAdministrative.getOne(id_ia);
+		Etudiant e = ia.getEtudiant();
+		Semestre semestre = modules.get(0).getSemestre();
+		InscriptionPedagogique ip =new InscriptionPedagogique();
+		
+		ip.setAnnee_academique(ia.getAnnee_academique());
+		ip.setDate_pre_inscription(ia.getDate_pre_inscription());
+		ip.setDate_valid_inscription(ia.getDate_valid_inscription());
+		ip.setEtudiant(e);
+		ip.setSemestre(semestre);
+		ip.setModule(modules);
+		inscriptionPedagogiqueRepository.save(ip);
+		
+		
+		return new ModelAndView("redirect:/inscription/ListInscriptionAdministrative");
+
+		
+		//------------------------------------------
+			
+	}
 
 	
 //-------------------------------------action :  creation d'une inscription par module d'un ou plusieurs etudiants------------------//
