@@ -1,8 +1,10 @@
 package com.umi.controllers;
 
 
+import java.util.Base64.Encoder;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Date;
@@ -29,6 +31,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import org.apache.commons.*;
+import org.apache.commons.codec.binary.Base64;
+
+import com.mysql.jdbc.Blob;
 import com.umi.models.Etape;
 import com.umi.models.Etudiant;
 import com.umi.models.Module;
@@ -214,11 +220,35 @@ public class InscriptionController {
 //-----------------------------------------page affichant la liste des inscriptions administratives-------------------------------//
 	
 	@GetMapping("/inscription/ListInscriptionAdministrative")
-	public ModelAndView listInscriptionAdministratives() {
+	public ModelAndView listInscriptionAdministratives() throws UnsupportedEncodingException {
 		ModelAndView model = new ModelAndView("ListInscriptionAdministrative");
 		List<Filiere> f=filiereRepository.getAllFiliere();
+		List<InscriptionAdministrative> lia = inscriptionAdministrative.getAllInscriptionsAdministrative();
+		
+		for (int i = 0; i < lia.get(7).getPhoto().length; i++) {
+			System.out.println(lia.get(7).getPhoto()[i]);
+		}
+		for (int i = 0; i < lia.size(); i++) {
+			if(lia.get(i).getPhoto() != null) {
+				
+			byte[] photo = lia.get(i).getPhoto();
+			byte[] encodeBase64Photo = Base64.encodeBase64(photo);
+			String base64Encoded = new String(encodeBase64Photo, "UTF-8");
+			lia.get(i).setEncodedPhoto(base64Encoded);
+			}
+			if(lia.get(i).getDocument1() != null) {
+				
+			byte[] document1 = lia.get(i).getDocument1();
+			byte[] encodeBase64Document1 = Base64.encodeBase64(document1);
+			String base64Encoded = new String(encodeBase64Document1, "UTF-8");
+			lia.get(i).setEncodedDocument1(base64Encoded);
+				}
+			}
+		
+			
+		
 		model.addObject("listAdministartive", "mm-active");
-		model.addObject("Inscription", inscriptionAdministrative.getAllInscriptionsAdministrative());
+		model.addObject("Inscription", lia);
 		model.addObject("f", f);
 		return model;
 	}

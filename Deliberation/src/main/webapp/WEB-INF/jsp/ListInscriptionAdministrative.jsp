@@ -42,14 +42,19 @@
 								<td><a style="color: black">${i.date_valid_inscription}</a></td>
 								<td><a style="color: black">${i.operateur}</a></td>
 								<c:if test="${i.photo != null }">
-								<td><div class="mb-2 mr-2 badge badge-success">disponible</div></td>
+								<td><div class="mb-2 mr-2 badge badge-success">
+								<a id="link" style="color:white;" href="data:image/jpeg;base64,${i.encodedPhoto}" download>disponible</a>
+								</div></td>
+								
 								</c:if>
 								<c:if test="${i.photo == null }">
 								<td><div class="mb-2 mr-2 badge badge-danger">non disponible</div></td>
 								</c:if>
 								
 								<c:if test="${i.document1 != null }">
-								<td><div class="mb-2 mr-2 badge badge-success">disponible</div></td>
+								<td><div class="mb-2 mr-2 badge badge-success">
+								<a id="link" style="color:white;" href="data:application/pdf;base64,${i.encodedDocument1}" download>disponible</a>
+								</div></td>
 								</c:if>
 								<c:if test="${i.document1 == null }">
 								<td><div class="mb-2 mr-2 badge badge-danger">non disponible</div></td>
@@ -71,6 +76,9 @@
 		</div>
 		<script type="text/javascript" src="./assets/scripts/main.js"></script>
 		<script>
+		
+		
+		
 		function openCity(evt, cityName) {
 			  // Declare all variables
 			  var i, tabcontent, tablinks;

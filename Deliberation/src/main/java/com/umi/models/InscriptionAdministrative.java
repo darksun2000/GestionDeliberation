@@ -40,13 +40,14 @@ public class InscriptionAdministrative {
 	@Lob
 	private byte[] photo;
 	
+	private String encodedPhoto;
 	
-	
-
+	private String encodedDocument1;
 	
 
 	public InscriptionAdministrative(int id_ia, Etudiant etudiant, Filiere filieres, String annee_academique,
-			Date date_pre_inscription, Date date_valid_inscription, String operateur, byte[] document1, byte[] photo) {
+			Date date_pre_inscription, Date date_valid_inscription, String operateur, byte[] document1, byte[] photo, 
+			String encodedPhoto,String encodedDocument1) {
 		super();
 		this.id_ia = id_ia;
 		this.etudiant = etudiant;
@@ -57,6 +58,40 @@ public class InscriptionAdministrative {
 		this.operateur = operateur;
 		this.document1 = document1;
 		this.photo = photo;
+		this.encodedPhoto = encodedPhoto;
+		this.encodedDocument1=encodedDocument1;
+	}
+
+
+
+
+
+	public String getEncodedDocument1() {
+		return encodedDocument1;
+	}
+
+
+
+
+
+	public void setEncodedDocument1(String encodedDocument1) {
+		this.encodedDocument1 = encodedDocument1;
+	}
+
+
+
+
+
+	public String getEncodedPhoto() {
+		return encodedPhoto;
+	}
+
+
+
+
+
+	public void setEncodedPhoto(String encodedPhoto) {
+		this.encodedPhoto = encodedPhoto;
 	}
 
 

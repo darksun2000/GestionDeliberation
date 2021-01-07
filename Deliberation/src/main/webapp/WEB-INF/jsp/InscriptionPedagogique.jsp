@@ -53,7 +53,7 @@
 								<td onclick="window.location.href = '/inscription/PageInscriptionPedagogiqueIndividuelle?id=${i.id_ia}'"><a style="color: black">${i.etudiant.first_name_fr} ${i.etudiant.last_name_fr}</a></td>
 								<td onclick="window.location.href = '/inscription/PageInscriptionPedagogiqueIndividuelle?id=${i.id_ia}'"><a style="color: black">${i.annee_academique}</a></td>
 								<td onclick="window.location.href = '/inscription/PageInscriptionPedagogiqueIndividuelle?id=${i.id_ia}'"><a style="color: black">${i.filieres.nom_filiere}</a></td>
-								<td><input type="checkbox" class="custom-control-input" name="${i.id_ia }" id="${i.id_ia }" onchange="envoi_form()"
+								<td><input type="checkbox" name="${i.id_ia }" id="${i.id_ia }" onchange="envoi_form()"
 										value="yes"></td>
 							</tr>
 						</c:forEach>
