@@ -27,8 +27,6 @@
 							<th class="th-sm">Date de preinscription</th>
 							<th class="th-sm">Date Validation d'inscription</th>
 							<th class="th-sm">Operateur</th>
-							<th class="th-sm">Photo</th>
-							<th class="th-sm">Document1</th>
 							<th class="th-sm"></th>
 							<th class="th-sm"></th>
 						</tr>
@@ -37,36 +35,22 @@
 						<c:forEach var="i" items="${Inscription}">
 							<tr>
 							<c:if test="${f.id_filiere==i.filieres.id_filiere }">
-								<td><a style="color: black">${i.etudiant.first_name_fr} ${i.etudiant.last_name_fr}</a></td>
-								<td><a style="color: black">${i.annee_academique}</a></td>
-								<td><a style="color: black">${i.date_pre_inscription.toString().substring(0,10)}</a></td>
-								<td><a style="color: black">${i.date_valid_inscription.toString().substring(0,10)}</a></td>
-								<td><a style="color: black">${i.operateur}</a></td>
-								<c:if test="${i.photo != null }">
-								<td>
-								<i class="fa fa-fw" aria-hidden="true" title="Copy to use check-circle" style="margin-left:6.5px">
-								<a id="link" style="color:green;font-size:30px;" href="data:image/jpeg;base64,${i.encodedPhoto}" download="photo_de_${i.etudiant.first_name_fr }_${i.etudiant.last_name_fr}"></a>
-								</i></td>
+								<td onclick="window.location.href ='ProfilEtudiant/${i.id_ia}'">
+								<a style="color: black" >
+								${i.etudiant.first_name_fr} ${i.etudiant.last_name_fr}</a></td>
+								<td onclick="window.location.href ='ProfilEtudiant/${i.id_ia}'">
+								<a style="color: black">
+								${i.annee_academique}</a></td>
+								<td onclick="window.location.href ='ProfilEtudiant/${i.id_ia}'">
+								<a style="color: black">
+								${i.date_pre_inscription.toString().substring(0,10)}</a></td>
+								<td onclick="window.location.href ='ProfilEtudiant/${i.id_ia}'">
+								<a style="color: black">
+								${i.date_valid_inscription.toString().substring(0,10)}</a></td>
+								<td onclick="window.location.href ='ProfilEtudiant/${i.id_ia}'">
+								<a style="color: black">
+								${i.operateur}</a></td>
 								
-								</c:if>
-								<c:if test="${i.photo == null }">
-								<td>
-							<i class="fa fa-fw" aria-hidden="true" title="Copy to use times-circle" style="color:red;font-size:30px;"></i>
-								</td>
-								</c:if>
-								
-								<c:if test="${i.document1 != null }">
-								<td>
-								<i class="fa fa-fw" aria-hidden="true" title="Copy to use check-circle" style="margin-left:6.5px">
-								<a id="link" style="color:green;font-size:30px;" href="data:application/pdf;base64,${i.encodedDocument1}" download="document1_de_${i.etudiant.first_name_fr }_${i.etudiant.last_name_fr}" ></a>
-								</i>
-								</td>
-								</c:if>
-								<c:if test="${i.document1 == null }">
-								<td>
-								<i class="fa fa-fw" aria-hidden="true" title="Copy to use times-circle" style="color:red;font-size:30px;"></i>
-								</td>
-								</c:if>
 								
 								<td> 
 								<i class="fa fa-fw" aria-hidden="true" title="Copy to use pencil-square-o"><a href="PageModifierInscriptionAdministrative?id=${i.id_ia}" style="font-size:20px;"></a></i>

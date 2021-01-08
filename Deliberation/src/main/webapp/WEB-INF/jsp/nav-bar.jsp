@@ -95,6 +95,7 @@
 					class="${StructureEnseignement}"> <i
 						class="metismenu-icon pe-7s-graph3"></i> Structure d'Enseignement
 				</a></li>
+			
 			</ul>
 		</div>
 	</div>

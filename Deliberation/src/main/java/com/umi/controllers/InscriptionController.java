@@ -27,6 +27,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -261,7 +262,41 @@ public class InscriptionController {
 			
 			return model;
 		}
+
 		
+//-------------------------------------------aller à la page pour uploder un fichier d'inscrip administratives------------------------//
+
+		
+		@RequestMapping("/inscription/ProfilEtudiant/{id}")
+		public ModelAndView ProfilEtudiant(
+				@PathVariable("id")int id_ia
+				) throws UnsupportedEncodingException {
+			ModelAndView model = new ModelAndView("ProfilEtudiant");
+			InscriptionAdministrative ia = inscriptionAdministrative.getOne(id_ia);
+			
+				if(ia.getPhoto() != null) {
+					
+				byte[] photo = ia.getPhoto();
+				byte[] encodeBase64Photo = Base64.encodeBase64(photo);
+				String base64Encoded = new String(encodeBase64Photo, "UTF-8");
+				ia.setEncodedPhoto(base64Encoded);
+				}
+				if(ia.getDocument1() != null) {
+					
+				byte[] document1 = ia.getDocument1();
+				byte[] encodeBase64Document1 = Base64.encodeBase64(document1);
+				String base64Encoded = new String(encodeBase64Document1, "UTF-8");
+				ia.setEncodedDocument1(base64Encoded);
+					}
+				
+			Etudiant etudiant = ia.getEtudiant();
+			List <InscriptionPedagogique> ip = inscriptionPedagogiqueRepository.getInscriptionsPedagogiqueByEtudiant(etudiant);
+			model.addObject("etudiant", etudiant);
+			model.addObject("ia",ia);
+			model.addObject("ip",ip);
+			
+			return model;
+		}
 		
 //-------------------------------------------aller à la page pour modifier inscrip administratives-----------------------------------------//
 		
