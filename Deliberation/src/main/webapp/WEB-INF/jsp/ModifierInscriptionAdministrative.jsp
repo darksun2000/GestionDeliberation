@@ -81,12 +81,26 @@
 					<div class="form-row">
 						<div class="col-md-6">
 							<div class="position-relative form-group">
-			      				<label for="annee_academique" class="">Inserer photo</label><input name="photo" id="file" type="file" class="form-control-file">
+			      				<label for="annee_academique" class="">Inserer photo
+			      				<c:if test="${ia.photo != null }">
+			      				<i class="fa fa-fw" aria-hidden="true" title="Copy to use check-circle"></i>
+			      				</c:if>
+			      				<c:if test="${ia.photo == null }">
+			      				<i class="fa fa-fw" aria-hidden="true" title="Copy to use times-circle"></i>
+			      				</c:if>
+			      				</label><input name="photo" id="file" type="file" class="form-control-file">
 							</div>
 						</div>
 						<div class="col-md-6">
 							<div class="position-relative form-group">
-								<label for="annee_academique" class="">Inserer document</label><input name="document1" id="file" type="file" class="form-control-file">		
+								<label for="annee_academique" class="">Inserer document
+								<c:if test="${ia.document1 != null }">
+			      				<i class="fa fa-fw" aria-hidden="true" title="Copy to use check-circle"></i>
+			      				</c:if>
+			      				<c:if test="${ia.document1 == null }">
+			      				<i class="fa fa-fw" aria-hidden="true" title="Copy to use times-circle"></i>
+			      				</c:if>
+								</label><input name="document1" id="file" type="file" class="form-control-file">		
 							</div>
 						</div>
 						</div>

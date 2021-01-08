@@ -225,9 +225,7 @@ public class InscriptionController {
 		List<Filiere> f=filiereRepository.getAllFiliere();
 		List<InscriptionAdministrative> lia = inscriptionAdministrative.getAllInscriptionsAdministrative();
 		
-		for (int i = 0; i < lia.get(7).getPhoto().length; i++) {
-			System.out.println(lia.get(7).getPhoto()[i]);
-		}
+		
 		for (int i = 0; i < lia.size(); i++) {
 			if(lia.get(i).getPhoto() != null) {
 				
@@ -712,7 +710,7 @@ public class InscriptionController {
 		
 		
 		
-//-----------------------------------------page affichant la liste des inscriptions Pedagoggiques par Module-------------------------------//
+//-----------------------------------------page affichant la liste des inscriptions Pedagoggiques par Module Globale-------------------------------//
 
 		
 		
@@ -728,6 +726,23 @@ public class InscriptionController {
 			model.addObject("f", f);
 			return model;
 		}
+		
+		
+		//-----------------------------------------page affichant la liste des inscriptions Pedagoggiques par Module Detaillé-------------------------------//
+
+		
+		
+				@GetMapping("/inscription/ListInscriptionPedagogiqueMD")
+				public ModelAndView listInscriptionPedagogiquesMD() {
+					ModelAndView model = new ModelAndView("ListInscriptionPedagogiqueParModule");
+					List<Filiere> f=filiereRepository.getAllFiliere();
+					model.addObject("listPedagogique", "mm-active");
+					model.addObject("Inscription", inscriptionPedagogiqueRepository.getAllInscriptionsPedagogique());
+					model.addObject("module", moduleRepository.getAllModules());
+					model.addObject("semestre",semestreRepository.getAllSemestre());
+					model.addObject("f", f);
+					return model;
+				}
 		
 
 //----------------------------------------------menu liste des inscription pedagogiques-----------------------------------------------------//

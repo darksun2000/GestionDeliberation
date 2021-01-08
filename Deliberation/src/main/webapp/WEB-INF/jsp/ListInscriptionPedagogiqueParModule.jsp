@@ -18,13 +18,12 @@
 				</div>
 				<c:forEach var="f" items="${f}">
 			
-	<div id="${f.nom_filiere}" class="tabcontent">
-					<c:if test="${ parModule==0}">
+			<div id="${f.nom_filiere}" class="tabcontent">
 						<input name="id_ias" id="ok" type="text" style="display: none">
 							<div class="col-md-6">
 							<div class="position-relative form-group">
 								<label for="Filiere" class="">Semestre</label>
-								<select name="annee" id="myInput" class="form-control" onchange="myFunction()">
+								<select name="annee" id="myInput" class="form-control" id="filtre" onchange="myFunction(this)">
 								<option selected="selected" disabled>Choisir le semestre</option>
 								<option value="1er semestre">1er semestre</option>
 								<option value="2eme semestre">2eme semestre</option>
@@ -35,61 +34,41 @@
 							</div>
 				
 						</div>
-						</c:if>
 						
-				<table class="mb-0 table table-hover" id="myTable">
+			<c:forEach var="s" items="${semestre }">		
+				<table class="mb-0 table table-hover" id="${s.libelle_semestre}" style="display: none">
 					<thead>
 						<tr>
-							<c:if test="${ parSemestre==1}">
+							
 							<td class="th-sm" >&nbsp;</td>
-							<td class="th-sm" >&nbsp;</td>
-							<td class="th-sm" >&nbsp;</td>
-							<td class="th-sm" >&nbsp;</td>
-							</c:if>
-							<td class="th-sm" >&nbsp;</td>
-							<c:if test="${ parModule==1}">
-							<c:forEach var="m" items="${module}">
-							<c:if test="${m.semestre.filiere==f && testM!=m.semestre}">
-							<c:set var = "testM" value = "${m.semestre}"/>
-							<td class="th-sm" colspan="5" style="text-align: center; border-left: 0.1px solid #E9ECEF;border-right: 0.5px solid #E9ECEF;"><b>${m.semestre.libelle_semestre}</b></td>
-							</c:if>
-							</c:forEach>
-							</c:if>
+						
+							<td class="th-sm" colspan="5" style="text-align: center; border-left: 0.1px solid #E9ECEF;border-right: 0.5px solid #E9ECEF;"><b>${s.libelle_semestre}</b></td>
+							
+							
 							</tr>
 							<tr>
 							<th class="th-sm">Nom Etudiant</th>
-							<c:if test="${ parSemestre==1}">
-							<th class="th-sm">Année universitaire</th>
-							<th class="th-sm">Date de preinscription</th>
-							<th class="th-sm">Date Validation d'inscription</th>
-							<th class="th-sm" rowspan="2">Semestre</th>
 							
 							
-							</c:if>
-							<c:if test="${ parModule==1}">
 							<c:forEach var="m" items="${module }">
-							<c:if test="${f.id_filiere==m.semestre.filiere.id_filiere }">
+							<c:if test="${f.id_filiere==m.semestre.filiere.id_filiere && m.semestre == s }">
+							
 							<td class="th-sm" style=" border: 0.1px solid #E9ECEF;">${m.libelle_module }</td>
 							</c:if>
 							</c:forEach>
-							</c:if>
+						
 						</tr>
 					</thead>
 					<tbody>
 						<c:forEach var="i" items="${Inscription}">
 							<tr>
-							<c:if test="${f.id_filiere==i.semestre.filiere.id_filiere }">
+							<c:if test="${f.id_filiere==i.semestre.filiere.id_filiere && i.semestre == s }">
 								<td><a style="color: black">${i.etudiant.first_name_fr} ${i.etudiant.last_name_fr}</a></td>
-								<c:if test="${ parSemestre==1}">
-								<td><a style="color: black">${i.annee_academique}</a></td>
-								<td><a style="color: black">${i.date_pre_inscription}</a></td>
-								<td><a style="color: black">${i.date_valid_inscription}</a></td>
-								<td><a style="color: black">${i.semestre.libelle_semestre}</a></td>
-								</c:if>
-								<c:if test="${ parModule==1}">
+								
+								
 								<c:forEach var="m" items="${module }">
 									<c:set var = "condition" value = "${0}"/>
-									<c:if test="${f.id_filiere==m.semestre.filiere.id_filiere }">
+									<c:if test="${f.id_filiere==m.semestre.filiere.id_filiere && m.semestre == s }">
 										<c:forEach var="im" items="${i.module}">
 											<c:if test="${im.id_module==m.id_module }">
 												<c:set var = "condition" value = "${1}"/>
@@ -102,11 +81,12 @@
 									</c:if>
 								</c:forEach>
 								</c:if>
-								</c:if>
+							
 							</tr>
 						</c:forEach>
 					</tbody>
 				</table>
+				</c:forEach>
 				</div>
 				</c:forEach>
 			</div>
@@ -134,25 +114,15 @@
 			}
 		
 		//-------------------------------------------------------------------------------//
-		function myFunction() {
-			  // Declare variables
-			  var input, filter, table, tr, td, i, txtValue;
-			  input = document.getElementById("myInput");
-			  filter = input.value.toUpperCase();
-			  table = document.getElementById("myTable");
-			  tr = table.getElementsByTagName("tr");
-			  // Loop through all table rows, and hide those who don't match the search query
-			  for (i = 0; i < tr.length; i++) {
-			    td = tr[i].getElementsByTagName("td")[4];
-			    if (td) {
-			      txtValue = td.textContent || td.innerText;
-			      if (txtValue.toUpperCase().indexOf(filter) > -1) {
-			        tr[i].style.display = "";
-			      } else {
-			        tr[i].style.display = "none";
-			      }
-			    }
-			  }
+		function myFunction(select) {
+			 var valeur = select.value;
+			 var table = document.getElementsByTagName("table");
+			 var i;
+			 for(i = 0 ; i < table.length ; i++){
+				 table[i].style.display = "none";
+			 }
+			 var myTable = document.getElementById(valeur);
+			 myTable.style.display = "";
 			}
 		
 		//-------------------------------------------------------------------------------//

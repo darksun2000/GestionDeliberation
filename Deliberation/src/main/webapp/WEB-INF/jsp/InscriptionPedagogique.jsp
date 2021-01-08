@@ -22,7 +22,7 @@
 							<div class="position-relative form-group">
 								<label for="Filiere" class="">Année universitaire</label>
 								<select name="annee" id="myInput" class="form-control" onchange="myFunction()">
-								<option default disabled>Choisir l'année universitaire</option>
+								<option selected="selected" disabled>Choisir l'année universitaire</option>
 								<option value="${annee-1}/${annee}">${annee-1}/${annee}</option>
 								<option value="${annee-2}/${annee-1}">${annee-2}/${annee-1}</option>
 								<option value="${annee-3}/${annee-2}">${annee-3}/${annee-2}</option>

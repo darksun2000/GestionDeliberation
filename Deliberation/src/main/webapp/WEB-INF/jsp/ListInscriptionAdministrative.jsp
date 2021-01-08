@@ -13,7 +13,7 @@
 				<h5 class="card-title">Liste des inscriptions d'étudiants</h5>
 				<div class="tab">
 				<c:forEach var="f" items="${f}">
- 					 <button class="mb-2 mr-2 btn btn-success" onclick="openCity(event, '${f.nom_filiere}')">${f.nom_filiere}</button>
+ 					 <button class="mb-2 mr-2 btn btn-primary" onclick="openCity(event, '${f.nom_filiere}')">${f.nom_filiere}</button>
   				</c:forEach>
 				</div>
 				<c:forEach var="f" items="${f}">
@@ -30,6 +30,7 @@
 							<th class="th-sm">Photo</th>
 							<th class="th-sm">Document1</th>
 							<th class="th-sm"></th>
+							<th class="th-sm"></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -38,32 +39,42 @@
 							<c:if test="${f.id_filiere==i.filieres.id_filiere }">
 								<td><a style="color: black">${i.etudiant.first_name_fr} ${i.etudiant.last_name_fr}</a></td>
 								<td><a style="color: black">${i.annee_academique}</a></td>
-								<td><a style="color: black">${i.date_pre_inscription}</a></td>
-								<td><a style="color: black">${i.date_valid_inscription}</a></td>
+								<td><a style="color: black">${i.date_pre_inscription.toString().substring(0,10)}</a></td>
+								<td><a style="color: black">${i.date_valid_inscription.toString().substring(0,10)}</a></td>
 								<td><a style="color: black">${i.operateur}</a></td>
 								<c:if test="${i.photo != null }">
-								<td><div class="mb-2 mr-2 badge badge-success">
-								<a id="link" style="color:white;" href="data:image/jpeg;base64,${i.encodedPhoto}" download>disponible</a>
-								</div></td>
+								<td>
+								<i class="fa fa-fw" aria-hidden="true" title="Copy to use check-circle" style="margin-left:6.5px">
+								<a id="link" style="color:green;font-size:30px;" href="data:image/jpeg;base64,${i.encodedPhoto}" download="photo_de_${i.etudiant.first_name_fr }_${i.etudiant.last_name_fr}"></a>
+								</i></td>
 								
 								</c:if>
 								<c:if test="${i.photo == null }">
-								<td><div class="mb-2 mr-2 badge badge-danger">non disponible</div></td>
+								<td>
+							<i class="fa fa-fw" aria-hidden="true" title="Copy to use times-circle" style="color:red;font-size:30px;"></i>
+								</td>
 								</c:if>
 								
 								<c:if test="${i.document1 != null }">
-								<td><div class="mb-2 mr-2 badge badge-success">
-								<a id="link" style="color:white;" href="data:application/pdf;base64,${i.encodedDocument1}" download>disponible</a>
-								</div></td>
+								<td>
+								<i class="fa fa-fw" aria-hidden="true" title="Copy to use check-circle" style="margin-left:6.5px">
+								<a id="link" style="color:green;font-size:30px;" href="data:application/pdf;base64,${i.encodedDocument1}" download="document1_de_${i.etudiant.first_name_fr }_${i.etudiant.last_name_fr}" ></a>
+								</i>
+								</td>
 								</c:if>
 								<c:if test="${i.document1 == null }">
-								<td><div class="mb-2 mr-2 badge badge-danger">non disponible</div></td>
+								<td>
+								<i class="fa fa-fw" aria-hidden="true" title="Copy to use times-circle" style="color:red;font-size:30px;"></i>
+								</td>
 								</c:if>
 								
-								<td> <button class="mb-2 mr-2 btn btn-primary" onclick="window.location.href='PageModifierInscriptionAdministrative?id=${i.id_ia}'">Modifier</button>
-								<button type="button" class="btn mr-2 mb-2 btn-danger" data-toggle="modal" data-target="#exampleModal" onclick="window.location.href='SupprimerInscriptionAdministrative/${i.id_ia}'">
-                                            Supprimer
-                                        </button>
+								<td> 
+								<i class="fa fa-fw" aria-hidden="true" title="Copy to use pencil-square-o"><a href="PageModifierInscriptionAdministrative?id=${i.id_ia}" style="font-size:20px;"></a></i>
+								</td>
+								<td>
+								<i class="fa fa-fw" aria-hidden="true" title="Copy to use trash">
+								<a href="SupprimerInscriptionAdministrative/${i.id_ia}" style="color:red;font-size:20px;"></a>
+								</i>       
 								</td>
 								</c:if>
 							</tr>

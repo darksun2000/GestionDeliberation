@@ -19,7 +19,7 @@
 							<div class="position-relative form-group">
 								<label for="Filiere" class="">Filiere</label>
 								<select name="filiere" id="filiere" class="form-control" >
-								<option default disabled>Choisir la filiére</option>
+								<option selected="selected" disabled>Choisir la filiére</option>
 								<c:forEach var="f" items="${f }">
 								<option value="${f.getId_filiere()}">${f.getNom_filiere() }</option>
 								</c:forEach>
