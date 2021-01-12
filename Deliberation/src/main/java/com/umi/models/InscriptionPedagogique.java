@@ -18,8 +18,6 @@ public class InscriptionPedagogique {
 	@JoinColumn(name="etudiant", foreignKey = @ForeignKey(name = "fk_etudiant"))
 	private Etudiant etudiant;
 	
-	@ManyToMany(fetch=FetchType.LAZY)
-	private List<Module> module = new ArrayList<Module>();
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	private Semestre semestre;
@@ -38,23 +36,6 @@ public class InscriptionPedagogique {
 
 	
 
-	
-
-
-
-	public List<Module> getModule() {
-		return module;
-	}
-
-
-
-
-
-
-
-	public void setModule(List<Module> module) {
-		this.module = module;
-	}
 
 
 
@@ -92,12 +73,11 @@ public class InscriptionPedagogique {
 
 
 
-	public InscriptionPedagogique(int id_ip, Etudiant etudiant, List<Module> module, Semestre semestre,
+	public InscriptionPedagogique(int id_ip, Etudiant etudiant, Semestre semestre,
 			String annee_academique, Date date_pre_inscription, Date date_valid_inscription) {
 		super();
 		this.id_ip = id_ip;
 		this.etudiant = etudiant;
-		this.module = module;
 		this.semestre = semestre;
 		this.annee_academique = annee_academique;
 		this.date_pre_inscription = date_pre_inscription;

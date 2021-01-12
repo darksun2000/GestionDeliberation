@@ -16,10 +16,25 @@
  					 <button class="mb-2 mr-2 btn btn-primary" onclick="openCity(event, '${f.nom_filiere}')">${f.nom_filiere}</button>
   				</c:forEach>
 				</div>
+				<div class="col-md-6">
+							<div class="position-relative form-group">
+								<label for="Filiere" class="">Année universitaire</label>
+								<select name="annee" id="myInput" class="form-control" onchange="filtre()">
+								<option selected="selected" disabled>Choisir l'année universitaire</option>
+								<option value="${annee-1}/${annee}">${annee-1}/${annee}</option>
+								<option value="${annee-2}/${annee-1}">${annee-2}/${annee-1}</option>
+								<option value="${annee-3}/${annee-2}">${annee-3}/${annee-2}</option>
+								<option value="${annee-4}/${annee-3}">${annee-4}/${annee-3}</option>
+								<option value="${annee-5}/${annee-4}">${annee-5}/${annee-4}</option>
+								<option value="${annee-6}/${annee-5}">${annee-6}/${annee-5}</option>
+								</select>
+							</div>
+				
+						</div>
 				<c:forEach var="f" items="${f}">
-
+			
 	<div id="${f.nom_filiere}" class="tabcontent">
-				<table class="mb-0 table table-hover">
+				<table class="mb-0 table table-hover" id="myTable">
 					<thead>
 						<tr>
 							<th class="th-sm">Nom Etudiant</th>
@@ -94,6 +109,27 @@
 			  document.getElementById(cityName).style.display = "block";
 			  evt.currentTarget.className += " active";
 			}
+		
+		function filtre() {
+			  // Declare variables
+			  var input, filter, table, tr, td, i, txtValue;
+			  input = document.getElementById("myInput");
+			  filter = input.value.toUpperCase();
+			  table = document.getElementById("myTable");
+			  tr = table.getElementsByTagName("tr");
+			  // Loop through all table rows, and hide those who don't match the search query
+			  for (i = 0; i < tr.length; i++) {
+			    td = tr[i].getElementsByTagName("td")[1];
+			    if (td) {
+			      txtValue = td.textContent || td.innerText;
+			      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+			        tr[i].style.display = "";
+			      } else {
+			        tr[i].style.display = "none";
+			      }
+			    }
+			  }
+			}
 		</script>
 	</layout:put>
 	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -115,4 +151,5 @@
         </div>
     </div>
 </div>
+
 </layout:extends>

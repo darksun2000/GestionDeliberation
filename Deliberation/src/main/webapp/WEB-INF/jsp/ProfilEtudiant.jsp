@@ -13,7 +13,7 @@
 		<div class="main-card mb-3 card">
 			<div class="card-body">
 			<img src="data:image/jpeg;base64,${ia.encodedPhoto}"
-			alt="/images/profile.jpg"
+			onerror="if (this.src != '/images/profile.jpg') this.src = '/images/profile.jpg';"
 			width="200" height="240" style="margin-left:30px;  border-radius: 100%;
 			width: 80%;
   			background-color: white;
@@ -321,15 +321,112 @@
 						<div class="form-row">
 						<div class="col-md-6">
 							<div class="position-relative form-group">
-			      				<label for="annee_academique" class="" style="font-weight:bold">Document1 :</label>
+			      				<label for="annee_academique" class="" style="font-weight:bold">Bac :</label>
 							</div>
 						</div>
+						<div class="col-md-6">
+							<div class="position-relative form-group">
+								<c:if test="${ia.bac != null }">
+								<td>
+								<i class="fa fa-fw" aria-hidden="true" title="Copy to use check-circle" style="margin-left:6.5px">
+								<a id="link" style="color:green;font-size:30px;" href="data:application/pdf;base64,${ia.encodedBac}" download="bac_de_${i.etudiant.first_name_fr }_${i.etudiant.last_name_fr}"></a>
+								</i></td>
+								
+								</c:if>
+								<c:if test="${ia.bac == null }">
+								<td>
+								<i class="fa fa-fw" aria-hidden="true" title="Copy to use times-circle" style="color:red;font-size:30px;"></i>
+								</td>
+								</c:if>		
+							</div>
+						</div>
+						</div>
+						
+						<div class="form-row">
+						<div class="col-md-6">
+							<div class="position-relative form-group">
+			      				<label for="annee_academique" class="" style="font-weight:bold">Relevé de note :</label>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="position-relative form-group">
+								<c:if test="${ia.rn != null }">
+								<td>
+								<i class="fa fa-fw" aria-hidden="true" title="Copy to use check-circle" style="margin-left:6.5px">
+								<a id="link" style="color:green;font-size:30px;" href="data:application/pdf;base64,${ia.encodedRv}" download="RelevéDeNote_de_${i.etudiant.first_name_fr }_${i.etudiant.last_name_fr}"></a>
+								</i></td>
+								
+								</c:if>
+								<c:if test="${ia.rn == null }">
+								<td>
+								<i class="fa fa-fw" aria-hidden="true" title="Copy to use times-circle" style="color:red;font-size:30px;"></i>
+								</td>
+								</c:if>		
+							</div>
+						</div>
+						</div>
+						
+						<div class="form-row">
+						<div class="col-md-6">
+							<div class="position-relative form-group">
+			      				<label for="annee_academique" class="" style="font-weight:bold">Acte de naissance :</label>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="position-relative form-group">
+								<c:if test="${ia.an != null }">
+								<td>
+								<i class="fa fa-fw" aria-hidden="true" title="Copy to use check-circle" style="margin-left:6.5px">
+								<a id="link" style="color:green;font-size:30px;" href="data:application/pdf;base64,${ia.encodedAn}" download="ActeDeNaissance_de_${i.etudiant.first_name_fr }_${i.etudiant.last_name_fr}"></a>
+								</i></td>
+								
+								</c:if>
+								<c:if test="${ia.an == null }">
+								<td>
+								<i class="fa fa-fw" aria-hidden="true" title="Copy to use times-circle" style="color:red;font-size:30px;"></i>
+								</td>
+								</c:if>		
+							</div>
+						</div>
+						</div>
+						
+						<div class="form-row">
+						<div class="col-md-6">
+							<div class="position-relative form-group">
+			      				<label for="annee_academique" class="" style="font-weight:bold">Cin :</label>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<div class="position-relative form-group">
+								<c:if test="${ia.cin != null }">
+								<td>
+								<i class="fa fa-fw" aria-hidden="true" title="Copy to use check-circle" style="margin-left:6.5px">
+								<a id="link" style="color:green;font-size:30px;" href="data:application/pdf;base64,${ia.encodedCin}" download="cin_de_${i.etudiant.first_name_fr }_${i.etudiant.last_name_fr}"></a>
+								</i></td>
+								
+								</c:if>
+								<c:if test="${ia.cin == null }">
+								<td>
+								<i class="fa fa-fw" aria-hidden="true" title="Copy to use times-circle" style="color:red;font-size:30px;"></i>
+								</td>
+								</c:if>		
+							</div>
+						</div>
+						</div>
+						<c:if test="${ia.document1 != null}">
+						<div class="form-row">
+						<div class="col-md-6">
+							<div class="position-relative form-group">
+			      				<label for="annee_academique" class="" style="font-weight:bold">Document supplémentaire 1 :</label>
+							</div>
+						</div>
+						
 						<div class="col-md-6">
 							<div class="position-relative form-group">
 								<c:if test="${ia.document1 != null }">
 								<td>
 								<i class="fa fa-fw" aria-hidden="true" title="Copy to use check-circle" style="margin-left:6.5px">
-								<a id="link" style="color:green;font-size:30px;" href="data:image/jpeg;base64,${ia.encodedDocument1}" download="photo_de_${i.etudiant.first_name_fr }_${i.etudiant.last_name_fr}"></a>
+								<a id="link" style="color:green;font-size:30px;" href="data:application/pdf;base64,${ia.encodedDocument1}" download="docSupp_de_${i.etudiant.first_name_fr }_${i.etudiant.last_name_fr}"></a>
 								</i></td>
 								
 								</c:if>
@@ -341,6 +438,33 @@
 							</div>
 						</div>
 						</div>
+						</c:if>
+						<c:if test="${ ia.document2 != null }">
+						<div class="form-row">
+						<div class="col-md-6">
+							<div class="position-relative form-group">
+			      				<label for="annee_academique" class="" style="font-weight:bold">Document supplémentaire 2 :</label>
+							</div>
+						</div>
+						
+						<div class="col-md-6">
+							<div class="position-relative form-group">
+								<c:if test="${ia.document2 != null }">
+								<td>
+								<i class="fa fa-fw" aria-hidden="true" title="Copy to use check-circle" style="margin-left:6.5px">
+								<a id="link" style="color:green;font-size:30px;" href="data:image/jpeg;base64,${ia.encodedDocument2}" download="DocSupp2_de_${i.etudiant.first_name_fr }_${i.etudiant.last_name_fr}"></a>
+								</i></td>
+								
+								</c:if>
+								<c:if test="${ia.document2 == null }">
+								<td>
+								<i class="fa fa-fw" aria-hidden="true" title="Copy to use times-circle" style="color:red;font-size:30px;"></i>
+								</td>
+								</c:if>		
+							</div>
+						</div>
+						</div>
+						</c:if>
 						
 			</div>
 			</div>
@@ -355,7 +479,7 @@
 				<div class="form-row">
 						<div class="col-md-4">
 							<div class="position-relative form-group">
-			      				<label for="annee_academique" class="" style="font-weight:bold">Semestre courant :</label>
+			      				<label for="annee_academique" class="" style="font-weight:bold">Semestre Inscrit :</label>
 							</div>
 						</div>
 						<div class="col-md-12">
@@ -364,13 +488,14 @@
 								<span class="label info" style="color: white;
   							padding: 8px;
   							font-family: Arial;
-  							background-color: #2196F3;">${i.semestre.libelle_semestre} &nbsp;</span>
+  							background-color: #2196F3;" id="${i.id_ip }" 
+  							onclick="showData(this.id)">${i.semestre.libelle_semestre} &nbsp;</span>
 							</c:forEach>	
 							</div>
 						</div>
 						</div>
 				
-				
+			<div id="mydiv">
 				<div class="form-row">
 						<div class="col-md-4">
 							<div class="position-relative form-group">
@@ -385,28 +510,125 @@
 	<div class="tabcontent">
 				
 					<c:forEach var="i" items="${ip }">
-						<c:forEach var="m" items="${i.module }">
+						<c:forEach var="ipm" items="${ipm }">
+							<c:if test="${ipm.inscription_pedagogique == i }">
+								<c:if test="${ipm.validation == 2.0 }">
 							<span class="label info" style="color: white;
   							padding: 8px;
   							font-family: Arial;
-  							background-color: #2196F3;">${m.libelle_module } &nbsp;</span>
+  							background-color: #2196F3;" id="${i.id_ip }">${ipm.module.libelle_module } &nbsp;</span>
+  							</c:if>
+  							</c:if>
 						</c:forEach>
 						</c:forEach>
 						
 				</div>
+				
+				
 				
 			</div>
 			</div>
 			</div>
 			
 		</div>
+		
+		
+		<div class="form-row">
+						<div class="col-md-4">
+							<div class="position-relative form-group">
+			      				<label for="annee_academique" class="" style="font-weight:bold">Modules validés :</label>
+							</div>
+						</div>
+						<div class="col-md-12">
+							<div class="position-relative form-group">
+				<div class="tab">
+				
+
+		<div class="tabcontent">
+				
+					<c:forEach var="i" items="${ip }">
+						<c:forEach var="ipm" items="${ipm }">
+							<c:if test="${ipm.inscription_pedagogique == i }">
+								<c:if test="${ipm.validation == 0.0 }">
+							<span class="label info" style="color: white;
+  							padding: 8px;
+  							font-family: Arial;
+  							background-color: #008000;" id="${i.id_ip }">${ipm.module.libelle_module } &nbsp;</span>
+  							</c:if>
+  							</c:if>
+						</c:forEach>
+						</c:forEach>
+						
+				</div>
+				
+				
+				
+			</div>
+			</div>
+			</div>
+			
 		</div>
 		
 		
 		
+		<div class="form-row">
+						<div class="col-md-4">
+							<div class="position-relative form-group">
+			      				<label for="annee_academique" class="" style="font-weight:bold">Modules non Validés :</label>
+							</div>
+						</div>
+						<div class="col-md-12">
+							<div class="position-relative form-group">
+				<div class="tab">
+				
+
+	<div class="tabcontent">
+				
+					<c:forEach var="i" items="${ip }">
+						<c:forEach var="ipm" items="${ipm }">
+							<c:if test="${ipm.inscription_pedagogique == i }">
+								<c:if test="${ipm.validation == -1.0 }">
+							<span class="label info" style="color: white;
+  							padding: 8px;
+  							font-family: Arial;
+  							background-color: #FF0000;" id="${i.id_ip }">${ipm.module.libelle_module } &nbsp;</span>
+  							</c:if>
+  							</c:if>
+						</c:forEach>
+						</c:forEach>
+						
+				</div>
+				
+				
+				
+			</div>
+			</div>
+			</div>
+			
+		</div>
 		
+		</div>
+		</div>
 	</div>
 	</div>
 	</div>
+	
+	<script>
+	function showData(ids){
+		var div = document.getElementById("mydiv");
+		var spans =div.querySelectorAll('span');
+		var i ;
+	 for(i=0 ; i <spans.length ; i++){
+		 if(spans[i].id == ids){
+		if (spans[i].style.display === "none") {
+			spans[i].style.display = "";
+		  } else {
+			  spans[i].style.display = "none";
+		  }
+		 }
+	 }
+		
+	}
+	</script>
 	</layout:put>
 </layout:extends>

@@ -2,6 +2,7 @@ package com.umi.repositories;
 
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -26,8 +27,9 @@ public interface InscriptionPedagogiqueRepository extends JpaRepository<Inscript
 	@Query("select s from InscriptionPedagogique s where etudiant=:x")
 	List<InscriptionPedagogique> getInscriptionsPedagogiqueByEtudiant(@Param("x")Etudiant etudiant);
 	
-	@Transactional
-	@Modifying
-	@Query("update InscriptionPedagogique s set s.module=:x where s.id_ip=:y")
-	void updateInscriptionPedagogique(@Param("y")int id,@Param("x")Collection<Module> listModules);
+	@Query("select s from InscriptionPedagogique s where etudiant=:x and annee_academique=:y and semestre=:z and date_pre_inscription=:a and date_valid_inscription=:b")
+	InscriptionPedagogique getInscriptionsPedagogiqueByInscriptionPedagogique(@Param("x")Etudiant etudiant ,@Param("y")String annee_academique
+			,@Param("z")Semestre semestre,@Param("a")Date date_pre_inscription,@Param("b")Date date_valid_inscription);
+	
+	
 }

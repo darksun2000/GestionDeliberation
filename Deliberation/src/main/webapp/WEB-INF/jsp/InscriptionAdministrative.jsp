@@ -62,14 +62,52 @@
 						</div>
 					</div>
 					<div class="form-row">
-						<div class="col-md-6">
+					<div class="col-md-6">
+							<div class="position-relative form-group">
+			      				<input type="checkbox" class="form-check-input" onchange="displayInput('photo')" name="filtre" style="margin-left:1px"><label style="margin-left:15px">Photo</label>
+			      				<input type="checkbox" class="form-check-input" onchange="displayInput('bac')" name="filtre" style="margin-left:10px"><label style="margin-left:28px">Bac</label>
+			      				<input type="checkbox" class="form-check-input" onchange="displayInput('rn')" name="filtre" style="margin-left:10px"><label style="margin-left:28px">Relevé de note</label>
+			      				<input type="checkbox" class="form-check-input" onchange="displayInput('an')" name="filtre" style="margin-left:10px"><label style="margin-left:28px">Acte de Naissance</label>
+			      				<input type="checkbox" class="form-check-input" onchange="displayInput('cin')" name="filtre" style="margin-left:10px"><label style="margin-left:28px">Cin</label><br>
+			      				<input type="checkbox" class="form-check-input" onchange="displayInput('document1')" name="filtre" style="margin-left:2px"><label style="margin-left:18px">Document sup 1</label>
+			      				<input type="checkbox" class="form-check-input" onchange="displayInput('document2')" name="filtre" style="margin-left:2px"><label style="margin-left:18px">Document sup 2</label>
+							</div>
+						</div>
+						
+						<div class="col-md-6" id="photo" style="display:none">
 							<div class="position-relative form-group">
 			      				<label for="annee_academique" class="">Inserer photo</label><input name="photo" id="file" type="file" class="form-control-file">
 							</div>
 						</div>
-						<div class="col-md-6">
+						<div class="col-md-6" id="bac" style="display:none">
 							<div class="position-relative form-group">
-								<label for="annee_academique" class="">Inserer document</label><input name="document1" id="file" type="file" class="form-control-file">		
+								<label for="annee_academique" class="">Inserer Bac</label><input name="bac" id="file" type="file" class="form-control-file">		
+							</div>
+						</div>
+						
+						<div class="col-md-6" id="rn" style="display:none">
+							<div class="position-relative form-group">
+								<label for="annee_academique" class="">Inserer Relevé de note</label><input name="rn" id="file" type="file" class="form-control-file">		
+							</div>
+						</div>
+						<div class="col-md-6" id="an" style="display:none">
+							<div class="position-relative form-group">
+								<label for="annee_academique" class="">Inserer Acte de naissance</label><input name="an" id="file" type="file" class="form-control-file">		
+							</div>
+						</div>
+						<div class="col-md-6" id="cin" style="display:none">
+							<div class="position-relative form-group">
+								<label for="annee_academique" class="">Inserer Cin</label><input name="cin" id="file" type="file" class="form-control-file">		
+							</div>
+						</div>
+						<div class="col-md-6" id="document1" style="display:none">
+							<div class="position-relative form-group">
+								<label for="annee_academique" class="">Inserer document supplémentaire 1</label><input name="document1" id="file" type="file" class="form-control-file">		
+							</div>
+						</div>
+						<div class="col-md-6" id="document2" style="display:none">
+							<div class="position-relative form-group">
+								<label for="annee_academique" class="">Inserer document supplémentaire 2</label><input name="document2" id="file" type="file" class="form-control-file">		
 							</div>
 						</div>
 						</div>
@@ -80,6 +118,20 @@
 				
 			</div>
 		</div>
+
+	<script>
+	function displayInput(idS){
+		
+		
+		var x=document.getElementById(idS+"");
+		if (x.style.display === "none") {
+		    x.style.display = "block";
+		  } else {
+		    x.style.display = "none";
+		  }
+	}
+	
+	</script>
 
 	</layout:put>
 </layout:extends>

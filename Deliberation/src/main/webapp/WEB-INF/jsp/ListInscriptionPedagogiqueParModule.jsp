@@ -69,10 +69,24 @@
 								<c:forEach var="m" items="${module }">
 									<c:set var = "condition" value = "${0}"/>
 									<c:if test="${f.id_filiere==m.semestre.filiere.id_filiere && m.semestre == s }">
-										<c:forEach var="im" items="${i.module}">
-											<c:if test="${im.id_module==m.id_module }">
+										<c:forEach var="ipm" items="${ipm}">
+										 <c:if test="${ipm.inscription_pedagogique == i }">
+										  
+											<c:if test="${ipm.module==m }">
 												<c:set var = "condition" value = "${1}"/>
+												<c:if test="${ipm.validation == 2.0 }">
 												<td style=" border: 0.1px solid #E9ECEF;"><div class="mb-2 mr-2 badge badge-primary">En cours</div></td>
+												</c:if>
+												<c:if test="${ipm.validation == 0.0 }">
+												<td style=" border: 0.1px solid #E9ECEF;"><div class="mb-2 mr-2 badge badge-success">Validé</div></td>
+												</c:if>
+												<c:if test="${ipm.validation == 1.0 }">
+												<td style=" border: 0.1px solid #E9ECEF;"><div class="mb-2 mr-2 badge badge-warning">Validé avec ratt</div></td>
+												</c:if>
+												<c:if test="${ipm.validation == -1.0 }">
+												<td style=" border: 0.1px solid #E9ECEF;"><div class="mb-2 mr-2 badge badge-danger">Non Validé</div></td>
+												</c:if>
+											</c:if>
 											</c:if>
 										</c:forEach>
 											<c:if test="${condition==0 }">

@@ -43,6 +43,7 @@ import com.umi.models.Filiere;
 import com.umi.models.InscriptionAdministrative;
 import com.umi.models.InscriptionEnLigne;
 import com.umi.models.InscriptionPedagogique;
+import com.umi.models.InscriptionPedagogiqueModule;
 import com.umi.models.Semestre;
 import com.umi.repositories.EtapeRepository;
 import com.umi.repositories.EtudiantRepository;
@@ -50,6 +51,7 @@ import com.umi.repositories.Excel2DbRepository;
 import com.umi.repositories.FiliereRepository;
 import com.umi.repositories.InscriptionAdministrativeRepository;
 import com.umi.repositories.InscriptionEnLigneRepository;
+import com.umi.repositories.InscriptionPedagogiqueModuleRepository;
 import com.umi.repositories.InscriptionPedagogiqueRepository;
 import com.umi.repositories.ModuleRepository;
 import com.umi.repositories.SemestreRepository;
@@ -67,9 +69,10 @@ public class InscriptionController {
 	private InscriptionPedagogiqueRepository inscriptionPedagogiqueRepository;
 	private ModuleRepository moduleRepository;
 	private EtapeRepository etapeRepository;
+	private InscriptionPedagogiqueModuleRepository inscriptionPedagogiqueModuleRepository;
 	Excel2DbRepository excel2Db =new Excel2DbRepository();
 	
-	public InscriptionController(EtapeRepository etapeRepository,ModuleRepository moduleRepository,InscriptionPedagogiqueRepository inscriptionPedagogiqueRepository,EtudiantRepository studentRepository,SemestreRepository semestreRepository,InscriptionAdministrativeRepository inscriptionAdministrative,InscriptionEnLigneRepository inscriptionEnLigne,FiliereRepository filiereRepository) {
+	public InscriptionController(InscriptionPedagogiqueModuleRepository inscriptionPedagogiqueModuleRepository,EtapeRepository etapeRepository,ModuleRepository moduleRepository,InscriptionPedagogiqueRepository inscriptionPedagogiqueRepository,EtudiantRepository studentRepository,SemestreRepository semestreRepository,InscriptionAdministrativeRepository inscriptionAdministrative,InscriptionEnLigneRepository inscriptionEnLigne,FiliereRepository filiereRepository) {
 		this.etudiantRepository = studentRepository;
 		this.inscriptionAdministrative=inscriptionAdministrative;
 		this.filiereRepository=filiereRepository;
@@ -78,6 +81,7 @@ public class InscriptionController {
 		this.inscriptionPedagogiqueRepository=inscriptionPedagogiqueRepository;
 		this.moduleRepository=moduleRepository;
 		this.etapeRepository=etapeRepository;
+		this.inscriptionPedagogiqueModuleRepository=inscriptionPedagogiqueModuleRepository;
 	}
 	
 	
@@ -117,7 +121,12 @@ public class InscriptionController {
 			@RequestParam("filiere")int id_filiere,
 			@RequestParam("operateur")String operateur,
 			@RequestParam("photo") MultipartFile photo,
-			@RequestParam("document1") MultipartFile document1
+			@RequestParam("bac") MultipartFile bac,
+			@RequestParam("rn") MultipartFile rn,
+			@RequestParam("an") MultipartFile an,
+			@RequestParam("cin") MultipartFile cin,
+			@RequestParam("document1") MultipartFile document1,
+			@RequestParam("document2") MultipartFile document2
 			) throws IOException {
 		InscriptionAdministrative ia=new InscriptionAdministrative();
 		System.out.println(ia.getDocument1());
@@ -155,11 +164,46 @@ public class InscriptionController {
 		ZoneId defaultZoneId = ZoneId.systemDefault();
 		java.util.Date date = Date.from(ld.atStartOfDay(defaultZoneId).toInstant());
 		ia.setDate_valid_inscription(date);
+		if(!bac.isEmpty()) {
+
+		ia.setBac(bac.getBytes());
+		
+		}
+		if(!an.isEmpty()) {
+
+		ia.setAn(an.getBytes());
+		
+		}
+		if(!rn.isEmpty()) {
+
+		ia.setRn(rn.getBytes());
+		
+		}
+		if(!cin.isEmpty()) {
+
+		ia.setCin(cin.getBytes());
+		
+		}
+		if(!document2.isEmpty()) {
+
+		ia.setDocument2(document2.getBytes());
+		
+		}
+		
+		if(!photo.isEmpty()) {
+
 		ia.setPhoto(photo.getBytes());
+		
+		}
+		
+		if(!document1.isEmpty()) {
+
 		ia.setDocument1(document1.getBytes());
+		
+		}
 		etudiantRepository.save(e);
 		//-------------get l'etudiant qui vient d'être inscrit inscriver----------------------------//
-		Etudiant etudiant=etudiantRepository.getOne(etudiantRepository.getIdEtudiantByName(iel.getFirst_name_fr(), iel.getLast_name_fr()));
+		Etudiant etudiant=etudiantRepository.getOne(etudiantRepository.getIdEtudiantByName(iel.getFirst_name_fr(), iel.getLast_name_fr()).get(0));
 		ia.setEtudiant(etudiant);
 		ia.setFilieres(filiereRepository.getOne(id_filiere));
 		ia.setOperateur(operateur);
@@ -179,8 +223,13 @@ public class InscriptionController {
 			@RequestParam("id_etudiant")int id_etudiant,
 			@RequestParam("filiere")int id_filiere,
 			@RequestParam("operateur")String operateur,
-			@RequestParam("document1")MultipartFile document1,
-			@RequestParam("photo")MultipartFile photo			
+			@RequestParam("photo") MultipartFile photo,
+			@RequestParam("bac") MultipartFile bac,
+			@RequestParam("rn") MultipartFile rn,
+			@RequestParam("an") MultipartFile an,
+			@RequestParam("cin") MultipartFile cin,
+			@RequestParam("document1") MultipartFile document1,
+			@RequestParam("document2") MultipartFile document2		
 			) throws IOException {
 		InscriptionAdministrative ia = inscriptionAdministrative.getOne(id_ia);
 		ia.setAnnee_academique(annee_academique);
@@ -189,13 +238,43 @@ public class InscriptionController {
 		ia.setFilieres(filiereRepository.getOne(id_filiere));
 		ia.setOperateur(operateur);
 		ia.setEtudiant(etudiantRepository.getOne(id_etudiant));
-		System.out.println(photo.isEmpty());
-		if(!photo.isEmpty()) {
+		if(!bac.isEmpty()) {
+
+			ia.setBac(bac.getBytes());
+			
+			}
+			if(!an.isEmpty()) {
+
+			ia.setAn(an.getBytes());
+			
+			}
+			if(!rn.isEmpty()) {
+
+			ia.setRn(rn.getBytes());
+			
+			}
+			if(!cin.isEmpty()) {
+
+			ia.setCin(cin.getBytes());
+			
+			}
+			if(!document2.isEmpty()) {
+
+			ia.setDocument2(document2.getBytes());
+			
+			}
+			
+			if(!photo.isEmpty()) {
+
 			ia.setPhoto(photo.getBytes());
-		}
-		if(!document1.isEmpty()) {
+			
+			}
+			
+			if(!document1.isEmpty()) {
+
 			ia.setDocument1(document1.getBytes());
-		}
+			
+			}
 		inscriptionAdministrative.save(ia);
 		//inscriptionAdministrative.updateInscriptionAdministrative(id_ia, annee_academique, date_pre_inscription, date_valid_inscription, etudiantRepository.getOne(id_etudiant), filiereRepository.getOne(id_filiere), operateur);
 		return new ModelAndView("redirect:/inscription/ListInscriptionAdministrative");
@@ -226,6 +305,17 @@ public class InscriptionController {
 		List<Filiere> f=filiereRepository.getAllFiliere();
 		List<InscriptionAdministrative> lia = inscriptionAdministrative.getAllInscriptionsAdministrative();
 		
+		//--------------------les années universitaires utilisés comme filtre du tableau-----------------------//
+				DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+			    LocalDate localDate = LocalDate.now();
+			    int ele[]=new int[3];
+			    for (int i = 0; i < ele.length; i++) {
+			    	ele[i]=Integer.parseInt((dtf.format(localDate).toString().split("/")[i].trim()));
+				}
+			    if(ele[1]>8) {
+			    	ele[0]++;
+			    }
+			    //-----------------------------------------------------------------------------------------------//
 		
 		for (int i = 0; i < lia.size(); i++) {
 			if(lia.get(i).getPhoto() != null) {
@@ -242,11 +332,47 @@ public class InscriptionController {
 			String base64Encoded = new String(encodeBase64Document1, "UTF-8");
 			lia.get(i).setEncodedDocument1(base64Encoded);
 				}
+			if(lia.get(i).getDocument2() != null) {
+				
+				byte[] document1 = lia.get(i).getDocument2();
+				byte[] encodeBase64Document2 = Base64.encodeBase64(document1);
+				String base64Encoded = new String(encodeBase64Document2, "UTF-8");
+				lia.get(i).setEncodedDocument2(base64Encoded);
+					}
+			if(lia.get(i).getBac() != null) {
+				
+				byte[] document1 = lia.get(i).getBac();
+				byte[] encodeBase64Document1 = Base64.encodeBase64(document1);
+				String base64Encoded = new String(encodeBase64Document1, "UTF-8");
+				lia.get(i).setEncodedBac(base64Encoded);
+					}
+			if(lia.get(i).getRn() != null) {
+				
+				byte[] document1 = lia.get(i).getRn();
+				byte[] encodeBase64Document1 = Base64.encodeBase64(document1);
+				String base64Encoded = new String(encodeBase64Document1, "UTF-8");
+				lia.get(i).setEncodedRv(base64Encoded);
+					}
+			if(lia.get(i).getAn() != null) {
+				
+				byte[] document1 = lia.get(i).getAn();
+				byte[] encodeBase64Document1 = Base64.encodeBase64(document1);
+				String base64Encoded = new String(encodeBase64Document1, "UTF-8");
+				lia.get(i).setEncodedAn(base64Encoded);
+					}
+			if(lia.get(i).getCin() != null) {
+				
+				byte[] document1 = lia.get(i).getCin();
+				byte[] encodeBase64Document1 = Base64.encodeBase64(document1);
+				String base64Encoded = new String(encodeBase64Document1, "UTF-8");
+				lia.get(i).setEncodedCin(base64Encoded);
+					}
 			}
 		
 			
 		
 		model.addObject("listAdministartive", "mm-active");
+		model.addObject("annee",ele[0]);
 		model.addObject("Inscription", lia);
 		model.addObject("f", f);
 		return model;
@@ -289,11 +415,54 @@ public class InscriptionController {
 				ia.setEncodedDocument1(base64Encoded);
 					}
 				
+				if(ia.getAn() != null) {
+					
+					byte[] photo = ia.getAn();
+					byte[] encodeBase64Photo = Base64.encodeBase64(photo);
+					String base64Encoded = new String(encodeBase64Photo, "UTF-8");
+					ia.setEncodedAn(base64Encoded);
+					}
+				
+				if(ia.getBac() != null) {
+						
+					byte[] document1 = ia.getBac();
+					byte[] encodeBase64Document1 = Base64.encodeBase64(document1);
+					String base64Encoded = new String(encodeBase64Document1, "UTF-8");
+					ia.setEncodedBac(base64Encoded);
+						}
+					
+					if(ia.getRn() != null) {
+						
+						byte[] photo = ia.getRn();
+						byte[] encodeBase64Photo = Base64.encodeBase64(photo);
+						String base64Encoded = new String(encodeBase64Photo, "UTF-8");
+						ia.setEncodedRv(base64Encoded);
+						}
+					
+					if(ia.getCin() != null) {
+							
+						byte[] document1 = ia.getCin();
+						byte[] encodeBase64Document1 = Base64.encodeBase64(document1);
+						String base64Encoded = new String(encodeBase64Document1, "UTF-8");
+						ia.setEncodedCin(base64Encoded);
+							}
+						
+						if(ia.getDocument2() != null) {
+							
+							byte[] photo = ia.getDocument2();
+							byte[] encodeBase64Photo = Base64.encodeBase64(photo);
+							String base64Encoded = new String(encodeBase64Photo, "UTF-8");
+							ia.setEncodedDocument2(base64Encoded);
+							}
+						
+				
 			Etudiant etudiant = ia.getEtudiant();
 			List <InscriptionPedagogique> ip = inscriptionPedagogiqueRepository.getInscriptionsPedagogiqueByEtudiant(etudiant);
 			model.addObject("etudiant", etudiant);
 			model.addObject("ia",ia);
 			model.addObject("ip",ip);
+			model.addObject("ipm",inscriptionPedagogiqueModuleRepository.findAll());
+			model.addObject("module", moduleRepository.findAll());
 			
 			return model;
 		}
@@ -592,16 +761,14 @@ public class InscriptionController {
 		
 		String []ids = ids_module.split(",");
 		int id_ia = Integer.parseInt(ids[0]);
-		ArrayList<Module> modules = new ArrayList<Module>();
+		Module module = new Module();
 		
-		for (int j = 1; j < ids.length; j++) {
-			modules.add(moduleRepository.getOne(Integer.parseInt(ids[j])));
-		}
+		
 		
 	    	    
 		InscriptionAdministrative ia = inscriptionAdministrative.getOne(id_ia);
 		Etudiant e = ia.getEtudiant();
-		Semestre semestre = modules.get(0).getSemestre();
+		Semestre semestre = moduleRepository.getOne(Integer.parseInt(ids[1])).getSemestre();
 		InscriptionPedagogique ip =new InscriptionPedagogique();
 		
 		ip.setAnnee_academique(ia.getAnnee_academique());
@@ -609,9 +776,18 @@ public class InscriptionController {
 		ip.setDate_valid_inscription(ia.getDate_valid_inscription());
 		ip.setEtudiant(e);
 		ip.setSemestre(semestre);
-		ip.setModule(modules);
-		inscriptionPedagogiqueRepository.save(ip);
 		
+		inscriptionPedagogiqueRepository.save(ip);
+		ip = inscriptionPedagogiqueRepository.getInscriptionsPedagogiqueByInscriptionPedagogique(ip.getEtudiant()
+				, ip.getAnnee_academique(), ip.getSemestre(), ip.getdate_pre_inscription(), ip.getDate_valid_inscription());
+		for (int j = 1; j < ids.length; j++) {
+			module = moduleRepository.getOne(Integer.parseInt(ids[j]));
+			InscriptionPedagogiqueModule ipm = new InscriptionPedagogiqueModule();
+			ipm.setInscription_pedagogique(ip);
+			ipm.setModule(module);
+			ipm.setValidation(2.0);
+			inscriptionPedagogiqueModuleRepository.save(ipm);
+		}
 		
 		return new ModelAndView("redirect:/inscription/ListInscriptionAdministrative");
 
@@ -643,14 +819,27 @@ public class InscriptionController {
 		List<InscriptionPedagogique> listIP =new ArrayList<InscriptionPedagogique>();
 		for (int i = 0; i < id.length; i++) {
 			listIP.add(inscriptionPedagogiqueRepository.getOne(Integer.parseInt(id[i].trim())));
-			listIP.get(i).setModule(listModules);;
+			
 		}
 		
 		//inscrire les ips par modules---------------------------------------
 		
 		for (int i = 0; i < listIP.size(); i++) {
-			inscriptionPedagogiqueRepository.save(listIP.get(i));
+			InscriptionPedagogique ip = listIP.get(i);
+			inscriptionPedagogiqueRepository.save(ip);
+			ip	= inscriptionPedagogiqueRepository.getInscriptionsPedagogiqueByInscriptionPedagogique(ip.getEtudiant(),
+							ip.getAnnee_academique(), ip.getSemestre(), ip.getdate_pre_inscription(),
+							ip.getDate_valid_inscription());
+			for (int j = 0; j < listModules.size(); j++) {
+				InscriptionPedagogiqueModule ipm = new InscriptionPedagogiqueModule();
+				ipm.setInscription_pedagogique(ip);
+				ipm.setModule(listModules.get(j));
+				inscriptionPedagogiqueModuleRepository.save(ipm);
+			}
 		}
+		
+		
+		
 		return new ModelAndView("redirect:/inscription/ListInscriptionAdministrative");
 	}
 	
@@ -756,6 +945,8 @@ public class InscriptionController {
 			model.addObject("listPedagogique", "mm-active");
 			model.addObject("Inscription", inscriptionPedagogiqueRepository.getAllInscriptionsPedagogique());
 			model.addObject("module", moduleRepository.getAllModules());
+			model.addObject("ipm",inscriptionPedagogiqueModuleRepository.findAll());
+			model.addObject("etudiant",etudiantRepository.getAllStudents());
 			model.addObject("parModule",1);
 			model.addObject("parSemestre",0);
 			model.addObject("f", f);
@@ -774,6 +965,8 @@ public class InscriptionController {
 					model.addObject("listPedagogique", "mm-active");
 					model.addObject("Inscription", inscriptionPedagogiqueRepository.getAllInscriptionsPedagogique());
 					model.addObject("module", moduleRepository.getAllModules());
+					model.addObject("ipm",inscriptionPedagogiqueModuleRepository.findAll());
+					model.addObject("etudiant",etudiantRepository.getAllStudents());
 					model.addObject("semestre",semestreRepository.getAllSemestre());
 					model.addObject("f", f);
 					return model;
