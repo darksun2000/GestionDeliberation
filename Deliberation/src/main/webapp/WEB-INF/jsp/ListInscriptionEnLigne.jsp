@@ -38,7 +38,7 @@
 								<td><a style="color: black"><button disabled class="mb-2 mr-2 btn btn-danger disabled">Pas Encore
                                         </button></a></td>
                                  </c:if>
-                                 <c:if test="${i.accepted == 1}">  
+                                 <c:if test="${i.accepted != 0}">  
 								<td><a style="color: black"><button disabled class="mb-2 mr-2 btn btn-success disabled">Accepté
                                         </button></a></td>
                                  </c:if>

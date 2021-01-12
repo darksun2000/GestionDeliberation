@@ -12,13 +12,7 @@ import com.umi.repositories.EtapeRepository;
 @Controller
 public class BasicController {
 	
-	@PersistenceContext
-	private EntityManager entityManager;
-	private EtapeRepository etapeRepository;
 	
-	public BasicController(EtapeRepository etapeRepository) {
-		this.etapeRepository = etapeRepository;
-	}
 	
 	@RequestMapping("/")
 	public ModelAndView helloworld() {

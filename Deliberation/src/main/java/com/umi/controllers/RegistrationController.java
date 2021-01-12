@@ -31,11 +31,6 @@ public class RegistrationController {
 		this.inscriptionEnligne=inscriptionEnligne;
 	}
 	
-	@GetMapping("/log")
-	public ModelAndView login() {
-		return new ModelAndView("login");
-	}
-	
 	@GetMapping("/student/create")
 	public ModelAndView createANewStudent() {
 		ModelAndView model = new ModelAndView("createStudent");
@@ -180,7 +175,6 @@ public class RegistrationController {
 		student.setBac_place(iel.getBac_place());
 		student.setAcademy(iel.getAcademy());
 		student.setEstablishment(iel.getEstablishment());
-		studentRepository.save(student);
 		inscriptionEnligne.updateAcceptation(iel.getId(),1);
 		return new ModelAndView("redirect:/student/ListInscriptionEnligne");
 	}

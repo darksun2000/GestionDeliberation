@@ -15,6 +15,12 @@ public interface InscriptionEnLigneRepository extends JpaRepository<InscriptionE
 	@Query("select s from InscriptionEnLigne s")
 	List<InscriptionEnLigne> getAllInscriptionsEnLigne();
 	
+	@Query("select s from InscriptionEnLigne s where s.accepted=1")
+	List<InscriptionEnLigne> getAllInscriptionsEnLigneAccepted();
+	
+	@Query("select s from InscriptionEnLigne s where s.accepted=1 and s.first_name_fr=:x and s.last_name_fr=:y")
+	InscriptionEnLigne findByNameAccepted(@Param("x")String first_name_fr,@Param("y")String last_name_fr);
+	
 	List<InscriptionEnLigne> findById(int ID);
 	void deleteById(int ID);
 	

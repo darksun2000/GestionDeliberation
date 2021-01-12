@@ -17,8 +17,7 @@
                                                         <div class="widget-content-outer">
                                                             <div class="widget-content-wrapper">
                                                                 <div class="widget-content-left">
-                                                                    <div class="widget-heading">Academy : </div>
-                                                                    <div class="widget-subheading">${Inscription.getAcademy()}</div>
+                                                                    <div class="widget-heading">Academy : ${Inscription.getAcademy()}</div>
                                                                 </div>
                                                                 
                                                             </div>
@@ -30,8 +29,7 @@
                                                         <div class="widget-content-outer">
                                                             <div class="widget-content-wrapper">
                                                                 <div class="widget-content-left">
-                                                                    <div class="widget-heading">Place de bac :</div>
-                                                                    <div class="widget-subheading">${Inscription.getBac_place()}</div>
+                                                                    <div class="widget-heading">Place de bac : ${Inscription.getBac_place()}</div>
                                                                 </div>
                                                                 
                                                             </div>
@@ -43,8 +41,7 @@
                                                         <div class="widget-content-outer">
                                                             <div class="widget-content-wrapper">
                                                                 <div class="widget-content-left">
-                                                                    <div class="widget-heading">Type de bac :</div>
-                                                                    <div class="widget-subheading">${Inscription.getBac_type()}</div>
+                                                                    <div class="widget-heading">Type de bac : ${Inscription.getBac_type()}</div>
                                                                 </div>
                                                                
                                                             </div>
@@ -56,8 +53,7 @@
                                                         <div class="widget-content-outer">
                                                             <div class="widget-content-wrapper">
                                                                 <div class="widget-content-left">
-                                                                    <div class="widget-heading">Date d'inscription :</div>
-                                                                    <div class="widget-subheading">${Inscription.getRegistration_date()}</div>
+                                                                    <div class="widget-heading">Date d'inscription : ${Inscription.getRegistration_date()}</div>
                                                                 </div>
                                                                 
                                                             </div>
@@ -69,8 +65,7 @@
                                                         <div class="widget-content-outer">
                                                             <div class="widget-content-wrapper">
                                                                 <div class="widget-content-left">
-                                                                    <div class="widget-heading">Date de naissance :</div>
-                                                                    <div class="widget-subheading">${Inscription.getBirth_date()}</div>
+                                                                    <div class="widget-heading">Date de naissance : ${Inscription.getBirth_date().toString().substring(0,10)}</div>
                                                                 </div>
                                                                 
                                                             </div>
@@ -82,8 +77,7 @@
                                                         <div class="widget-content-outer">
                                                             <div class="widget-content-wrapper">
                                                                 <div class="widget-content-left">
-                                                                    <div class="widget-heading">Ville de naissance :</div>
-                                                                    <div class="widget-subheading">${Inscription.getBirth_place()}</div>
+                                                                    <div class="widget-heading">Ville de naissance : ${Inscription.getBirth_place()}</div>
                                                                 </div>
                                                                 
                                                             </div>
@@ -95,8 +89,7 @@
                                                         <div class="widget-content-outer">
                                                             <div class="widget-content-wrapper">
                                                                 <div class="widget-content-left">
-                                                                    <div class="widget-heading">Ville :</div>
-                                                                    <div class="widget-subheading">${Inscription.getCity()}</div>
+                                                                    <div class="widget-heading">Ville : ${Inscription.getCity()}</div>
                                                                 </div>
                                                                 
                                                             </div>
@@ -108,8 +101,7 @@
                                                         <div class="widget-content-outer">
                                                             <div class="widget-content-wrapper">
                                                                 <div class="widget-content-left">
-                                                                    <div class="widget-heading">CNE :</div>
-                                                                    <div class="widget-subheading">${Inscription.getCne()}</div>
+                                                                    <div class="widget-heading">CNE : ${Inscription.getCne()}</div>
                                                                 </div>
                                                                 
                                                             </div>
@@ -121,8 +113,7 @@
                                                         <div class="widget-content-outer">
                                                             <div class="widget-content-wrapper">
                                                                 <div class="widget-content-left">
-                                                                    <div class="widget-heading">Etablissement :</div>
-                                                                    <div class="widget-subheading">${Inscription.getEstablishment()}</div>
+                                                                    <div class="widget-heading">Etablissement : ${Inscription.getEstablishment()}</div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -133,8 +124,7 @@
                                                         <div class="widget-content-outer">
                                                             <div class="widget-content-wrapper">
                                                                 <div class="widget-content-left">
-                                                                    <div class="widget-heading">Nom en arabe :</div>
-                                                                    <div class="widget-subheading">${Inscription.getLast_name_ar()}</div>
+                                                                    <div class="widget-heading">Nom en arabe : ${Inscription.getLast_name_ar()}</div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -145,8 +135,7 @@
                                                         <div class="widget-content-outer">
                                                             <div class="widget-content-wrapper">
                                                                 <div class="widget-content-left">
-                                                                    <div class="widget-heading">Nom en francais :</div>
-                                                                    <div class="widget-subheading">${Inscription.getLast_name_fr()}</div>
+                                                                    <div class="widget-heading">Nom en francais : ${Inscription.getLast_name_fr()}</div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -157,8 +146,7 @@
                                                         <div class="widget-content-outer">
                                                             <div class="widget-content-wrapper">
                                                                 <div class="widget-content-left">
-                                                                    <div class="widget-heading">Prenom en arabe :</div>
-                                                                    <div class="widget-subheading">${Inscription.getFirst_name_ar()}</div>
+                                                                    <div class="widget-heading">Prenom en arabe : ${Inscription.getFirst_name_ar()}</div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -169,8 +157,7 @@
                                                         <div class="widget-content-outer">
                                                             <div class="widget-content-wrapper">
                                                                 <div class="widget-content-left">
-                                                                    <div class="widget-heading">Prenom en francais :</div>
-                                                                    <div class="widget-subheading">${Inscription.getFirst_name_fr()}</div>
+                                                                    <div class="widget-heading">Prenom en francais : ${Inscription.getFirst_name_fr()}</div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -181,8 +168,7 @@
                                                         <div class="widget-content-outer">
                                                             <div class="widget-content-wrapper">
                                                                 <div class="widget-content-left">
-                                                                    <div class="widget-heading">Sexe :</div>
-                                                                    <div class="widget-subheading">${Inscription.getGender()}</div>
+                                                                    <div class="widget-heading">Sexe : ${Inscription.getGender()}</div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -193,8 +179,7 @@
                                                         <div class="widget-content-outer">
                                                             <div class="widget-content-wrapper">
                                                                 <div class="widget-content-left">
-                                                                    <div class="widget-heading">Nom lycée :</div>
-                                                                    <div class="widget-subheading">${Inscription.getHigh_school()}</div>
+                                                                    <div class="widget-heading">Nom lycée : ${Inscription.getHigh_school()}</div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -205,8 +190,7 @@
                                                         <div class="widget-content-outer">
                                                             <div class="widget-content-wrapper">
                                                                 <div class="widget-content-left">
-                                                                    <div class="widget-heading">Num Massar :</div>
-                                                                    <div class="widget-subheading">${Inscription.getMassar_edu()}</div>
+                                                                    <div class="widget-heading">Num Massar : ${Inscription.getMassar_edu()}</div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -218,8 +202,7 @@
                                                         <div class="widget-content-outer">
                                                             <div class="widget-content-wrapper">
                                                                 <div class="widget-content-left">
-                                                                    <div class="widget-heading">Mention :</div>
-                                                                    <div class="widget-subheading">${Inscription.getMention()}</div>
+                                                                    <div class="widget-heading">Mention : ${Inscription.getMention()}</div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -230,8 +213,8 @@
                                                         <div class="widget-content-outer">
                                                             <div class="widget-content-wrapper">
                                                                 <div class="widget-content-left">
-                                                                    <div class="widget-heading">Nationalité :</div>
-                                                                    <div class="widget-subheading">${Inscription.getNationality()}</div>
+                                                                    <div class="widget-heading">Nationalité : ${Inscription.getNationality()}</div>
+                                                                    <div class="widget-subheading"></div>
                                                                 </div>
                                                             </div>
                                                         </div>
