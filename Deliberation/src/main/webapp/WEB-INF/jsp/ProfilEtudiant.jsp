@@ -242,18 +242,7 @@
 						</div>
 						</div>
 						
-							<div class="form-row">
-						<div class="col-md-6">
-							<div class="position-relative form-group">
-			      				<label for="annee_academique" class="" style="font-weight:bold">Date de validation d'inscription :</label>
-							</div>
-						</div>
-						<div class="col-md-6">
-							<div class="position-relative form-group">
-								<label for="annee_academique" class="">${ia.date_valid_inscription.toString().substring(0,10) }</label>		
-							</div>
-						</div>
-						</div>
+						
 				
 				<div class="form-row">
 						<div class="col-md-6">

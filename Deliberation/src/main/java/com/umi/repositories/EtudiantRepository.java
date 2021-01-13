@@ -18,7 +18,7 @@ public interface EtudiantRepository extends JpaRepository<Etudiant, Integer>{
 	@Query("select s from Etudiant s where s.nationality = :nationality")
 	List<Etudiant> getStudentByNationality(@Param("nationality") String nationality);
 	
-	@Query("select id from Etudiant s where first_name_fr = :a and last_name_fr = :b")
+	@Query("select id from Etudiant s where first_name_fr=:a and last_name_fr=:b")
 	List<Integer>getIdEtudiantByName(@Param("a")String first_name_fr,@Param("b")String last_name_fr);
 	
 	@Transactional

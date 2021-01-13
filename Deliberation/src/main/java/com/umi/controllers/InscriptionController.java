@@ -495,7 +495,7 @@ public class InscriptionController {
 			InscriptionAdministrative ia;
 			//---------------pour les lignes non valide---------//
 			List<String> namesE=new ArrayList<String>();
-			//---------------pour les lignes non valide---------//
+			//---------------pour les lignes valide---------//
 			List<String> namesV=new ArrayList<String>();
 		        //----------------------------------------------------------------------------------------//
 		        try {
@@ -552,17 +552,18 @@ public class InscriptionController {
 		                    case 3:
 		                        String fullNameEtudiant = nextCell.getStringCellValue();
 		                        String [] nameEtudiant=fullNameEtudiant.split(" ");
-		                        String first_name_fr=nameEtudiant[0];
-		                        String last_name_fr=nameEtudiant[1];
-		                        InscriptionEnLigne iel=inscriptionEnLigne.findByNameAccepted(first_name_fr, last_name_fr);
+		                        String first_name_fr=nameEtudiant[0].trim();
+		                        String last_name_fr=nameEtudiant[1].trim();
+		                        InscriptionEnLigne iel=inscriptionEnLigne.findByNameAccepted(first_name_fr,last_name_fr);
+		                        
 		                        //--------cas ou l'inscription en ligne n'existe pas-----//
-		                        if(iel==null) {
-		                        	namesE.add(fullNameEtudiant);
+		                        if(iel == null) {
+		                        	namesE.add(fullNameEtudiant+" , cause : il n'y a aucune inscription en ligne acceptée correspondante.");
 		                        	dontSave=true;
 		                        	continue;
 		                        }
 		                        //----------------------------------------------//
-		                        namesV.add(fullNameEtudiant);
+		                        
 		                        Etudiant e = new Etudiant();
 		                       e.setAcademy(iel.getAcademy());
 		                       e.setBac_place(iel.getBac_place());
@@ -584,7 +585,14 @@ public class InscriptionController {
 		                       e.setNationality(iel.getNationality());
 		                       e.setProvince(iel.getProvince());
 		                       e.setRegistration_date(iel.getRegistration_date());
+		                       List <Integer> en =etudiantRepository.getIdEtudiantByName(iel.getFirst_name_fr(), iel.getLast_name_fr());
+		                       if(!en.isEmpty()) {
+		                    	   namesE.add(first_name_fr+" "+ last_name_fr+" , cause : L'etudiant est deja inscrit administrativement.");
+		                    	   dontSave=true;
+		                    	   continue;
+		                       }
 		                       etudiantRepository.save(e);
+		                        
 		                        ia.setEtudiant(e);
 		                        break;
 		                   //colonne 5
@@ -598,8 +606,10 @@ public class InscriptionController {
 		                        String operateur = nextCell.getStringCellValue();
 		                        ia.setOperateur(operateur);
 		                        if(dontSave==true)continue;
+		                        
 		                        //faire entrer l inscrip. dans la base de données
 		                        inscriptionAdministrative.save(ia);
+		                        namesV.add(ia.getEtudiant().getFirst_name_fr()+" "+ia.getEtudiant().getLast_name_fr());
 		                        break;
 		                    }
 		                }  
@@ -725,8 +735,9 @@ public class InscriptionController {
 		InscriptionAdministrative ia;
 		Etudiant e;
 		Semestre semestre =semestreRepository.getOne(id_semestre);
+		ArrayList<InscriptionPedagogique> nonInscrit = new ArrayList<InscriptionPedagogique>();
 		for (int i = 0; i < id.length; i++) {
-			InscriptionPedagogique ip =new InscriptionPedagogique();
+			InscriptionPedagogique ip = new InscriptionPedagogique();
 			idI=Integer.parseInt(id[i].trim());
 			ia=inscriptionAdministrative.getOne(idI);
 			e=ia.getEtudiant();
@@ -735,8 +746,16 @@ public class InscriptionController {
 			ip.setDate_valid_inscription(ia.getDate_valid_inscription());
 			ip.setEtudiant(e);
 			ip.setSemestre(semestre);
+			InscriptionPedagogique ipE = inscriptionPedagogiqueRepository
+					.getInscriptionsPedagogiqueByInscriptionPedagogique(ip.getEtudiant(),
+							ip.getAnnee_academique(), ip.getSemestre(), ip.getdate_pre_inscription(),
+							ip.getDate_valid_inscription());
+			if(ipE == null) {
 			inscriptionPedagogiqueRepository.save(ip);
-		
+			}
+			else {
+				nonInscrit.add(ip);
+			}
 		
 		
 		}
@@ -747,6 +766,7 @@ public class InscriptionController {
 				model.addObject("module",moduleRepository.getModuleBySemestre(s));
 				model.addObject("f", f);
 				model.addObject("semestre",s);
+				model.addObject("nninscrit",nonInscrit);
 				return model;
 	}
 	
@@ -763,8 +783,6 @@ public class InscriptionController {
 		int id_ia = Integer.parseInt(ids[0]);
 		Module module = new Module();
 		
-		
-		
 	    	    
 		InscriptionAdministrative ia = inscriptionAdministrative.getOne(id_ia);
 		Etudiant e = ia.getEtudiant();
@@ -776,8 +794,13 @@ public class InscriptionController {
 		ip.setDate_valid_inscription(ia.getDate_valid_inscription());
 		ip.setEtudiant(e);
 		ip.setSemestre(semestre);
-		
+		InscriptionPedagogique ipE = inscriptionPedagogiqueRepository
+				.getInscriptionsPedagogiqueByInscriptionPedagogique(ip.getEtudiant(),
+						ip.getAnnee_academique(), ip.getSemestre(), ip.getdate_pre_inscription(),
+						ip.getDate_valid_inscription());
+		if(ipE == null) {
 		inscriptionPedagogiqueRepository.save(ip);
+		}
 		ip = inscriptionPedagogiqueRepository.getInscriptionsPedagogiqueByInscriptionPedagogique(ip.getEtudiant()
 				, ip.getAnnee_academique(), ip.getSemestre(), ip.getdate_pre_inscription(), ip.getDate_valid_inscription());
 		for (int j = 1; j < ids.length; j++) {
@@ -785,7 +808,6 @@ public class InscriptionController {
 			InscriptionPedagogiqueModule ipm = new InscriptionPedagogiqueModule();
 			ipm.setInscription_pedagogique(ip);
 			ipm.setModule(module);
-			ipm.setValidation(2.0);
 			inscriptionPedagogiqueModuleRepository.save(ipm);
 		}
 		

@@ -131,7 +131,7 @@ public class RegistrationController {
 			){
 		
 		List<InscriptionEnLigne> l=inscriptionEnligne.findById(id);
-				ModelAndView model = new ModelAndView("ProfileInscriptionEnLigne");
+		ModelAndView model = new ModelAndView("ProfileInscriptionEnLigne");
 		model.addObject("listInscriptions", "mm-active");
 		model.addObject("Inscription", l.get(0));
 		
@@ -175,7 +175,7 @@ public class RegistrationController {
 		student.setBac_place(iel.getBac_place());
 		student.setAcademy(iel.getAcademy());
 		student.setEstablishment(iel.getEstablishment());
-		inscriptionEnligne.updateAcceptation(iel.getId(),1);
+		inscriptionEnligne.save(iel);
 		return new ModelAndView("redirect:/student/ListInscriptionEnligne");
 	}
 	
