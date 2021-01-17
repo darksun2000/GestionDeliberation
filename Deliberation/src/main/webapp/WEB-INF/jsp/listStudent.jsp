@@ -11,12 +11,13 @@
 		<div class="main-card mb-3 card">
 			<div class="card-body">
 				<h5 class="card-title">Liste des étudiants</h5>
-				<table class="mb-0 table table-striped">
+				<input type="text" onkeyup="myFunction()" id="myInput">
+				<table class="mb-0 table table-striped" id="myTable">
 					<thead>
 						<tr>
-							<th>Nom</th>
-							<th class="th-sm">Prénom</th>
 							<th class="th-sm">CNE</th>
+							<th class="th-sm">Nom</th>
+							<th class="th-sm">Prénom</th>
 							<th class="th-sm">Sexe</th>
 							<th class="th-sm">Nationalité</th>
 							<th class="th-sm">Date de naissance</th>
@@ -27,9 +28,9 @@
 					<tbody>
 						<c:forEach var="student" items="${students}">
 							<tr>
+								<td><a style="color: black" href="#">${student.cne}</a></td>
 								<td><a style="color: black" href="#">${student.last_name_fr}</a></td>
 								<td><a style="color: black" href="#">${student.first_name_fr}</a></td>
-								<td><a style="color: black" href="#">${student.cne}</a></td>
 								<td><a style="color: black" href="#">${student.gender}</a></td>
 								<td><a style="color: black" href="#">${student.nationality}</a></td>
 								<c:set var="date" value="${student.birth_date}"></c:set>
@@ -43,6 +44,64 @@
 				</table>
 			</div>
 		</div>
+<script>
+function sortTable() {
+  var table, rows, switching, i, x, y, shouldSwitch;
+  table = document.getElementById("myTable");
+  switching = true;
+  /*Make a loop that will continue until
+  no switching has been done:*/
+  while (switching) {
+    //start by saying: no switching is done:
+    switching = false;
+    rows = table.rows;
+    /*Loop through all table rows (except the
+    first, which contains table headers):*/
+    for (i = 1; i < (rows.length - 1); i++) {
+      //start by saying there should be no switching:
+      shouldSwitch = false;
+      /*Get the two elements you want to compare,
+      one from current row and one from the next:*/
+      x = rows[i].getElementsByTagName("TD")[1];
+      y = rows[i + 1].getElementsByTagName("TD")[1];
+      //check if the two rows should switch place:
+      if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+        //if so, mark as a switch and break the loop:
+        shouldSwitch = true;
+        break;
+      }
+    }
+    if (shouldSwitch) {
+      /*If a switch has been marked, make the switch
+      and mark that a switch has been done:*/
+      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+      switching = true;
+    }
+  }
+}
+</script>
+<script>
+function myFunction() {
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("myTable");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }       
+  }
+  sortTable();
+}
+sortTable();
+</script>
 
 	</layout:put>
 </layout:extends>

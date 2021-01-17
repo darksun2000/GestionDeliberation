@@ -13,7 +13,11 @@
 				<h5 class="card-title">Inscription Administrative de l'Etudiant</h5>
 				<button class="mb-3 mr-2  btn-transition btn btn-outline-alternate" style="padding: 15px 100px;margin-left:130px;margin-top:20px" onclick="window.location.href='ListInscriptionPedagogiqueS'"
 				>Liste Inscription par semestre</button>
-				<button class="mb-3 mr-2  btn-transition btn btn-outline-dark" style="padding: 15px 100px;margin-top:20px"  onclick="window.location.href='ListInscriptionPedagogiqueM'">Liste Inscription par module</button>
+				
+				<button class="mb-3 mr-2  btn-transition btn btn-outline-dark"
+				 style="padding: 15px 100px;margin-top:20px"  
+				 onclick="window.location.href='ListInscriptionPedagogiqueMD'">
+				 Liste Inscription par module</button>
 				
 			</div>
 		</div>

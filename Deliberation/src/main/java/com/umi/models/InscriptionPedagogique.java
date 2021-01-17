@@ -1,10 +1,20 @@
 package com.umi.models;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name="InscriptionPedagogique")
@@ -14,12 +24,14 @@ public class InscriptionPedagogique {
 	@Column(name="id_ip")
 	private int id_ip;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name="etudiant", foreignKey = @ForeignKey(name = "fk_etudiant"))
 	private Etudiant etudiant;
 	
 	
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne
+	@JoinColumn(name="semestre", foreignKey = @ForeignKey(name = "fk_semestre"))
+	@NotFound(action = NotFoundAction.IGNORE)
 	private Semestre semestre;
 	
 	@Column(name="annee_academique")

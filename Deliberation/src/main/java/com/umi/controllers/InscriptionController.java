@@ -1,8 +1,10 @@
 package com.umi.controllers;
 
 
+import java.util.Base64.Encoder;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Date;
@@ -25,14 +27,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import org.apache.commons.*;
+import org.apache.commons.codec.binary.Base64;
+
+import com.mysql.jdbc.Blob;
 import com.umi.models.Etape;
 import com.umi.models.Etudiant;
 import com.umi.models.Module;
 import com.umi.models.Filiere;
+import com.umi.models.Historique;
 import com.umi.models.InscriptionAdministrative;
 import com.umi.models.InscriptionEnLigne;
 import com.umi.models.InscriptionPedagogique;
@@ -42,6 +50,7 @@ import com.umi.repositories.EtapeRepository;
 import com.umi.repositories.EtudiantRepository;
 import com.umi.repositories.Excel2DbRepository;
 import com.umi.repositories.FiliereRepository;
+import com.umi.repositories.HistoriqueRepository;
 import com.umi.repositories.InscriptionAdministrativeRepository;
 import com.umi.repositories.InscriptionEnLigneRepository;
 import com.umi.repositories.InscriptionPedagogiqueModuleRepository;
@@ -62,14 +71,12 @@ public class InscriptionController {
 	private InscriptionPedagogiqueRepository inscriptionPedagogiqueRepository;
 	private ModuleRepository moduleRepository;
 	private EtapeRepository etapeRepository;
-	private InscriptionPedagogiqueModuleRepository inscriptionpedagogiquemoduleRepository;
+	private InscriptionPedagogiqueModuleRepository inscriptionPedagogiqueModuleRepository;
 	Excel2DbRepository excel2Db =new Excel2DbRepository();
+	private HistoriqueRepository historiqueRepository;
 	
-	public InscriptionController(EtapeRepository etapeRepository,ModuleRepository moduleRepository,InscriptionPedagogiqueRepository inscriptionPedagogiqueRepository,
-			EtudiantRepository studentRepository,SemestreRepository semestreRepository,
-			InscriptionAdministrativeRepository inscriptionAdministrative,
-			InscriptionEnLigneRepository inscriptionEnLigne,FiliereRepository filiereRepository,
-			InscriptionPedagogiqueModuleRepository inscriptionpedagogiquemoduleRepository) {
+	public InscriptionController(InscriptionPedagogiqueModuleRepository inscriptionPedagogiqueModuleRepository,EtapeRepository etapeRepository,ModuleRepository moduleRepository,InscriptionPedagogiqueRepository inscriptionPedagogiqueRepository,EtudiantRepository studentRepository,SemestreRepository semestreRepository,InscriptionAdministrativeRepository inscriptionAdministrative,InscriptionEnLigneRepository inscriptionEnLigne,FiliereRepository filiereRepository
+			, HistoriqueRepository historiqueRepository) {
 		this.etudiantRepository = studentRepository;
 		this.inscriptionAdministrative=inscriptionAdministrative;
 		this.filiereRepository=filiereRepository;
@@ -78,7 +85,8 @@ public class InscriptionController {
 		this.inscriptionPedagogiqueRepository=inscriptionPedagogiqueRepository;
 		this.moduleRepository=moduleRepository;
 		this.etapeRepository=etapeRepository;
-		this.inscriptionpedagogiquemoduleRepository=inscriptionpedagogiquemoduleRepository;
+		this.inscriptionPedagogiqueModuleRepository=inscriptionPedagogiqueModuleRepository;
+		this.historiqueRepository = historiqueRepository;
 	}
 	
 	
@@ -118,10 +126,15 @@ public class InscriptionController {
 			@RequestParam("filiere")int id_filiere,
 			@RequestParam("operateur")String operateur,
 			@RequestParam("photo") MultipartFile photo,
-			@RequestParam("document1") MultipartFile document1
+			@RequestParam("bac") MultipartFile bac,
+			@RequestParam("rn") MultipartFile rn,
+			@RequestParam("an") MultipartFile an,
+			@RequestParam("cin") MultipartFile cin,
+			@RequestParam("document1") MultipartFile document1,
+			@RequestParam("document2") MultipartFile document2
 			) throws IOException {
 		InscriptionAdministrative ia=new InscriptionAdministrative();
-		System.out.println("test");
+		System.out.println(ia.getDocument1());
 		Etudiant e =new Etudiant();
 		InscriptionEnLigne iel=new InscriptionEnLigne();
 		iel=inscriptionEnLigne.getOne(id_etudiant);
@@ -134,7 +147,7 @@ public class InscriptionController {
          e.setBirth_place(iel.getBirth_place());
          e.setCity(iel.getCity());
          e.setCne(iel.getCne());
-         e.setEstablishment(iel.getEstablishment());
+         e.setEtablissement(iel.getEtablissement());
          e.setFirst_name_ar(iel.getFirst_name_ar());
          e.setFirst_name_fr(iel.getFirst_name_fr());
          e.setGender(iel.getGender());
@@ -156,15 +169,53 @@ public class InscriptionController {
 		ZoneId defaultZoneId = ZoneId.systemDefault();
 		java.util.Date date = Date.from(ld.atStartOfDay(defaultZoneId).toInstant());
 		ia.setDate_valid_inscription(date);
+		if(!bac.isEmpty()) {
+
+		ia.setBac(bac.getBytes());
+		
+		}
+		if(!an.isEmpty()) {
+
+		ia.setAn(an.getBytes());
+		
+		}
+		if(!rn.isEmpty()) {
+
+		ia.setRn(rn.getBytes());
+		
+		}
+		if(!cin.isEmpty()) {
+
+		ia.setCin(cin.getBytes());
+		
+		}
+		if(!document2.isEmpty()) {
+
+		ia.setDocument2(document2.getBytes());
+		
+		}
+		
+		if(!photo.isEmpty()) {
+
 		ia.setPhoto(photo.getBytes());
+		
+		}
+		
+		if(!document1.isEmpty()) {
+
 		ia.setDocument1(document1.getBytes());
+		
+		}
 		etudiantRepository.save(e);
 		//-------------get l'etudiant qui vient d'être inscrit inscriver----------------------------//
-		Etudiant etudiant=etudiantRepository.getOne(etudiantRepository.getIdEtudiantByName(iel.getFirst_name_fr(), iel.getLast_name_fr()));
+		Etudiant etudiant=etudiantRepository.getOne(etudiantRepository.getIdEtudiantByName(iel.getFirst_name_fr(), iel.getLast_name_fr()).get(0));
 		ia.setEtudiant(etudiant);
 		ia.setFilieres(filiereRepository.getOne(id_filiere));
 		ia.setOperateur(operateur);
 		inscriptionAdministrative.save(ia);
+		
+		historiqueRepository.save(new Historique("étudiant " + e.getFirst_name_fr() + " " + e.getLast_name_fr() + " inscrit administrativement", new java.util.Date()));
+		
 		return new ModelAndView("redirect:/student/list");
 	}
 	
@@ -180,8 +231,13 @@ public class InscriptionController {
 			@RequestParam("id_etudiant")int id_etudiant,
 			@RequestParam("filiere")int id_filiere,
 			@RequestParam("operateur")String operateur,
-			@RequestParam("document1")MultipartFile document1,
-			@RequestParam("photo")MultipartFile photo			
+			@RequestParam("photo") MultipartFile photo,
+			@RequestParam("bac") MultipartFile bac,
+			@RequestParam("rn") MultipartFile rn,
+			@RequestParam("an") MultipartFile an,
+			@RequestParam("cin") MultipartFile cin,
+			@RequestParam("document1") MultipartFile document1,
+			@RequestParam("document2") MultipartFile document2		
 			) throws IOException {
 		InscriptionAdministrative ia = inscriptionAdministrative.getOne(id_ia);
 		ia.setAnnee_academique(annee_academique);
@@ -190,14 +246,45 @@ public class InscriptionController {
 		ia.setFilieres(filiereRepository.getOne(id_filiere));
 		ia.setOperateur(operateur);
 		ia.setEtudiant(etudiantRepository.getOne(id_etudiant));
-		System.out.println(photo.isEmpty());
-		if(!photo.isEmpty()) {
+		if(!bac.isEmpty()) {
+
+			ia.setBac(bac.getBytes());
+			
+			}
+			if(!an.isEmpty()) {
+
+			ia.setAn(an.getBytes());
+			
+			}
+			if(!rn.isEmpty()) {
+
+			ia.setRn(rn.getBytes());
+			
+			}
+			if(!cin.isEmpty()) {
+
+			ia.setCin(cin.getBytes());
+			
+			}
+			if(!document2.isEmpty()) {
+
+			ia.setDocument2(document2.getBytes());
+			
+			}
+			
+			if(!photo.isEmpty()) {
+
 			ia.setPhoto(photo.getBytes());
-		}
-		if(!document1.isEmpty()) {
+			
+			}
+			
+			if(!document1.isEmpty()) {
+
 			ia.setDocument1(document1.getBytes());
-		}
+			
+			}
 		inscriptionAdministrative.save(ia);
+		historiqueRepository.save(new Historique("documents de l'étudiant " + ia.getEtudiant().getFirst_name_fr() + " " + ia.getEtudiant().getLast_name_fr() + " modifié à l'administration", new java.util.Date()));
 		//inscriptionAdministrative.updateInscriptionAdministrative(id_ia, annee_academique, date_pre_inscription, date_valid_inscription, etudiantRepository.getOne(id_etudiant), filiereRepository.getOne(id_filiere), operateur);
 		return new ModelAndView("redirect:/inscription/ListInscriptionAdministrative");
 	}
@@ -214,6 +301,8 @@ public class InscriptionController {
 		inscriptionPedagogiqueRepository.deleteAll(ipl);
 		}
 		etudiantRepository.delete(inscriptionAdministrative.getOne(id_ia).getEtudiant());
+		String name = inscriptionAdministrative.getOne(id_ia).getEtudiant().getFirst_name_fr() + inscriptionAdministrative.getOne(id_ia).getEtudiant().getLast_name_fr();
+		historiqueRepository.save(new Historique("inscription administrative de l'étudiant " + name + " supprimée", new java.util.Date()));
 		inscriptionAdministrative.deleteById(id_ia);
 		return new ModelAndView("redirect:/inscription/ListInscriptionAdministrative");
 	}
@@ -222,11 +311,80 @@ public class InscriptionController {
 //-----------------------------------------page affichant la liste des inscriptions administratives-------------------------------//
 	
 	@GetMapping("/inscription/ListInscriptionAdministrative")
-	public ModelAndView listInscriptionAdministratives() {
+	public ModelAndView listInscriptionAdministratives() throws UnsupportedEncodingException {
 		ModelAndView model = new ModelAndView("ListInscriptionAdministrative");
 		List<Filiere> f=filiereRepository.getAllFiliere();
+		List<InscriptionAdministrative> lia = inscriptionAdministrative.getAllInscriptionsAdministrative();
+		
+		//--------------------les années universitaires utilisés comme filtre du tableau-----------------------//
+				DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+			    LocalDate localDate = LocalDate.now();
+			    int ele[]=new int[3];
+			    for (int i = 0; i < ele.length; i++) {
+			    	ele[i]=Integer.parseInt((dtf.format(localDate).toString().split("/")[i].trim()));
+				}
+			    if(ele[1]>8) {
+			    	ele[0]++;
+			    }
+			    //-----------------------------------------------------------------------------------------------//
+		
+		for (int i = 0; i < lia.size(); i++) {
+			if(lia.get(i).getPhoto() != null) {
+				
+			byte[] photo = lia.get(i).getPhoto();
+			byte[] encodeBase64Photo = Base64.encodeBase64(photo);
+			String base64Encoded = new String(encodeBase64Photo, "UTF-8");
+			lia.get(i).setEncodedPhoto(base64Encoded);
+			}
+			if(lia.get(i).getDocument1() != null) {
+				
+			byte[] document1 = lia.get(i).getDocument1();
+			byte[] encodeBase64Document1 = Base64.encodeBase64(document1);
+			String base64Encoded = new String(encodeBase64Document1, "UTF-8");
+			lia.get(i).setEncodedDocument1(base64Encoded);
+				}
+			if(lia.get(i).getDocument2() != null) {
+				
+				byte[] document1 = lia.get(i).getDocument2();
+				byte[] encodeBase64Document2 = Base64.encodeBase64(document1);
+				String base64Encoded = new String(encodeBase64Document2, "UTF-8");
+				lia.get(i).setEncodedDocument2(base64Encoded);
+					}
+			if(lia.get(i).getBac() != null) {
+				
+				byte[] document1 = lia.get(i).getBac();
+				byte[] encodeBase64Document1 = Base64.encodeBase64(document1);
+				String base64Encoded = new String(encodeBase64Document1, "UTF-8");
+				lia.get(i).setEncodedBac(base64Encoded);
+					}
+			if(lia.get(i).getRn() != null) {
+				
+				byte[] document1 = lia.get(i).getRn();
+				byte[] encodeBase64Document1 = Base64.encodeBase64(document1);
+				String base64Encoded = new String(encodeBase64Document1, "UTF-8");
+				lia.get(i).setEncodedRv(base64Encoded);
+					}
+			if(lia.get(i).getAn() != null) {
+				
+				byte[] document1 = lia.get(i).getAn();
+				byte[] encodeBase64Document1 = Base64.encodeBase64(document1);
+				String base64Encoded = new String(encodeBase64Document1, "UTF-8");
+				lia.get(i).setEncodedAn(base64Encoded);
+					}
+			if(lia.get(i).getCin() != null) {
+				
+				byte[] document1 = lia.get(i).getCin();
+				byte[] encodeBase64Document1 = Base64.encodeBase64(document1);
+				String base64Encoded = new String(encodeBase64Document1, "UTF-8");
+				lia.get(i).setEncodedCin(base64Encoded);
+					}
+			}
+		
+			
+		
 		model.addObject("listAdministartive", "mm-active");
-		model.addObject("Inscription", inscriptionAdministrative.getAllInscriptionsAdministrative());
+		model.addObject("annee",ele[0]);
+		model.addObject("Inscription", lia);
 		model.addObject("f", f);
 		return model;
 	}
@@ -241,7 +399,84 @@ public class InscriptionController {
 			
 			return model;
 		}
+
 		
+//-------------------------------------------aller à la page pour uploder un fichier d'inscrip administratives------------------------//
+
+		
+		@RequestMapping("/inscription/ProfilEtudiant/{id}")
+		public ModelAndView ProfilEtudiant(
+				@PathVariable("id")int id_ia
+				) throws UnsupportedEncodingException {
+			ModelAndView model = new ModelAndView("ProfilEtudiant");
+			InscriptionAdministrative ia = inscriptionAdministrative.getOne(id_ia);
+			
+				if(ia.getPhoto() != null) {
+					
+				byte[] photo = ia.getPhoto();
+				byte[] encodeBase64Photo = Base64.encodeBase64(photo);
+				String base64Encoded = new String(encodeBase64Photo, "UTF-8");
+				ia.setEncodedPhoto(base64Encoded);
+				}
+				if(ia.getDocument1() != null) {
+					
+				byte[] document1 = ia.getDocument1();
+				byte[] encodeBase64Document1 = Base64.encodeBase64(document1);
+				String base64Encoded = new String(encodeBase64Document1, "UTF-8");
+				ia.setEncodedDocument1(base64Encoded);
+					}
+				
+				if(ia.getAn() != null) {
+					
+					byte[] photo = ia.getAn();
+					byte[] encodeBase64Photo = Base64.encodeBase64(photo);
+					String base64Encoded = new String(encodeBase64Photo, "UTF-8");
+					ia.setEncodedAn(base64Encoded);
+					}
+				
+				if(ia.getBac() != null) {
+						
+					byte[] document1 = ia.getBac();
+					byte[] encodeBase64Document1 = Base64.encodeBase64(document1);
+					String base64Encoded = new String(encodeBase64Document1, "UTF-8");
+					ia.setEncodedBac(base64Encoded);
+						}
+					
+					if(ia.getRn() != null) {
+						
+						byte[] photo = ia.getRn();
+						byte[] encodeBase64Photo = Base64.encodeBase64(photo);
+						String base64Encoded = new String(encodeBase64Photo, "UTF-8");
+						ia.setEncodedRv(base64Encoded);
+						}
+					
+					if(ia.getCin() != null) {
+							
+						byte[] document1 = ia.getCin();
+						byte[] encodeBase64Document1 = Base64.encodeBase64(document1);
+						String base64Encoded = new String(encodeBase64Document1, "UTF-8");
+						ia.setEncodedCin(base64Encoded);
+							}
+						
+						if(ia.getDocument2() != null) {
+							
+							byte[] photo = ia.getDocument2();
+							byte[] encodeBase64Photo = Base64.encodeBase64(photo);
+							String base64Encoded = new String(encodeBase64Photo, "UTF-8");
+							ia.setEncodedDocument2(base64Encoded);
+							}
+						
+				
+			Etudiant etudiant = ia.getEtudiant();
+			List <InscriptionPedagogique> ip = inscriptionPedagogiqueRepository.getInscriptionsPedagogiqueByEtudiant(etudiant);
+			model.addObject("etudiant", etudiant);
+			model.addObject("ia",ia);
+			model.addObject("ip",ip);
+			model.addObject("ipm",inscriptionPedagogiqueModuleRepository.findAll());
+			model.addObject("module", moduleRepository.findAll());
+			
+			return model;
+		}
 		
 //-------------------------------------------aller à la page pour modifier inscrip administratives-----------------------------------------//
 		
@@ -271,7 +506,7 @@ public class InscriptionController {
 			InscriptionAdministrative ia;
 			//---------------pour les lignes non valide---------//
 			List<String> namesE=new ArrayList<String>();
-			//---------------pour les lignes non valide---------//
+			//---------------pour les lignes valide---------//
 			List<String> namesV=new ArrayList<String>();
 		        //----------------------------------------------------------------------------------------//
 		        try {
@@ -328,17 +563,18 @@ public class InscriptionController {
 		                    case 3:
 		                        String fullNameEtudiant = nextCell.getStringCellValue();
 		                        String [] nameEtudiant=fullNameEtudiant.split(" ");
-		                        String first_name_fr=nameEtudiant[0];
-		                        String last_name_fr=nameEtudiant[1];
-		                        InscriptionEnLigne iel=inscriptionEnLigne.findByNameAccepted(first_name_fr, last_name_fr);
+		                        String first_name_fr=nameEtudiant[0].trim();
+		                        String last_name_fr=nameEtudiant[1].trim();
+		                        InscriptionEnLigne iel=inscriptionEnLigne.findByNameAccepted(first_name_fr,last_name_fr);
+		                        
 		                        //--------cas ou l'inscription en ligne n'existe pas-----//
-		                        if(iel==null) {
-		                        	namesE.add(fullNameEtudiant);
+		                        if(iel == null) {
+		                        	namesE.add(fullNameEtudiant+" , cause : il n'y a aucune inscription en ligne acceptée correspondante.");
 		                        	dontSave=true;
 		                        	continue;
 		                        }
 		                        //----------------------------------------------//
-		                        namesV.add(fullNameEtudiant);
+		                        
 		                        Etudiant e = new Etudiant();
 		                       e.setAcademy(iel.getAcademy());
 		                       e.setBac_place(iel.getBac_place());
@@ -348,7 +584,7 @@ public class InscriptionController {
 		                       e.setBirth_place(iel.getBirth_place());
 		                       e.setCity(iel.getCity());
 		                       e.setCne(iel.getCne());
-		                       e.setEstablishment(iel.getEstablishment());
+		                       e.setEtablissement(iel.getEtablissement());
 		                       e.setFirst_name_ar(iel.getFirst_name_ar());
 		                       e.setFirst_name_fr(iel.getFirst_name_fr());
 		                       e.setGender(iel.getGender());
@@ -360,8 +596,16 @@ public class InscriptionController {
 		                       e.setNationality(iel.getNationality());
 		                       e.setProvince(iel.getProvince());
 		                       e.setRegistration_date(iel.getRegistration_date());
+		                       List <Integer> en =etudiantRepository.getIdEtudiantByName(iel.getFirst_name_fr(), iel.getLast_name_fr());
+		                       if(!en.isEmpty()) {
+		                    	   namesE.add(first_name_fr+" "+ last_name_fr+" , cause : L'etudiant est deja inscrit administrativement.");
+		                    	   dontSave=true;
+		                    	   continue;
+		                       }
 		                       etudiantRepository.save(e);
+		                        
 		                        ia.setEtudiant(e);
+		                        inscriptionEnLigne.updateAcceptation(iel.getId(), 3);
 		                        break;
 		                   //colonne 5
 		                    case 4:
@@ -374,8 +618,10 @@ public class InscriptionController {
 		                        String operateur = nextCell.getStringCellValue();
 		                        ia.setOperateur(operateur);
 		                        if(dontSave==true)continue;
+		                        
 		                        //faire entrer l inscrip. dans la base de données
 		                        inscriptionAdministrative.save(ia);
+		                        namesV.add(ia.getEtudiant().getFirst_name_fr()+" "+ia.getEtudiant().getLast_name_fr());
 		                        break;
 		                    }
 		                }  
@@ -501,8 +747,9 @@ public class InscriptionController {
 		InscriptionAdministrative ia;
 		Etudiant e;
 		Semestre semestre =semestreRepository.getOne(id_semestre);
+		ArrayList<InscriptionPedagogique> nonInscrit = new ArrayList<InscriptionPedagogique>();
 		for (int i = 0; i < id.length; i++) {
-			InscriptionPedagogique ip =new InscriptionPedagogique();
+			InscriptionPedagogique ip = new InscriptionPedagogique();
 			idI=Integer.parseInt(id[i].trim());
 			ia=inscriptionAdministrative.getOne(idI);
 			e=ia.getEtudiant();
@@ -511,8 +758,16 @@ public class InscriptionController {
 			ip.setDate_valid_inscription(ia.getDate_valid_inscription());
 			ip.setEtudiant(e);
 			ip.setSemestre(semestre);
+			InscriptionPedagogique ipE = inscriptionPedagogiqueRepository
+					.getInscriptionsPedagogiqueByInscriptionPedagogique(ip.getEtudiant(),
+							ip.getAnnee_academique(), ip.getSemestre(), ip.getdate_pre_inscription(),
+							ip.getDate_valid_inscription());
+			if(ipE == null) {
 			inscriptionPedagogiqueRepository.save(ip);
-		
+			}
+			else {
+				nonInscrit.add(ip);
+			}
 		
 		
 		}
@@ -523,6 +778,7 @@ public class InscriptionController {
 				model.addObject("module",moduleRepository.getModuleBySemestre(s));
 				model.addObject("f", f);
 				model.addObject("semestre",s);
+				model.addObject("nninscrit",nonInscrit);
 				return model;
 	}
 	
@@ -537,31 +793,35 @@ public class InscriptionController {
 		
 		String []ids = ids_module.split(",");
 		int id_ia = Integer.parseInt(ids[0]);
-		ArrayList<Module> modules = new ArrayList<Module>();
-		
-		for (int j = 1; j < ids.length; j++) {
-			modules.add(moduleRepository.getOne(Integer.parseInt(ids[j])));
-		}
+		Module module = new Module();
 		
 	    	    
 		InscriptionAdministrative ia = inscriptionAdministrative.getOne(id_ia);
 		Etudiant e = ia.getEtudiant();
-		Semestre semestre = modules.get(0).getSemestre();
+		Semestre semestre = moduleRepository.getOne(Integer.parseInt(ids[1])).getSemestre();
 		InscriptionPedagogique ip =new InscriptionPedagogique();
-		 
+		
 		ip.setAnnee_academique(ia.getAnnee_academique());
 		ip.setDate_pre_inscription(ia.getDate_pre_inscription());
 		ip.setDate_valid_inscription(ia.getDate_valid_inscription());
 		ip.setEtudiant(e);
 		ip.setSemestre(semestre);
-		ip=inscriptionPedagogiqueRepository.save(ip);
-		Iterator<Module>  mod=modules.iterator();
-		while(mod.hasNext()) {
-			Module module = mod.next();
+		InscriptionPedagogique ipE = inscriptionPedagogiqueRepository
+				.getInscriptionsPedagogiqueByInscriptionPedagogique(ip.getEtudiant(),
+						ip.getAnnee_academique(), ip.getSemestre(), ip.getdate_pre_inscription(),
+						ip.getDate_valid_inscription());
+		if(ipE == null) {
+		inscriptionPedagogiqueRepository.save(ip);
+		}
+		ip = inscriptionPedagogiqueRepository.getInscriptionsPedagogiqueByInscriptionPedagogique(ip.getEtudiant()
+				, ip.getAnnee_academique(), ip.getSemestre(), ip.getdate_pre_inscription(), ip.getDate_valid_inscription());
+		for (int j = 1; j < ids.length; j++) {
+			module = moduleRepository.getOne(Integer.parseInt(ids[j]));
 			InscriptionPedagogiqueModule ipm = new InscriptionPedagogiqueModule();
 			ipm.setInscription_pedagogique(ip);
 			ipm.setModule(module);
-			inscriptionpedagogiquemoduleRepository.save(ipm);
+			ipm = inscriptionPedagogiqueModuleRepository.save(ipm);
+			historiqueRepository.save(new Historique("inscription pedagogique de l'étudiant " + ipm.getInscription_pedagogique().getEtudiant().getFirst_name_fr() + ipm.getInscription_pedagogique().getEtudiant().getLast_name_fr() + " crée", new java.util.Date()));
 		}
 		
 		return new ModelAndView("redirect:/inscription/ListInscriptionAdministrative");
@@ -600,16 +860,21 @@ public class InscriptionController {
 		//inscrire les ips par modules---------------------------------------
 		
 		for (int i = 0; i < listIP.size(); i++) {
-			InscriptionPedagogique ip =inscriptionPedagogiqueRepository.save(listIP.get(i));
-			Iterator<Module>  mod=listModules.iterator();
-			while(mod.hasNext()) {
-				Module module = mod.next();
+			InscriptionPedagogique ip = listIP.get(i);
+			inscriptionPedagogiqueRepository.save(ip);
+			ip	= inscriptionPedagogiqueRepository.getInscriptionsPedagogiqueByInscriptionPedagogique(ip.getEtudiant(),
+							ip.getAnnee_academique(), ip.getSemestre(), ip.getdate_pre_inscription(),
+							ip.getDate_valid_inscription());
+			for (int j = 0; j < listModules.size(); j++) {
 				InscriptionPedagogiqueModule ipm = new InscriptionPedagogiqueModule();
 				ipm.setInscription_pedagogique(ip);
-				ipm.setModule(module);
-				inscriptionpedagogiquemoduleRepository.save(ipm);
+				ipm.setModule(listModules.get(j));
+				ipm = inscriptionPedagogiqueModuleRepository.save(ipm);
+				historiqueRepository.save(new Historique("inscription pedagogique par module de l'étudiant " + ipm.getInscription_pedagogique().getEtudiant().getFirst_name_fr() + ipm.getInscription_pedagogique().getEtudiant().getLast_name_fr() + " crée", new java.util.Date()));
 			}
 		}
+		
+		
 		
 		return new ModelAndView("redirect:/inscription/ListInscriptionAdministrative");
 	}
@@ -638,7 +903,6 @@ public class InscriptionController {
 		Semestre s=semestreRepository.getSemestreByFiliereAndLibelle(f, libelle_semestre);
 		model.addObject("InscriptionPedagogique", "mm-active");
 		model.addObject("annee",ele[0]);
-		
 		model.addObject("Inscription", inscriptionPedagogiqueRepository.getInscriptionsPedagogiqueBySemestre(s));
 		model.addObject("module",moduleRepository.getModuleBySemestre(s));
 		model.addObject("f", f);
@@ -706,7 +970,7 @@ public class InscriptionController {
 		
 		
 		
-//-----------------------------------------page affichant la liste des inscriptions Pedagoggiques par Module-------------------------------//
+//-----------------------------------------page affichant la liste des inscriptions Pedagoggiques par Module Globale-------------------------------//
 
 		
 		
@@ -715,13 +979,34 @@ public class InscriptionController {
 			ModelAndView model = new ModelAndView("ListInscriptionPedagogique");
 			List<Filiere> f=filiereRepository.getAllFiliere();
 			model.addObject("listPedagogique", "mm-active");
-			model.addObject("Inscription", inscriptionpedagogiquemoduleRepository.getAllInscriptionPedagogiqueModule());
+			model.addObject("Inscription", inscriptionPedagogiqueRepository.getAllInscriptionsPedagogique());
 			model.addObject("module", moduleRepository.getAllModules());
+			model.addObject("ipm",inscriptionPedagogiqueModuleRepository.findAll());
+			model.addObject("etudiant",etudiantRepository.getAllStudents());
 			model.addObject("parModule",1);
 			model.addObject("parSemestre",0);
 			model.addObject("f", f);
 			return model;
 		}
+		
+		
+		//-----------------------------------------page affichant la liste des inscriptions Pedagoggiques par Module Detaillé-------------------------------//
+
+		
+		
+				@GetMapping("/inscription/ListInscriptionPedagogiqueMD")
+				public ModelAndView listInscriptionPedagogiquesMD() {
+					ModelAndView model = new ModelAndView("ListInscriptionPedagogiqueParModule");
+					List<Filiere> f=filiereRepository.getAllFiliere();
+					model.addObject("listPedagogique", "mm-active");
+					model.addObject("Inscription", inscriptionPedagogiqueRepository.getAllInscriptionsPedagogique());
+					model.addObject("module", moduleRepository.getAllModules());
+					model.addObject("ipm",inscriptionPedagogiqueModuleRepository.findAll());
+					model.addObject("etudiant",etudiantRepository.getAllStudents());
+					model.addObject("semestre",semestreRepository.getAllSemestre());
+					model.addObject("f", f);
+					return model;
+				}
 		
 
 //----------------------------------------------menu liste des inscription pedagogiques-----------------------------------------------------//
@@ -776,6 +1061,7 @@ public class InscriptionController {
 			List<Etape> etapesA=etapeRepository.findAllById(id);
 			for (int i = 0; i < etapesA.size(); i++) {
 				etapeRepository.activerDiplomante(etapesA.get(i).getId_etape(),1);
+				historiqueRepository.save(new Historique("année " + etapesA.get(i).getLibelle_etape() + " est desormait diplomante", new java.util.Date()));
 			}
 			
 			List<Etape> etapesD=etapeRepository.findAll();
@@ -789,6 +1075,7 @@ public class InscriptionController {
 				}
 				if(trouver==0) {
 					etapeRepository.activerDiplomante(etapesD.get(i).getId_etape(),0);
+					historiqueRepository.save(new Historique("année " + etapesD.get(i).getLibelle_etape() + " n'est desormait plus diplomante", new java.util.Date()));
 				}
 			}
 			return new ModelAndView("redirect:/inscription/StructureEnseignement");

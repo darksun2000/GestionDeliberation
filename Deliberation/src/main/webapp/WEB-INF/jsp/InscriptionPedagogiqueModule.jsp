@@ -33,7 +33,7 @@
 								<td><a style="color: black">${i.etudiant.first_name_fr} ${i.etudiant.last_name_fr}</a></td>
 								<td><a style="color: black">${i.annee_academique}</a></td>
 								<td><a style="color: black">${i.semestre.filiere.nom_filiere}</a></td>
-								<td><a style="color: black">${i.semestre.id_semestre}</a></td>
+								<td><a style="color: black">${i.semestre.libelle_semestre}</a></td>
 								<td><input type="checkbox" id="lesIps" name="${i.id_ip }" onchange="envoi_form()"
 										value="yes"></td>
 							</tr>

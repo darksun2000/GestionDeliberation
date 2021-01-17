@@ -16,6 +16,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 @Entity
 @Table(name="Module")
 public class Module {
@@ -26,16 +29,21 @@ public class Module {
     @Column(name="libelle_module")
     private String libelle_module;
     @Column(name="coeficient")
-    private Double coeficient;
+    private Double coeficient = 1d;
     @Column(name="validation")
-    private Double validation;
+    private Double validation = 10d;
     @Column(name="eliminatoire")
-    private Double eliminatoire;
+    private Double eliminatoire = 4d;
     @OneToMany(cascade=CascadeType.REMOVE, mappedBy="module")
     private List<Element> elements = new ArrayList<Element>();
     @ManyToOne
     @JoinColumn(name="semestre", foreignKey=@ForeignKey(name="fk_semestre"))
+    @NotFound(action = NotFoundAction.IGNORE)
     private Semestre semestre;
+    
+    @ManyToOne
+    @JoinColumn(name="professeur", foreignKey=@ForeignKey(name="fk_professeur"))
+    private Professeur professeur;
 
     public Module() {
     }
@@ -54,7 +62,13 @@ public class Module {
 		this.semestre = semestre;
 	}
 
-
+    public Module(String libelle_module, Semestre semestre) {
+    	this.libelle_module = libelle_module;
+    	this.semestre = semestre;
+    	this.coeficient = 1d;
+    	this.validation = 10d;
+    	this.eliminatoire = 4d;
+    }
 
 	public Double getEliminatoire() {
 		return eliminatoire;
@@ -115,4 +129,12 @@ public class Module {
     public void setElements(List<Element> elements) {
         this.elements = elements;
     }
+
+	public Professeur getProfesseur() {
+		return professeur;
+	}
+
+	public void setProfesseur(Professeur professeur) {
+		this.professeur = professeur;
+	}
 }

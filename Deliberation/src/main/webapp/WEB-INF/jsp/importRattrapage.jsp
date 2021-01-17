@@ -10,7 +10,12 @@
 
 		<div class="main-card mb-3 card">
 			<div class="card-body">
-				<h5 class="card-title">Inscription Administrative de l'Etudiant</h5>
+				<h5 class="card-title">Deliberation Rattrapage</h5>
+				<form method="get" action="/delib/ListRatt">
+				<input name="module" id="module" value="${module.id_module}"
+							type="hidden" class="form-control" readonly>
+				<button class="mb-2 mr-2 btn btn-success" >Liste rattrapage</button>
+				</form>
 				<form action="/delib/UploadRattrapage" method="Post" enctype="multipart/form-data">
 
 

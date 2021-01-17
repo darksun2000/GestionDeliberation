@@ -30,6 +30,9 @@ public interface InscriptionPedagogiqueModuleRepository extends JpaRepository<In
 	@Query("select s from InscriptionPedagogiqueModule s where s.inscription_pedagogique.etudiant = :x and s.module = :module")
 	InscriptionPedagogiqueModule getInscriptionPedagogiqueModuleByEtudiantAndModule(@Param("x") Etudiant i,@Param("module") Module m);
 	
+	@Query("select s from InscriptionPedagogiqueModule s where s.validation = 0 and s.module=:module")
+	List<InscriptionPedagogiqueModule> getInscriptionPedagogiqueModuleByValidation(@Param("module") Module module);
+	
 	@Transactional
 	@Modifying
 	@Query("update InscriptionPedagogiqueModule s set s.inscription_pedagogique=:i, s.module=:m, s.note_module=:n, s.validation=:v where s.id=:id")

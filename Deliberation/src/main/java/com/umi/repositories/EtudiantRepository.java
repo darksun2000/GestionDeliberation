@@ -15,17 +15,14 @@ public interface EtudiantRepository extends JpaRepository<Etudiant, Integer>{
 	@Query("select s from Etudiant s")
 	List<Etudiant> getAllStudents();
 	
+	@Query("select e from Etudiant e where e.cne = :cne")
+	Etudiant getEtudiantByCne(@Param("cne")String cne);
+	
 	@Query("select s from Etudiant s where s.nationality = :nationality")
 	List<Etudiant> getStudentByNationality(@Param("nationality") String nationality);
 	
-	@Query("select id from Etudiant s where first_name_fr = :a and last_name_fr = :b")
-	int getIdEtudiantByName(@Param("a")String first_name_fr,@Param("b")String last_name_fr);
-	
-	@Query("select id from Etudiant s where cne = :x")
-	int getIdEtudiantByCne(@Param("x")String cne);
-	
-	@Query("select s from Etudiant s where cne = :x")
-	Etudiant getEtudiantByCne(@Param("x")String cne);
+	@Query("select id from Etudiant s where first_name_fr=:a and last_name_fr=:b")
+	List<Integer>getIdEtudiantByName(@Param("a")String first_name_fr,@Param("b")String last_name_fr);
 	
 	@Transactional
 	@Modifying

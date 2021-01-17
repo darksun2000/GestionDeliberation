@@ -4,6 +4,9 @@ import java.util.Date;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+
 import com.umi.enums.Gender;
 
 @Entity
@@ -117,8 +120,10 @@ public class InscriptionEnLigne {
 	/**
 	 * établissement
 	 */
-	@Column(name = "establishment")
-	private String establishment;
+	@ManyToOne
+	@JoinColumn(name = "etablissement", foreignKey = @ForeignKey(name = "fk_etablissement"))
+	@NotFound(action = NotFoundAction.IGNORE)
+	private Etablissement etablissement;
 
 	/**
 	 * accepeted
@@ -129,7 +134,7 @@ public class InscriptionEnLigne {
 	public InscriptionEnLigne(int id, String massar_edu, String first_name_fr, String first_name_ar,
 			String last_name_fr, String last_name_ar, String cne, String nationality, Gender gender, Date birth_date,
 			String birth_place, String city, String province, Integer bac_year, String bac_type, String mention,
-			String high_school, String bac_place, String academy, Date registration_date, String establishment ,int accepted) {
+			String high_school, String bac_place, String academy, Date registration_date, Etablissement etablissement,int accepted) {
 		super();
 		this.id = id;
 		this.massar_edu = massar_edu;
@@ -151,7 +156,7 @@ public class InscriptionEnLigne {
 		this.bac_place = bac_place;
 		this.academy = academy;
 		this.registration_date = registration_date;
-		this.establishment = establishment;
+		this.etablissement = etablissement;
 		this.accepted=accepted;
 	}
 
@@ -328,13 +333,13 @@ public class InscriptionEnLigne {
 		this.registration_date = registration_date;
 	}
 
-	public String getEstablishment() {
-		return establishment;
+	public Etablissement getEtablissement() {
+		return etablissement;
 	}
 
-	public void setEstablishment(String establishment) {
-		this.establishment = establishment;
+	public void setEtablissement(Etablissement etablissement) {
+		this.etablissement = etablissement;
 	}
-	
+
 	
 }

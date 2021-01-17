@@ -13,9 +13,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.umi.enums.Gender;
+import com.umi.models.Etablissement;
 import com.umi.models.Etudiant;
+import com.umi.models.Historique;
 import com.umi.models.InscriptionEnLigne;
+import com.umi.repositories.EtablissementRepository;
 import com.umi.repositories.EtudiantRepository;
+import com.umi.repositories.HistoriqueRepository;
 import com.umi.repositories.InscriptionEnLigneRepository;
 
 @Controller
@@ -25,10 +29,16 @@ public class RegistrationController {
 	private EntityManager entiryManager;
 	private EtudiantRepository studentRepository;
 	private InscriptionEnLigneRepository inscriptionEnligne;
+	private EtablissementRepository etablissementRepository;
+	private HistoriqueRepository historiqueRepository;
 	
-	public RegistrationController(EtudiantRepository studentRepository, InscriptionEnLigneRepository inscriptionEnligne) {
+	public RegistrationController(EtudiantRepository studentRepository, InscriptionEnLigneRepository inscriptionEnligne
+			, EtablissementRepository etablissementRepository
+			, HistoriqueRepository historiqueRepository) {
 		this.studentRepository = studentRepository;
 		this.inscriptionEnligne=inscriptionEnligne;
+		this.etablissementRepository = etablissementRepository;
+		this.historiqueRepository = historiqueRepository;
 	}
 	
 	@GetMapping("/student/create")
@@ -48,7 +58,7 @@ public class RegistrationController {
 			, @RequestParam("province") String province, @RequestParam("bac_year") Integer bac_year
 			, @RequestParam("bac_type") String bac_type, @RequestParam("mention") String mention
 			, @RequestParam("high_school") String high_school, @RequestParam("bac_place") String bac_place
-			, @RequestParam("academy") String academy, @RequestParam("establishment") String establishment) {
+			, @RequestParam("academy") String academy, @RequestParam("etablissement_id") Integer etablissement_id) {
 		
 		Etudiant student = new Etudiant();
 		student.setLast_name_fr(last_name_fr);
@@ -69,11 +79,12 @@ public class RegistrationController {
 		student.setHigh_school(high_school);
 		student.setBac_place(bac_place);
 		student.setAcademy(academy);
-		student.setEstablishment(establishment);
+		Etablissement etablissement = etablissementRepository.getOne(etablissement_id);
+		student.setEtablissement(etablissement);
 		student.setRegistration_date(new java.util.Date());
 		
 		studentRepository.save(student);
-		
+		historiqueRepository.save(new Historique("etudiant " + first_name_fr + " " + last_name_fr + " créé", new java.util.Date()));
 		
 		return new ModelAndView("redirect:/student/list");
 	}
@@ -82,6 +93,7 @@ public class RegistrationController {
 	@GetMapping("/student/InscriptionEnLigne")
 	public ModelAndView createANewInscriptionEnLigne() {
 		ModelAndView model = new ModelAndView("InscriptionEnLigne");
+		model.addObject("etablissements", etablissementRepository.findAll());
 		model.addObject("InscriptionEnLigne", "mm-active");//will be used in the nav-bar
 		return model;
 	}
@@ -95,7 +107,7 @@ public class RegistrationController {
 			, @RequestParam("province") String province, @RequestParam("bac_year") Integer bac_year
 			, @RequestParam("bac_type") String bac_type, @RequestParam("mention") String mention
 			, @RequestParam("high_school") String high_school, @RequestParam("bac_place") String bac_place
-			, @RequestParam("academy") String academy, @RequestParam("establishment") String establishment) {
+			, @RequestParam("academy") String academy, @RequestParam("etablissement_id") Integer etablissement_id) {
 		
 		InscriptionEnLigne student = new InscriptionEnLigne();
 		student.setLast_name_fr(last_name_fr);
@@ -116,13 +128,14 @@ public class RegistrationController {
 		student.setHigh_school(high_school);
 		student.setBac_place(bac_place);
 		student.setAcademy(academy);
-		student.setEstablishment(establishment);
+		Etablissement etablissement = etablissementRepository.getOne(etablissement_id);
+		student.setEtablissement(etablissement);
 		student.setRegistration_date(new java.util.Date());
 		
 		inscriptionEnligne.save(student);
 		
-		
-		return new ModelAndView("redirect:/student/list");
+		historiqueRepository.save(new Historique("etudiant " + first_name_fr + " " + last_name_fr + " inscrit en ligne", new java.util.Date()));
+		return new ModelAndView("redirect:/student/ListInscriptionEnligne");
 	}
 	
 	@GetMapping("/student/ProfilInscriptionEnLigne")
@@ -131,7 +144,7 @@ public class RegistrationController {
 			){
 		
 		List<InscriptionEnLigne> l=inscriptionEnligne.findById(id);
-				ModelAndView model = new ModelAndView("ProfileInscriptionEnLigne");
+		ModelAndView model = new ModelAndView("ProfileInscriptionEnLigne");
 		model.addObject("listInscriptions", "mm-active");
 		model.addObject("Inscription", l.get(0));
 		
@@ -143,7 +156,7 @@ public class RegistrationController {
 	public ModelAndView refuserInscription(
 			@RequestParam("idie")int id
 			) {
-		
+		historiqueRepository.save(new Historique("une inscription en ligne refusé", new java.util.Date()));
 		inscriptionEnligne.deleteById(id);
 		return new ModelAndView("redirect:/student/ListInscriptionEnligne");
 	}
@@ -174,8 +187,9 @@ public class RegistrationController {
 		student.setHigh_school(iel.getHigh_school());
 		student.setBac_place(iel.getBac_place());
 		student.setAcademy(iel.getAcademy());
-		student.setEstablishment(iel.getEstablishment());
-		inscriptionEnligne.updateAcceptation(iel.getId(),1);
+		student.setEtablissement(iel.getEtablissement());
+		inscriptionEnligne.save(iel);
+		historiqueRepository.save(new Historique("inscription en ligne de l'etudiant " + iel.getFirst_name_fr() + " " + iel.getLast_name_fr() + " accepté", new java.util.Date()));
 		return new ModelAndView("redirect:/student/ListInscriptionEnligne");
 	}
 	

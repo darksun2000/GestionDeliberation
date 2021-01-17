@@ -10,9 +10,9 @@
 
 		<div class="main-card mb-3 card">
 			<div class="card-body">
-				<h5 class="card-title">Inscription Administrative de l'Etudiant</h5>
+				<h5 class="card-title">Deliberation Session Ordinnaire</h5>
+				
 				<form action="/delib/UploadOrdinaire" method="Post" enctype="multipart/form-data">
-
 
 				<input name="module" id="module" value="${module.id_module}"
 							type="hidden" class="form-control" readonly>

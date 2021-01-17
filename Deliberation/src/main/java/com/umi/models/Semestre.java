@@ -18,7 +18,7 @@ public class Semestre {
     @Column(name="id_semestre")
     private int id_semestre;
     @Column(name="validation")
-    private Double validation;
+    private Double validation=10d;
     @Column(name="libelle_semestre")
     private String libelle_semestre;
     @ManyToOne
@@ -37,6 +37,13 @@ public class Semestre {
         this.libelle_semestre = libelle_semestre;
         this.filiere = filiere;
         this.etape = etape;
+    }
+    
+    public Semestre(Double validation, String libelle_semestre, Filiere filiere, Etape etape) {
+    	this.validation = validation;
+    	this.libelle_semestre = libelle_semestre;
+    	this.filiere = filiere;
+    	this.etape = etape;
     }
 
     public Double getValidation() {

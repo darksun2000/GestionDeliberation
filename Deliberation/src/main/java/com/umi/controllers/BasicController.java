@@ -14,14 +14,14 @@ public class BasicController {
 	
 	
 	
-	@RequestMapping("/")
-	public ModelAndView helloworld() {
-		ModelAndView model = new ModelAndView("index");
-		model.addObject("dashboard", "mm-active");
-		model.addObject("message", "HELLO WORLD");
-		return model;
-//		return new ModelAndView("redirect:/student/list");
-	}
+//	@RequestMapping("/")
+//	public ModelAndView helloworld() {
+//		ModelAndView model = new ModelAndView("index");
+//		model.addObject("dashboard", "mm-active");
+//		model.addObject("message", "HELLO WORLD");
+//		return model;
+////		return new ModelAndView("redirect:/student/list");
+//	}
 	
 	@RequestMapping("/foobar")
 	public ModelAndView foobar() {

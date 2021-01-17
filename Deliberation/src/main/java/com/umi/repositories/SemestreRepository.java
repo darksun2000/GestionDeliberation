@@ -16,6 +16,9 @@ public interface SemestreRepository extends JpaRepository<Semestre, Integer>{
 	List<Semestre> getAllSemestre();
 	
 	@Query("select s from Semestre s where filiere=:x")
+	List<Semestre> getSemestresByFiliere(@Param("x")Filiere filiere);
+	
+	@Query("select s from Semestre s where filiere=:x")
 	List<Semestre> getSemestreByFiliere(@Param("x")Filiere filiere);
 	
 	@Query("select s from Semestre s where etape = :etape")

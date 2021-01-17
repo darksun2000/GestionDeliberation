@@ -113,7 +113,7 @@
                                                         <div class="widget-content-outer">
                                                             <div class="widget-content-wrapper">
                                                                 <div class="widget-content-left">
-                                                                    <div class="widget-heading">Etablissement : ${Inscription.getEstablishment()}</div>
+                                                                    <div class="widget-heading">Etablissement : ${Inscription.getEtablissement().getName()}</div>
                                                                 </div>
                                                             </div>
                                                         </div>

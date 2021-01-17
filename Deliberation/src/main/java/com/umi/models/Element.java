@@ -21,9 +21,9 @@ public class Element
     @Column(name = "libelle_element")
     private String libelle_element;
     @Column(name = "coeficient")
-    private Double coeficient;
+    private Double coeficient = 1d;
     @Column(name = "validation")
-    private Double validation;
+    private Double validation = 10d;
     @ManyToOne
     @JoinColumn(name = "module", foreignKey = @ForeignKey(name = "fk_module"))
     private Module module;

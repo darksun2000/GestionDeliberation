@@ -176,9 +176,14 @@
 						</div>
 						<div class="col-md-3">
 							<div class="position-relative form-group">
-								<label for="establishment" class="">établissement</label><input
-									name="establishment" id="establishment" placeholder=""
-									type="text" class="form-control" required>
+								<label for="etablissement_id" class="">établissement</label>
+								
+								<select name="etablissement_id" id="exampleSelect" class="form-control">
+									<c:forEach var="etablissement" items="${etablissements}">
+										<option value="${etablissement.id }"> ${etablissement.name }</option>
+									</c:forEach>
+								</select>
+								
 							</div>
 						</div>
 					</div>

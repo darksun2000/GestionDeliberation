@@ -17,9 +17,17 @@
   				</c:forEach>
 				</div>
 				<c:forEach var="f" items="${f}">
-
+			
 	<div id="${f.nom_filiere}" class="tabcontent">
-				<table class="mb-0 table table-hover">
+					<c:if test="${ parModule==0}">
+						<input name="id_ias" id="ok" type="text" style="display: none">
+							<div class="col-md-6">
+							
+				
+						</div>
+						</c:if>
+						
+				<table class="mb-0 table table-hover" id="myTable">
 					<thead>
 						<tr>
 							<c:if test="${ parSemestre==1}">
@@ -60,13 +68,13 @@
 					<tbody>
 						<c:forEach var="i" items="${Inscription}">
 							<tr>
-							<c:if test="${f.id_filiere==i.inscription_pedagogique.semestre.filiere.id_filiere }">
-								<td><a style="color: black">${i.inscription_pedagogique.etudiant.first_name_fr} ${i.inscription_pedagogique.etudiant.last_name_fr}</a></td>
+							<c:if test="${f.id_filiere==i.semestre.filiere.id_filiere }">
+								<td><a style="color: black">${i.etudiant.first_name_fr} ${i.etudiant.last_name_fr}</a></td>
 								<c:if test="${ parSemestre==1}">
-								<td><a style="color: black">${i.inscription_pedagogique.annee_academique}</a></td>
-								<td><a style="color: black">${i.inscription_pedagogique.date_pre_inscription}</a></td>
-								<td><a style="color: black">${i.inscription_pedagogique.date_valid_inscription}</a></td>
-								<td><a style="color: black">${i.inscription_pedagogique.semestre.libelle_semestre}</a></td>
+								<td><a style="color: black">${i.annee_academique}</a></td>
+								<td><a style="color: black">${i.date_pre_inscription}</a></td>
+								<td><a style="color: black">${i.date_valid_inscription}</a></td>
+								<td><a style="color: black">${i.semestre.libelle_semestre}</a></td>
 								</c:if>
 								<c:if test="${ parModule==1}">
 								<c:forEach var="m" items="${module }">
@@ -114,6 +122,31 @@
 			  document.getElementById(cityName).style.display = "block";
 			  evt.currentTarget.className += " active";
 			}
+		
+		//-------------------------------------------------------------------------------//
+		function myFunction() {
+			  // Declare variables
+			  var input, filter, table, tr, td, i, txtValue;
+			  input = document.getElementById("myInput");
+			  filter = input.value.toUpperCase();
+			  table = document.getElementById("myTable");
+			  tr = table.getElementsByTagName("tr");
+			  // Loop through all table rows, and hide those who don't match the search query
+			  for (i = 0; i < tr.length; i++) {
+			    td = tr[i].getElementsByTagName("td")[4];
+			    if (td) {
+			      txtValue = td.textContent || td.innerText;
+			      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+			        tr[i].style.display = "";
+			      } else {
+			        tr[i].style.display = "none";
+			      }
+			    }
+			  }
+			}
+		
+		//-------------------------------------------------------------------------------//
+		
 		</script>
 	</layout:put>
 </layout:extends>

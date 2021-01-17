@@ -27,6 +27,8 @@ public class Etape
     private String libelle_etape;
     @Column(name = "diplomante")
     private int diplomante;
+    @Column(name = "validation")
+    private Double validation = 10d;
     @ManyToOne
     @JoinColumn(name = "filiere", foreignKey = @ForeignKey(name = "fk_filiere"))
     private Filiere filiere;
@@ -37,15 +39,38 @@ public class Etape
         this.semestres = new ArrayList<Semestre>();
     }
     
-    public Etape( int id_etape,  String libelle_etape,  int diplomante,  Filiere filiere) {
-        this.semestres = new ArrayList<Semestre>();
-        this.id_etape = id_etape;
-        this.libelle_etape = libelle_etape;
-        this.diplomante = diplomante;
-        this.filiere = filiere;
-    }
+   
     
-    public int getId_etape() {
+    public Etape(int id_etape, String libelle_etape, int diplomante, Double validation, Filiere filiere,
+			List<Semestre> semestres) {
+		super();
+		this.id_etape = id_etape;
+		this.libelle_etape = libelle_etape;
+		this.diplomante = diplomante;
+		this.validation = validation;
+		this.filiere = filiere;
+		this.semestres = semestres;
+	}
+
+    public Etape(String libelle_etape, int diplomante, Filiere filiere) {
+    	this.libelle_etape = libelle_etape;
+    	this.diplomante = diplomante;
+    	this.filiere = filiere;
+    }
+
+	public Double getValidation() {
+		return validation;
+	}
+
+
+
+	public void setValidation(Double validation) {
+		this.validation = validation;
+	}
+
+
+
+	public int getId_etape() {
         return this.id_etape;
     }
     

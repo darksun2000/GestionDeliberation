@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<div class="app-sidebar sidebar-shadow">
+<div class="app-sidebar sidebar-shadow" scrolling="yes">
 	<div class="app-header__logo">
 		<div class="logo-src"></div>
 		<div class="header__pane ml-auto">
@@ -42,6 +42,73 @@
 						class="metismenu-icon pe-7s-rocket"></i> Tableau de bords
 				</a></li>
 
+				<li><a href="#" aria-expanded="false"> <i
+						class="metismenu-icon pe-7s-id"></i> Etablissements <i
+						class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+				</a>
+					<ul class="mm-collapse" style="height: 7.04px;">
+						<li><a href="/etablissement/creer"
+							class="${EtablissementCreate}"> <i
+								class="metismenu-icon pe-7s-add-user"></i>Ajouter un
+								etablissement
+						</a></li>
+						<li><a href="/etablissement/liste"
+							class="${listEtablissement}"> <i
+								class="metismenu-icon pe-7s-menu"></i>Liste des etablissements
+						</a></li>
+					</ul></li>
+				<li><a href="#" aria-expanded="false"> <i
+						class="metismenu-icon pe-7s-id"></i> Responsables <i
+						class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+				</a>
+					<ul class="mm-collapse" style="height: 7.04px;">
+						<li><a href="/responsable/creer"
+							class="${ResponsableCreate}"> <i
+								class="metismenu-icon pe-7s-add-user"></i>Ajouter un
+								responsable
+						</a></li>
+						<li><a href="/responsable/liste"
+							class="${listResponsable}"> <i
+								class="metismenu-icon pe-7s-menu"></i>Liste des responsables
+						</a></li>
+					</ul></li>
+				<li><a href="#" aria-expanded="false"> <i
+						class="metismenu-icon pe-7s-id"></i> Filières <i
+						class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+				</a>
+					<ul class="mm-collapse" style="height: 7.04px;">
+						<li><a href="/filiere/creer" class="${FiliereCreate}"> <i
+								class="metismenu-icon pe-7s-add-user"></i>Ajouter une filière
+						</a></li>
+						<li><a href="/filiere/liste" class="${listFiliere}"> <i
+								class="metismenu-icon pe-7s-menu"></i>Liste des filières
+						</a></li>
+					</ul></li>
+				<li><a href="#" aria-expanded="false"> <i
+						class="metismenu-icon pe-7s-id"></i> Professeurs <i
+						class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+				</a>
+					<ul class="mm-collapse" style="height: 7.04px;">
+						<li><a href="/professeur/creer" class="${ProfesseurCreate}">
+								<i class="metismenu-icon pe-7s-add-user"></i>Ajouter un
+								Professeur
+						</a></li>
+						<li><a href="/professeur/liste" class="${listProfesseur}">
+								<i class="metismenu-icon pe-7s-menu"></i>Liste des Professeurs
+						</a></li>
+					</ul></li>
+				<li><a href="#" aria-expanded="false"> <i
+						class="metismenu-icon pe-7s-id"></i> Modules <i
+						class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+				</a>
+					<ul class="mm-collapse" style="height: 7.04px;">
+						<li><a href="/module/creer" class="${ModuleCreate}"> <i
+								class="metismenu-icon pe-7s-add-user"></i>Créer un Module
+						</a></li>
+						<li><a href="/module/liste" class="${listModule}"> <i
+								class="metismenu-icon pe-7s-menu"></i>Liste des Modules
+						</a></li>
+					</ul></li>
 				<li><a href="/student/list" class="${listStudent}"> <i
 						class="metismenu-icon pe-7s-study"></i> Liste des étudiants
 				</a></li>
@@ -95,25 +162,6 @@
 					class="${StructureEnseignement}"> <i
 						class="metismenu-icon pe-7s-graph3"></i> Structure d'Enseignement
 				</a></li>
-				<li><a href="/filiere/creer"
-					class="${creerFiliere}"> <i
-						class="metismenu-icon pe-7s-graph3"></i> Créer une filière
-				</a></li>
-				<li><a href="#" aria-expanded="false"> <i
-						class="metismenu-icon pe-7s-id"></i> Module <i
-						class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
-				</a>
-					<ul class="mm-collapse" style="height: 7.04px;">
-						<li><a href="/module/creer"
-							class="${creerModule}"> <i
-								class="metismenu-icon pe-7s-add-user"></i>Créer une module
-						</a></li>
-						<li><a href="/module/ListModule"
-							class="${ListModule}"> <i
-								class="metismenu-icon pe-7s-menu"></i>Listes I. Pedagogique
-						</a></li>
-					</ul></li>
-				
 				
 				<li><a href="#" aria-expanded="false"> <i
 						class="metismenu-icon pe-7s-id"></i> Note Element de module <i
@@ -149,8 +197,20 @@
 					class="${importdelib}"> <i
 						class="metismenu-icon pe-7s-graph3"></i> Resultat Deliberation semestre
 				</a></li>
+				<li><a href="/delib/choixListEtape"
+					class="${importdelib}"> <i
+						class="metismenu-icon pe-7s-graph3"></i> Resultat Deliberation anuelle
+				</a></li>
 						
 					</ul></li>
+				<li><a href="/historique/liste"
+					class=""> <i
+						class="metismenu-icon pe-7s-graph3"></i> Historique
+				</a></li>
+				<li><a href="/logout"
+					class=""> <i
+						class="metismenu-icon pe-7s-graph3"></i> Se déconnecter
+				</a></li>
 			</ul>
 		</div>
 	</div>

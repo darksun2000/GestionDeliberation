@@ -1,16 +1,26 @@
 package com.umi.models;
 
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import com.umi.enums.Gender;
 
@@ -125,8 +135,13 @@ public class Etudiant {
 	/**
 	 * établissement
 	 */
-	@Column(name = "establishment")
-	private String establishment;
+	@ManyToOne
+	@JoinColumn(name = "etablissement", foreignKey = @ForeignKey(name = "fk_etablissement"))
+	@NotFound(action = NotFoundAction.IGNORE)
+	private Etablissement etablissement;
+	
+	@OneToMany(cascade = { CascadeType.REMOVE }, mappedBy = "etudiant")
+	List<InscriptionPedagogique> inscription_pedagogiques = new ArrayList<InscriptionPedagogique>();
 	
 	public Etudiant() {
 		
@@ -135,7 +150,7 @@ public class Etudiant {
 	public Etudiant(String massar_edu, String first_name_fr, String first_name_ar, String last_name_fr,
 			String last_name_ar, String cne, String nationality, Gender gender, Date birth_date, String birth_place,
 			String city, String province, Integer bac_year, String bac_type, String mention, String high_school,
-			String bac_place, String academy, Date registration_date, String establishment) {
+			String bac_place, String academy, Date registration_date, Etablissement etablissement) {
 		super();
 		this.massar_edu = massar_edu;
 		this.first_name_fr = first_name_fr;
@@ -156,7 +171,7 @@ public class Etudiant {
 		this.bac_place = bac_place;
 		this.academy = academy;
 		this.registration_date = registration_date;
-		this.establishment = establishment;
+		this.etablissement = etablissement;
 	}
 
 	public int getId() {
@@ -319,12 +334,22 @@ public class Etudiant {
 		this.registration_date = registration_date;
 	}
 
-	public String getEstablishment() {
-		return establishment;
+	public Etablissement getEtablissement() {
+		return etablissement;
 	}
 
-	public void setEstablishment(String establishment) {
-		this.establishment = establishment;
+	public void setEtablissement(Etablissement etablissement) {
+		this.etablissement = etablissement;
 	}
+
+	public List<InscriptionPedagogique> getInscription_pedagogiques() {
+		return inscription_pedagogiques;
+	}
+
+	public void setInscription_pedagogiques(List<InscriptionPedagogique> inscription_pedagogiques) {
+		this.inscription_pedagogiques = inscription_pedagogiques;
+	}
+	
+	
 	
 }
