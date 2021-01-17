@@ -24,3 +24,30 @@
     -->
 <link href="/css/main.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['bar']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Filières', 'validé', 'rattrapage', 'Non validé'],
+          ['BGI', 1000, 400, 200],
+          ['BGB', 1170, 460, 250],
+          ['BCA', 660, 1120, 300],
+          ['SMIA', 1030, 540, 350]
+        ]);
+
+        var options = {
+          chart: {
+            title: 'Statistique des etudiants',
+            subtitle: 'Validé, ratrappage et non validé pour cette periode',
+          }
+        };
+
+        var chart = new google.charts.Bar(document.getElementById('columnchart_material'));
+
+        chart.draw(data, google.charts.Bar.convertOptions(options));
+      }
+    </script>
